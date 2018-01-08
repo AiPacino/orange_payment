@@ -6,6 +6,10 @@ router.get('/' , async (req , res) => {
   res.success({version : '0.0.1'})
 })
 
+router.post('/sessionKey' , async (req , res) => {
+  
+})
+
 router.use('/mini' , require('./mini'))
 router.use('/user' , require('./user'))
 router.use('/question' , require('./question'))

@@ -27,7 +27,7 @@ let config = {
     type : 'mysql',
     host : '59939c0a9a983.gz.cdb.myqcloud.com',
     port : 5579,
-    dbname : 'orange_pay',
+    dbname : 'orange_one',
     username: 'root',
     password: 'Lucong19890512',
     maxLimit : 10,

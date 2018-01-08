@@ -9,9 +9,9 @@ module.exports = {
   routers : [
 
     {
-      method : 'demo',
-      name : 'demo',
-      args : ['a' , 'b']
+      method : 'getSessionKey',
+      name : '获取用户sessionkey',
+      args : ['uid']
     },
     
   ],

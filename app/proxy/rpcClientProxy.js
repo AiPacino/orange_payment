@@ -15,25 +15,25 @@ let clientRequest = (method , args) => {
 }
 
 
-let _demo = (args) => {
-  return clientRequest('demo' , args)
+let _getSessionKey = (args) => {
+  return clientRequest('getSessionKey' , args)
 }
 
 
 
 let clientProxy = {
   
- // demo
- demo : (args) => {
-   return _demo(args)
+ // 获取用户sessionkey
+ getSessionKey : (args) => {
+   return _getSessionKey(args)
  }
 
 }
 
 let clientArgs = {
   
- demo: {
-   a: null,b: null
+ getSessionKey: {
+   uid: null
  }
 
 }
