@@ -1,14 +1,10 @@
 const RPC = require('./../../lib/rpc')
 const log = require('./../../lib/log')('rpc-controller-index')
 
-RPC.add('demo' , (args , response) => {
+RPC.add('demo' , async (args) => {
 
-  return (async () => {
-    
-    let data = await args
-    log.info('data' , data)
-    response.json(data)
-  })()
+  let data = await args
+  return { code :1 , message : '111' , aaa : data}
   
 })
 

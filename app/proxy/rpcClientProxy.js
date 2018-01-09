@@ -15,25 +15,55 @@ let clientRequest = (method , args) => {
 }
 
 
+let _demo = (args) => {
+  return clientRequest('demo' , args)
+}
+
 let _getSessionKey = (args) => {
   return clientRequest('getSessionKey' , args)
+}
+
+let _questionCreate = (args) => {
+  return clientRequest('questionCreate' , args)
 }
 
 
 
 let clientProxy = {
   
+ // demo
+ demo : (args) => {
+   return _demo(args)
+ }
+ ,
+
  // 获取用户sessionkey
  getSessionKey : (args) => {
    return _getSessionKey(args)
+ }
+ ,
+
+ // 添加问题
+ questionCreate : (args) => {
+   return _questionCreate(args)
  }
 
 }
 
 let clientArgs = {
   
+ demo: {
+   a: null,b: null
+ }
+ ,
+
  getSessionKey: {
    uid: null
+ }
+ ,
+
+ questionCreate: {
+   uid: null,questionObj: null
  }
 
 }
