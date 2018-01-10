@@ -26,7 +26,31 @@ module.exports = {
       name : '添加问题',
       args : ['uid' , 'questionObj']
     },
-    
+    {
+      method : 'questionUpdate',
+      name : '修改问题',
+      args : ['uid' , 'questionObj']
+    },
+    {
+      method : 'questionPublish',
+      name : '问题发布',
+      args : ['uid' , 'questionObj']
+    },
+    {
+      method : 'questionDelete',
+      name : '问题删除',
+      args : ['uid' , 'question_id']
+    },
+    {
+      method : 'questionDetail',
+      name : '问题详情',
+      args : ['uid' , 'question_id']
+    },
+    {
+      method : 'questionList',
+      name : '问题列表',
+      args : ['uid' , 'map']
+    },
   ],
 
 

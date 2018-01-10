@@ -1,5 +1,4 @@
 const { DB , FIELD_TYPE} = require('./../../lib/model')
-const log = require('./../lib/log')('user_model')
 
 class UserAppModel {
 
@@ -19,7 +18,7 @@ class UserAppModel {
       phone : {
         type: FIELD_TYPE.STRING_LEN(16)
       },
-      open_id: {
+      openid: {
         type: FIELD_TYPE.STRING_LEN(32)
       },
       avatar_url: {
