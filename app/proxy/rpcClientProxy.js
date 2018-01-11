@@ -47,6 +47,18 @@ let _questionList = (args) => {
   return clientRequest('questionList' , args)
 }
 
+let _answerListForQuestion = (args) => {
+  return clientRequest('answerListForQuestion' , args)
+}
+
+let _answerCreate = (args) => {
+  return clientRequest('answerCreate' , args)
+}
+
+let _answerDelete = (args) => {
+  return clientRequest('answerDelete' , args)
+}
+
 
 
 let clientProxy = {
@@ -97,6 +109,24 @@ let clientProxy = {
  questionList : (args) => {
    return _questionList(args)
  }
+ ,
+
+ // 问题列表
+ answerListForQuestion : (args) => {
+   return _answerListForQuestion(args)
+ }
+ ,
+
+ // 回答问题
+ answerCreate : (args) => {
+   return _answerCreate(args)
+ }
+ ,
+
+ // 删除回答
+ answerDelete : (args) => {
+   return _answerDelete(args)
+ }
 
 }
 
@@ -139,6 +169,21 @@ let clientArgs = {
 
  questionList: {
    uid: null,map: null
+ }
+ ,
+
+ answerListForQuestion: {
+   question_id: null,map: null
+ }
+ ,
+
+ answerCreate: {
+   uid: null,question_id: null,answerObj: null
+ }
+ ,
+
+ answerDelete: {
+   uid: null,answer_id: null
  }
 
 }

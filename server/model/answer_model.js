@@ -1,21 +1,22 @@
 const { DB , FIELD_TYPE , OP , Se} = require('./../../lib/model')
 const UserModel = require('./user_model')
+// const QuestionModel = require('./question_model')
 
-class QuestionModel {
+class AnswerModel {
 
   constructor(){
-    this.model = DB.define('question' , {
+    this.model = DB.define('answer' , {
       id : {
         type : FIELD_TYPE.BIGINT,
         primaryKey: true,
         autoIncrement: true 
       },
-      type: {
-        type: FIELD_TYPE.INT_LEN(2),
-        defaultValue : 1
+      question_id: {
+        type : FIELD_TYPE.BIGINT
       },
-      title : {
-        type: FIELD_TYPE.STRING_LEN(128)
+      pid : {
+        type : FIELD_TYPE.BIGINT,
+        defaultValue : 0
       },
       content : {
         type: FIELD_TYPE.TEXT
@@ -23,17 +24,13 @@ class QuestionModel {
       uid: {
         type : FIELD_TYPE.BIGINT,
       },
-      deadline : {
+      likes_count : {
         type : FIELD_TYPE.INT,
-        defaultValue : parseInt(Date.now() / 1000)
-      },
-      amount : {
-        type : FIELD_TYPE.INT,
-        defaultValue : parseInt(Date.now() / 1000)
+        defaultValue : 0
       },
       status : {
         type : FIELD_TYPE.INT_LEN(2),
-        defaultValue : 0
+        defaultValue : 1
       },
       create_time : {
         type : FIELD_TYPE.INT,
@@ -46,23 +43,20 @@ class QuestionModel {
     },{
       timestamps: false,
       freezeTableName: true,
-      tableName : 't_question'
+      tableName : 't_answer'
     })
 
     this.model.belongsTo(UserModel.model , {foreignKey :'uid' , targetKey: 'id'})
   }
 
-  async getListByUid(uid , map = {}){
+  async getListByQuestionId(questionId , map = {}){
 
     let where = {}
-    where.uid = uid
+    where.question_id = questionId
     let page = map.page ? map.page : 1
     let size = map.size ? map.size : 10
-    if (map.hasOwnProperty('status')){
-      where.status = map.status
-    }else{
-      where.status = {[OP.gt]: 0}
-    }
+
+    where.status = map.status ? map.status : 1
 
     let result = this.model.findAndCountAll({
       where: where,
@@ -73,6 +67,7 @@ class QuestionModel {
       ],
       include: [{
         model: UserModel.model,
+        // where: { id : Se.col('t_answer.uid') },
         attributes: ['id', 'nick_name' , 'avatar_url' , 'gender']
       }]
     })
@@ -82,4 +77,4 @@ class QuestionModel {
 
 }
 
-module.exports = new QuestionModel()
+module.exports = new AnswerModel()

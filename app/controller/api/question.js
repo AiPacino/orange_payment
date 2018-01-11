@@ -91,9 +91,20 @@ router.post('/delete' , (req , res) => {
 
 })
 
-// 问题列表
-
 // 问题详情
+router.post('/detail' , (req , res) => {
+  let uid = req.uid
+  let id = req.body.id
+
+  log.info('detail uid ' , uid , 'id' , id)
+  QuestionService.detail(uid , id).then(result => {
+    log.info('detail result ' , result)
+    return res.json(result)
+  })
+
+})
+
+// 问题列表
 router.post('/list' , (req , res) => {
   let uid = req.uid
   let map = req.body

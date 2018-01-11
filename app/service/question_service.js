@@ -53,6 +53,16 @@ class QusetionService {
     log.info('list result ' ,result)
     return result
   }
+
+  async detail(uid , id){
+    let args = rpcArgs.questionDetail
+    args.question_id = id
+    args.uid = uid
+    log.info('detail args' , args)
+    let result = await rpcProxy.questionDetail(args)
+    log.info('detail result' , result)
+    return result
+  }
 }
 
 module.exports = new QusetionService()

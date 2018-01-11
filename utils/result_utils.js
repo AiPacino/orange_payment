@@ -50,4 +50,14 @@ module.exports = {
     code : 10114,
     message : 'question数据该状态下无法删除'
   },
+  QUESTION_STATUS_NO_CAN_ANSWER : {
+    code : 10115,
+    message : 'question数据该状态下无法回答'
+  },
+  // answer
+  ANSWER_FIND_ERROR : {
+    code : 10120,
+    message : '未找到answer数据'
+  }
+  
 }

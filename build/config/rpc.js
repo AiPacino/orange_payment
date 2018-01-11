@@ -51,6 +51,23 @@ module.exports = {
       name : '问题列表',
       args : ['uid' , 'map']
     },
+
+    // answer
+    {
+      method : 'answerListForQuestion',
+      name : '问题列表',
+      args : ['question_id' , 'map']
+    },
+    {
+      method : 'answerCreate',
+      name : '回答问题',
+      args : ['uid' , 'question_id' , 'answerObj']
+    },
+    {
+      method : 'answerDelete',
+      name : '删除回答',
+      args : ['uid' , 'answer_id']
+    },
   ],
 
 

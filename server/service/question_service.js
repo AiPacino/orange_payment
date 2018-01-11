@@ -1,6 +1,9 @@
 const RESULT_UTILS = require('./../../utils/result_utils')
 const QuestionModel = require('./../model/question_model')
+const UserModel = require('./../model/user_model')
+const AnswerModel = require('./../model/answer_model')
 const log = require('./../../lib/log')('server-service-question')
+
 
 class QuestionService {
 
@@ -111,6 +114,23 @@ class QuestionService {
     let result = await QuestionModel.getListByUid(uid , map)
     log.info('list result' , result)
     return {count : result.count , rows : result.rows}
+  }
+
+  async detail(uid , id){
+    let question = await QuestionModel.model.findOne({
+      where : {uid : uid , id : id}
+    })
+    log.info('detail result' , question)
+    let result = question ? question.dataValues : null
+    if(result){
+      result.user = await UserModel.model.findById(uid)
+      result.answer = await AnswerModel.getListByQuestionId(id)
+      
+      return result
+    }else {
+      return null
+    }
+
   }
 }
 

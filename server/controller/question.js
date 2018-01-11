@@ -57,5 +57,16 @@ RPC.add('questionList' , async (args) => {
   
 })
 
+RPC.add('questionDetail' , async (args) => {
+
+  let uid = args.uid
+  let id = args.question_id
+  log.info('questionDetail uid' , uid , 'id' , id)
+  let result = await QuestionService.detail(uid , id)
+  log.info('questionDetail result' , result)
+  return result
+  
+})
+
 
 module.exports = RPC.methods()

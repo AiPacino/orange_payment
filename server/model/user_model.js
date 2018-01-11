@@ -3,7 +3,7 @@ const { DB , FIELD_TYPE} = require('./../../lib/model')
 class UserAppModel {
 
   constructor(){
-    this.model = DB.define('t_user' , {
+    this.model = DB.define('user' , {
       id : {
         type : FIELD_TYPE.BIGINT,
         primaryKey: true,
@@ -51,10 +51,13 @@ class UserAppModel {
       }
     },{
       timestamps: false,
-      freezeTableName: true
+      freezeTableName: true,
+      tableName : 't_user'
     })
+
   }
 
+  
 }
 
 module.exports = new UserAppModel()
