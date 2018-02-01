@@ -16,13 +16,19 @@ router.get('/pay' , (req , res) => {
 // 微信公众号授权
 router.get('/auth' , (req , res) => {
 
-  let opt = {}
-  opt.app_id = 'wx9070c69e2b42f307',
-  opt.app_secret = 'a5a11c1b2b559c071ec7695f1c7eb716'
-
-  let redirectUrl = req.session.redirect_uri || req.protocol + '://' + req.hostname + '/demo/wechat'
-  let url = wechatPubService.getAuthorizeUrl(redirectUrl , opt)
-  return res.redirect(url)
+  let code = req.query.code
+  if(code){
+    res.send(code)
+  }else {
+    let opt = {}
+    opt.app_id = 'wx9070c69e2b42f307',
+    opt.app_secret = 'a5a11c1b2b559c071ec7695f1c7eb716'
+  
+    let redirectUrl = req.protocol + '://' + req.hostname + '/demo/auth'
+    let url = wechatPubService.getAuthorizeUrl(redirectUrl , opt)
+    return res.redirect(url)
+  }
+  
 })
 
 router.use('/wechat' , wechatRouter)
