@@ -6,7 +6,9 @@ let config = {
   
   dev : true ,
   
-  port : 8080 , // 监听端口
+  port : 8090 , // web端口
+
+  port_api : 8092, // api端口
 
   session : {
     secret : '5e61dc2eb977626227e9d32b21b78b3b43bb2874'
@@ -18,7 +20,7 @@ let config = {
   },
 
   rpc : {
-    port : 8081,
+    port : 8091,
     host : '127.0.0.1',
     path : path.join(__dirname , './../server/controller')
   },
@@ -27,7 +29,7 @@ let config = {
     type : 'mysql',
     host : '59939c0a9a983.gz.cdb.myqcloud.com',
     port : 5579,
-    dbname : 'orange_one',
+    dbname : 'orange_payment',
     username: 'root',
     password: 'Lucong19890512',
     maxLimit : 10,
