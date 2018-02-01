@@ -17,11 +17,9 @@ router.get('/pay' , (req , res) => {
 router.get('/auth' , async (req , res) => {
 
   let code = req.query.code
-
-  code = '071LFBLv0Spypc12riLv0zIyLv0LFBLv'
   let opt = {}
   opt.app_id = 'wx9070c69e2b42f307',
-  opt.app_secret = 'a5a11c1b2b559c071ec7695f1c7eb716'
+  opt.app_secret = 'a47bfa076a9135dda22f9ce9a5ce4ae9'
   log.info('/auth' , opt)
   log.info('/auth code' , code)
   if(code){

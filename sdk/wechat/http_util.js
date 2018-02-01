@@ -10,7 +10,7 @@ class HttpUtil {
   post(action , data = {} , method = 'json'){
     let contentType = 'application/json'
     let body = ''
-    if(method == 'json'){
+    if(method == 'json' || data){
       body = JSON.stringify(data)
     }else if(method == 'xml'){
       contentType = 'application/xml'

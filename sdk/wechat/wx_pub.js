@@ -26,8 +26,9 @@ class WxPubSdk {
     url += '&secret=' + this.app_secret
     url += '&code=' + code
     url += '&grant_type=authorization_code'
+    console.log('===========' , url)
+    let result = await httpUtil.post(url , '')
 
-    let result = await httpUtil.post(url , {})
     return result
   }
 }
