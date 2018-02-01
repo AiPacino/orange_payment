@@ -10,8 +10,9 @@ class WeixinPubService {
     wxOpt.app_id = opt.app_id
     wxOpt.app_secret = opt.app_secret
     
-    let WxPay = new WxPubSdk(wxOpt)
-    let authorizeUrl = WxPay.getAuthorizeUrl(redirectUri)
+    let WxPub = new WxPubSdk(wxOpt)
+    let authorizeUrl = WxPub.getAuthorizeUrl(redirectUri)
+    log.info('getAuthorizeUrl authorizeUrl:' , authorizeUrl)
     return authorizeUrl
   }
 
@@ -20,9 +21,9 @@ class WeixinPubService {
     let wxOpt = {}
     wxOpt.app_id = opt.app_id
     wxOpt.app_secret = opt.app_secret
-    
-    let WxPay = new WxPubSdk(wxOpt)
-    let authorizeData = await WxPay.getAuthorizationCode(code , wxOpt)
+    log.info('getAuthorizationCode code' , code)
+    let WxPub = new WxPubSdk(wxOpt)
+    let authorizeData = await WxPub.getAuthorizationCode(code)
     return authorizeData
   }
 }

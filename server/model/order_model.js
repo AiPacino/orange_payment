@@ -65,6 +65,10 @@ class OrderModel {
         type: FIELD_TYPE.TEXT,
         defaultValue : ''
       },
+      payment_user : {
+        type: FIELD_TYPE.STRING_LEN(32),
+        defaultValue : ''
+      },
       unifiedorder_info: {
         type: FIELD_TYPE.TEXT,
         defaultValue : ''

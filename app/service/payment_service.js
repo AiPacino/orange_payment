@@ -48,6 +48,7 @@ class PaymentService {
       total_fee :resultData.total_fee,
       redirect_url : resultData.redirect_url,
       payment_type : resultData.payment_type,
+      payment_user : resultData.payment_user,
       method :resultData.method
     }
     return result

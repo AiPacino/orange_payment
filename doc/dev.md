@@ -12,5 +12,7 @@
   detail : '' , // 订单详情
   total_fee : 100 , // 订单金额,精确到分
   redirect_url : '' , // 支付完成跳转链接
+  payment_type : 'JSAPI'
+  payment_user : '' // wx传openid
 }
 ```

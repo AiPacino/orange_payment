@@ -23,7 +23,7 @@ class WxPubSdk {
   async getAuthorizationCode(code){
     let url = 'https://api.weixin.qq.com/sns/oauth2/access_token?'
     url += 'appid=' + this.appid
-    url += '&app_secret=' + this.app_secret
+    url += '&secret=' + this.app_secret
     url += '&code=' + code
     url += '&grant_type=authorization_code'
 
