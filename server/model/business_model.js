@@ -1,41 +1,36 @@
 const { DB , FIELD_TYPE} = require('./../../lib/model')
 
-class UserAppModel {
+class BusinessModel {
 
   constructor(){
-    this.model = DB.define('user' , {
+    this.model = DB.define('business' , {
       id : {
         type : FIELD_TYPE.BIGINT,
         primaryKey: true,
         autoIncrement: true 
       },
-      nick_name: {
+      uuid: {
         type: FIELD_TYPE.STRING_LEN(64)
       },
-      real_name : {
-        type: FIELD_TYPE.STRING_LEN(64)
+      name : {
+        type: FIELD_TYPE.STRING_LEN(255)
       },
-      phone : {
-        type: FIELD_TYPE.STRING_LEN(16)
+      email : {
+        type: FIELD_TYPE.STRING_LEN(255)
       },
-      openid: {
+      password: {
+        type: FIELD_TYPE.STRING_LEN(255)
+      },
+      app_id: {
         type: FIELD_TYPE.STRING_LEN(32)
       },
-      avatar_url: {
-        type: FIELD_TYPE.STRING
+      app_secret : {
+        type: FIELD_TYPE.STRING_LEN(64),
+        defaultValue : ''
       },
-      gender : {
-        type : FIELD_TYPE.STRING_LEN(2),
-        defaultValue : 0
-      },
-      province: {
-        type: FIELD_TYPE.STRING_LEN(64)
-      },
-      city: {
-        type: FIELD_TYPE.STRING_LEN(64)
-      },
-      country: {
-        type: FIELD_TYPE.STRING_LEN(64)
+      sec_key: {
+        type: FIELD_TYPE.STRING_LEN(32),
+        defaultValue : ''
       },
       status : {
         type : FIELD_TYPE.BOOLEAN,
@@ -52,7 +47,7 @@ class UserAppModel {
     },{
       timestamps: false,
       freezeTableName: true,
-      tableName : 't_user'
+      tableName : 't_business'
     })
 
   }
@@ -60,4 +55,4 @@ class UserAppModel {
   
 }
 
-module.exports = new UserAppModel()
+module.exports = new BusinessModel()

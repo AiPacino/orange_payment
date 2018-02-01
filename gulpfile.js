@@ -1,5 +1,5 @@
 'use strcict'
-const SERVER_PROXY_HOST = 'http://127.0.0.1:8080'
+const SERVER_PROXY_HOST = 'http://127.0.0.1:8090'
 // 
 const SOURCE_FOLDER_ASSETS = './src/' // 静态资源源文件夹
 const SOURCE_FOLDER_JS = './src/js/' // js源文件夹

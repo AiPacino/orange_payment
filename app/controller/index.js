@@ -1,14 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const {rpcProxy , rpcArgs} = require('./../proxy/rpcClientProxy')
 
 router.get('/' , async (req , res) => {
-  let args = rpcArgs.demo
-  args.a = '1',
-  args.b = '2'
+  res.send('hello world!')
+})
 
-  let result = await rpcProxy.demo(args)
-  res.send(result)
+router.get('/MP_verify_whMgCjWdjph4TYOA.txt' , (req , res) => {
+  res.send('whMgCjWdjph4TYOA')
 })
 
 module.exports = router

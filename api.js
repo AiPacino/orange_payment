@@ -83,7 +83,7 @@ app.use(function(req, res, next){
 
 /* istanbul ignore next */
 if (!module.parent) {
-  let port = CONFIG.port
+  let port = CONFIG.port_api
   app.listen(port)
   log.info('Express server started on port:' + port)
   // console.log('express web started on port 8080')
