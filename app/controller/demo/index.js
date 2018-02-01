@@ -14,15 +14,21 @@ router.get('/pay' , (req , res) => {
 })
 
 // 微信公众号授权
-router.get('/auth' , (req , res) => {
+router.get('/auth' , async (req , res) => {
 
   let code = req.query.code
+
+  code = '071LFBLv0Spypc12riLv0zIyLv0LFBLv'
+  let opt = {}
+  opt.app_id = 'wx9070c69e2b42f307',
+  opt.app_secret = 'a5a11c1b2b559c071ec7695f1c7eb716'
+
   if(code){
-    res.send(code)
+
+    let data = await wechatPubService.getAuthorizationCode(code)
+    res.send(data)
   }else {
-    let opt = {}
-    opt.app_id = 'wx9070c69e2b42f307',
-    opt.app_secret = 'a5a11c1b2b559c071ec7695f1c7eb716'
+    
   
     let redirectUrl = req.protocol + '://' + req.hostname + '/demo/auth'
     let url = wechatPubService.getAuthorizeUrl(redirectUrl , opt)

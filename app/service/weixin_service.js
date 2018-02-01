@@ -16,6 +16,8 @@ class WeixinService {
     let resultData = await WxPay.unifiedOrder(order)
     return resultData
   }
+
+
 }
 
 module.exports = new WeixinService()

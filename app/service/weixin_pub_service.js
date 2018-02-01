@@ -14,6 +14,17 @@ class WeixinPubService {
     let authorizeUrl = WxPay.getAuthorizeUrl(redirectUri)
     return authorizeUrl
   }
+
+  async getAuthorizationCode(code , opt = {}){
+
+    let wxOpt = {}
+    wxOpt.app_id = opt.app_id
+    wxOpt.app_secret = opt.app_secret
+    
+    let WxPay = new WxPubSdk(wxOpt)
+    let authorizeData = await WxPay.getAuthorizationCode(code , wxOpt)
+    return authorizeData
+  }
 }
 
 module.exports = new WeixinPubService()

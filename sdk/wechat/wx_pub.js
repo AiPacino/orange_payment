@@ -1,3 +1,5 @@
+const httpUtil = require('./http_util')
+
 class WxPubSdk {
 
   constructor(opt){
@@ -16,6 +18,17 @@ class WxPubSdk {
     url += '&state=STATE#wechat_redirect'
 
     return url
+  }
+
+  async getAuthorizationCode(code){
+    let url = 'https://api.weixin.qq.com/sns/oauth2/access_token?'
+    url += 'appid=' + this.appid
+    url += '&app_secret=' + this.app_secret
+    url += '&code=' + code
+    url += '&grant_type=authorization_code'
+
+    let result = await httpUtil.post(url , {})
+    return result
   }
 }
 
