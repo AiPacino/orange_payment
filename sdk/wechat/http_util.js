@@ -8,15 +8,20 @@ class HttpUtil {
   }
 
   post(action , data = {} , method = 'json'){
+    console.log('xml================' , data)
     let contentType = 'application/json'
     let body = ''
-    if(method == 'json' || data){
-      body = JSON.stringify(data)
+    if(method == 'json'){
+      if (data){
+        body = JSON.stringify(data)
+      }
+      
     }else if(method == 'xml'){
-      contentType = 'application/xml'
+      contentType = 'text/xml'
       body = this._objToXml(data)
+      
     }
-
+    console.log('===================' , body)
     return new Promise((resolve, reject) => {
       request({
         url: action,
@@ -38,8 +43,21 @@ class HttpUtil {
   }
 
   _objToXml(obj){
-    let builder = new xml2js.Builder()
-    let xml = builder.buildObject(obj)
+    // console.log('_objToXml================' , obj)
+    // var builder = new xml2js.Builder()
+    // var jsonxml = builder.buildObject(obj)
+
+    // console.log('_objToXml================' , jsonxml)
+    // return jsonxml
+    let xml = '<xml>'
+    for (let key in obj) {
+      if(obj[key]){
+        xml += `<${key}>${obj[key]}</${key}>`
+      }
+      
+    }
+    xml += '</xml>'
+    console.log('_objToXml================' , xml)
     return xml
   }
 }

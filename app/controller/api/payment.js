@@ -67,7 +67,7 @@ router.post('/unifiedOrder' , async (req , res) => {
   }
 
   let unifiedOrderObj = orderRes.data
-  unifiedOrderObj.ip = req.ip
+  unifiedOrderObj.ip = '127.0.0.1'
   let unifiedOrderResult = await PaymentService.unifiedOrder(unifiedOrderObj , payOpt)
 
   res.json(unifiedOrderResult)

@@ -19,12 +19,12 @@ class WxPay {
       mch_id : this.mch_id,
       device_info : 'WEB',
       nonce_str : this._getNonceStr(),
-      // sign_type : 'MD5',
+      sign_type : 'MD5',
       body : body,
       // detail : obj.detail,
       attach : attach || '',
       out_trade_no : out_trade_no,
-      // fee_type : 'CNY',
+      fee_type : 'CNY',
       total_fee : parseInt(total_fee),
       spbill_create_ip : ip,
       notify_url : this.notify_url,
@@ -43,22 +43,26 @@ class WxPay {
     return result
   }
 
-  _sign(obj){
+  _sign(signObj){
 
     let key = this.key
     let keySortStr = (obj) => {
       let sdic = Object.keys(obj).sort()
       let strArr = []
       for(let k in sdic){
-        strArr.push(sdic[k] + '=' + obj[sdic[k]])
+        if(obj[sdic[k]]){
+          strArr.push(sdic[k] + '=' + obj[sdic[k]])
+        }
       }
       strArr.push('key=' + key)
       return strArr.join('&')
     }
 
-    let sortStr = keySortStr(obj)
+    let sortStr = keySortStr(signObj)
     console.log('========================' , sortStr)
-    let signStr = crypto.createHash('md5').update(sortStr).digest('hex')
+    let hash = crypto.createHash('md5')
+    hash.update(sortStr)
+    let signStr = hash.digest('hex')
 
     return signStr.toUpperCase()
   }
