@@ -6,5 +6,6 @@ router.get('/' , async (req , res) => {
 })
 
 router.use('/payment' , require('./payment'))
+router.use('/notify' , require('./notify'))
 
 module.exports = router
