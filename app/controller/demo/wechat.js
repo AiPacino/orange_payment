@@ -8,9 +8,9 @@ const Uuid = require('./../../../utils/uuid_utils')
 
 router.use((req , res , next) => {
 
-  if(process.env.NODE_ENV != 'production'){
-    req.session.openid = 'oLOGI0lDCn1OH19JzDkzItpmPsaU'
-  }
+  // if(process.env.NODE_ENV != 'production'){
+  //   // req.session.openid = 'oLOGI0lDCn1OH19JzDkzItpmPsaU'
+  // }
 
   let openid = req.session.openid || null
   log.info('/demo-wecaht openid' , openid)
