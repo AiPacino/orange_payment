@@ -45,7 +45,7 @@ router.get('/pay' , async (req , res) => {
     payment_type : 'JSAPI',
     payment_user : openid // wx JSAPI传openid
   }
-  log.info('/pay orderObj' . orderObj)
+  log.info('/pay orderObj' , orderObj)
   let orderRes = await httpUtils.post(action , orderObj)
   if(orderRes.code != 0){
     return res.send(orderRes.message)
@@ -58,6 +58,7 @@ router.get('/pay' , async (req , res) => {
   let prepayId = orderRes.data.prepay_id
   log.info('/pay prepayId' , prepayId)
   let wxPay = WeixinService.wxPayJsInit(opt , prepayId)
+  log.info('/pay wxPay' , wxPay)
   res.locals.wxPay = wxPay
 
   // jssdk init
