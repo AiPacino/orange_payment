@@ -8,6 +8,7 @@ let config = {
   
   port : 8090 , // web端口
 
+  host_api : 'http://127.0.0.1',
   port_api : 8092, // api端口
 
   session : {
@@ -17,6 +18,15 @@ let config = {
   mini_app : {
     app_id : 'wxb6eaa665e1c5789a' ,
     app_secret : '0d68a47bc93510f24941bfe5d1977b2b'
+  },
+
+  // 微信测试账号
+  wx_opt : {
+    app_id : 'wx9070c69e2b42f307' ,
+    app_secret : 'a47bfa076a9135dda22f9ce9a5ce4ae9',
+    mch_id : '1488745772',
+    key : 'ccf9507615a847fca60d386d12f6f8a0',
+    notify_url : 'https://pay.cc512.com/demo/pay/notify',
   },
 
   rpc : {
@@ -37,12 +47,12 @@ let config = {
 
 }
 
-let env = process.env.NODE_ENV ? process.env.NODE_ENV : ''
+// let env = process.env.NODE_ENV ? process.env.NODE_ENV : ''
 
-if (env){
-  let extendsConfig = require('./' + env)
-  config = Object.assign(config , extendsConfig)
-}
+// if (env){
+//   let extendsConfig = require('./' + env)
+//   config = Object.assign(config , extendsConfig)
+// }
 
 
 module.exports = config

@@ -26,10 +26,41 @@ class WxPubSdk {
     url += '&secret=' + this.app_secret
     url += '&code=' + code
     url += '&grant_type=authorization_code'
-    console.log('===========' , url)
+    // console.log('===========' , url)
     let result = await httpUtil.post(url , '')
 
     return result
+  }
+
+  async getAccessToken(){
+
+    let url = 'https://api.weixin.qq.com/cgi-bin/token?'
+    url += 'grant_type=client_credential'
+    url += '&appid=' + this.appid
+    url += '&secret=' + this.app_secret
+    // console.log('====================' , url)
+    let result = await httpUtil.get(url)
+    // console.log(result)
+    let accessToken = JSON.parse(result)
+    if(accessToken.hasOwnProperty('access_token')){
+      return accessToken
+    }else{
+      return null
+    }
+  }
+
+  async getJsapiTicket(accessToken){
+    let url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?'
+    url += 'access_token=' + accessToken+ '&type=jsapi'
+    
+    let result = await httpUtil.get(url)
+    let jssapiTicket = JSON.parse(result)
+    if(jssapiTicket.hasOwnProperty('ticket')){
+      return jssapiTicket
+    }else {
+      return null
+    }
+    // return result
   }
 }
 

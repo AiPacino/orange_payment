@@ -1,27 +1,40 @@
 const request = require('request')
-const xml2js = require('xml2js')
 
 class HttpUtil {
 
-  get(){
-
+  get(action){
+    return new Promise((resolve, reject) => {
+      request( action, (error, response, body) => {
+        if(error){
+          reject(error)
+        }
+        
+        if (!error && response.statusCode == 200) {
+          resolve(body)
+        }
+        // console.log('error:', error); // Print the error if one occurred
+        // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        // console.log('body:', body); // Print the HTML for the Google homepage.
+      })
+    })
+    
   }
 
   post(action , data = {} , method = 'json'){
-    console.log('xml================' , data)
+    // console.log('xml================' , data)
     let contentType = 'application/json'
-    let body = ''
+    let body = data
     if(method == 'json'){
-      if (data){
-        body = JSON.stringify(data)
-      }
+      // if (data){
+      //   body = JSON.stringify(data)
+      // }
       
     }else if(method == 'xml'){
       contentType = 'text/xml'
       body = this._objToXml(data)
       
     }
-    console.log('===================' , body)
+    // console.log('===================' , body)
     return new Promise((resolve, reject) => {
       request({
         url: action,
@@ -57,7 +70,7 @@ class HttpUtil {
       
     }
     xml += '</xml>'
-    console.log('_objToXml================' , xml)
+    // console.log('_objToXml================' , xml)
     return xml
   }
 }

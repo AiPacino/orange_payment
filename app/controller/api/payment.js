@@ -46,6 +46,7 @@ router.post('/createOrder' , async(req , res) => {
 router.post('/unifiedOrder' , async (req , res) => {
 
   let orderObj = req.body
+  log.info('/unifiedOrder  req.body' , req.body)
   log.info('/unifiedOrder  req.business' , req.business)
   orderObj.business_id = req.business.id
   orderObj.business_uuid = req.business.uuid

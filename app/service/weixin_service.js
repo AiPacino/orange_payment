@@ -1,10 +1,14 @@
 const log = require('./../../lib/log')('weixin_service')
 const RESULT_UTILS = require('./../../utils/result_utils')
 const WxPaySdk = require('./../../sdk/wechat/wx_pay')
+const WxPubSdk = require('./../../sdk/wechat/wx_pub')
+const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
+const WxTokenModel = require('./../../server/model/wx_token_model')
 
 class WeixinService {
 
+  // 微信支付下单
   async unifiedOrder(order , opt){
 
     let wxPayOpt = {}
@@ -47,18 +51,141 @@ class WeixinService {
     return result
   }
 
+  /**
+   * 保存订单数据
+   * @param {*} orderNo 
+   * @param {*} unifiedOrderResult 
+   */
   async _saveUnifiedOrderResult(orderNo , unifiedOrderResult){
     let order = await OrderModel.model.findOne({
       where : { order_no : orderNo}
     })
-    let unifiedorderInfo = order.unifiedorder_info
-    let unifiedorderObj = unifiedorderInfo ? JSON.parse(unifiedorderInfo) : null
-    if(!unifiedorderObj || unifiedorderObj.code != 0){
+    if(order){
       order.unifiedorder_info = JSON.stringify(unifiedOrderResult)
       order.save()
     }
-
+    
     return
+  }
+
+  /**
+   * jssdk初始化
+   * @param {*} opt 
+   * @param {*} url 
+   */
+  async jssdkInit(opt , url){
+
+    let jsapiTicket = await this.getJsapiTicket(opt)
+    log.info('jssdkInit jsapiTicket ' ,jsapiTicket)
+    let WxJsSdk = new WxJssdk(opt)
+    let jssdkInitObj = WxJsSdk.getJssdkInit(jsapiTicket , url)
+    log.info('jssdkInit jssdkInitObj' , jssdkInitObj)
+    return jssdkInitObj
+  }
+
+  /**
+   * 微信pay初始化
+   * @param {*} opt 
+   * @param {*} prepayId 
+   */
+  wxPayJsInit(opt , prepayId){
+    let WxJsSdk = new WxJssdk(opt)
+    let wxPayInitObj = WxJsSdk.getWxPayInit(prepayId)
+    log.info('wxPayJsInit wxPayInitObj' , wxPayInitObj)
+    return wxPayInitObj
+  }
+
+  async getAccessToken(opt , wxToken = null){
+    let appId = opt.app_id
+    if(!wxToken){
+      wxToken = await WxTokenModel.model.findOne({
+        where : {app_id : appId}
+      })
+    }
+
+    let nowTime = parseInt(Date.now() / 1000)
+    let deadLine = nowTime + 7200 - 100 // 过期时间
+    if(wxToken){
+      let accessToken = wxToken.access_token
+      let accessTokenDeadline = wxToken.access_token_deadline
+      if(accessToken && accessTokenDeadline > nowTime){
+        log.info('getAccessToken result 1 ' , accessToken)
+        return accessToken
+      }
+    }
+
+    let wxPub = new WxPubSdk(opt)
+    let accessTokenReturn = await wxPub.getAccessToken()
+    log.info('accessTokenReturn' , accessTokenReturn)
+    if (!accessTokenReturn){
+      return null
+    }
+
+    if(wxToken){
+      wxToken.access_token = accessTokenReturn.access_token
+      wxToken.access_token_deadline = deadLine
+      await wxToken.save()
+    }else{
+      await WxTokenModel.model.create(
+        {
+          app_id : appId,
+          access_token : accessTokenReturn.access_token,
+          access_token_deadline : deadLine
+        }
+      )
+    }
+
+    log.info('getAccessToken result 2 ' , accessTokenReturn.access_token)
+    return accessTokenReturn.access_token
+
+  }
+
+  async getJsapiTicket(opt){
+    let appId = opt.app_id
+    let wxToken = await WxTokenModel.model.findOne({
+      where : {app_id : appId}
+    })
+
+    let nowTime = parseInt(Date.now() / 1000)
+    let deadLine = nowTime + 7200 - 100 // 过期时间
+    
+    if(wxToken){
+      let jsapiTicket = wxToken.jsapi_ticket
+      let jsapiTicketDeadline = wxToken.jsapi_ticket_deadline
+      if(jsapiTicket && jsapiTicketDeadline >nowTime){
+        log.info('getJsapiTicket result 1', jsapiTicket)
+        return jsapiTicket
+      }
+    }
+
+    let accessToken = await this.getAccessToken(opt , wxToken)
+    let wxPub = new WxPubSdk(opt)
+    let jsapiTicketResult = await wxPub.getJsapiTicket(accessToken)
+    if(!jsapiTicketResult){
+      return null
+    }
+
+    wxToken = await WxTokenModel.model.findOne({
+      where : {app_id : appId}
+    })
+
+    if(wxToken){
+      wxToken.jsapi_ticket = jsapiTicketResult.ticket
+      wxToken.jsapi_ticket_deadline = deadLine
+      await wxToken.save()
+    }else{
+      await WxTokenModel.model.create(
+        {
+          app_id : appId,
+          jsapi_ticket : jsapiTicketResult.ticket,
+          jsapi_ticket_deadline : deadLine
+        }
+      )
+    }
+
+    log.info('getJsapiTicket result 2', jsapiTicketResult.ticket)
+    return jsapiTicketResult.ticket
+
   }
 
 }

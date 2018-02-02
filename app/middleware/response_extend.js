@@ -7,7 +7,7 @@ const VERSION = require('./../../config/index').version
 
 module.exports = (req , res , next) => {
 
-  let ua = req.headers['user-agent'].toLowerCase()
+  let ua = req.headers['user-agent'] ? req.headers['user-agent'].toLowerCase() : ''
   res.locals.is_weixin = ua.match(/MicroMessenger/i) == 'micromessenger'
   res.locals.is_alipay = ua.match(/Alipay/i) == 'alipay'
   res.locals.is_mobile = ua.match(/(iphone|ipod|ipad|android)/i) ? true : false
