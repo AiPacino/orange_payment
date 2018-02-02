@@ -97,7 +97,7 @@ class WeixinService {
       }else{
         order.unifiedorder_info = JSON.stringify(notifyObj)
         order.save()
-        
+
         return 'FAIL'
       }
       
@@ -105,9 +105,6 @@ class WeixinService {
     }else{
       return 'FAIL'
     }
-    
-
-    
     
     // 找到订单信息 商户信息
 
