@@ -29,7 +29,8 @@ class PaymentService {
       if(status == 0){
         return RESULT_UTILS.ORDER_STATUS_0
       }else {
-        resultData = orderFind
+        resultData = await orderFind.update(orderObj)
+        // resultData = orderFind
       }
     }else{
 
@@ -38,6 +39,7 @@ class PaymentService {
       resultData = order
     }
 
+    log.info('/createOrder resultData' , resultData)
     let result = RESULT_UTILS.SUCCESS
     result.data = {
       business_id : resultData.business_uuid,

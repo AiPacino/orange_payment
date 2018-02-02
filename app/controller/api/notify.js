@@ -9,7 +9,8 @@ router.get('/' , async (req , res) => {
 })
 
 router.post('/wxpay' , async (req , res) => {
-  res.success({version : '0.0.1'})
+  log.info('req.body' , req.body)
+  res.send('success')
 })
 
 module.exports = router

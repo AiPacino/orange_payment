@@ -14,12 +14,12 @@ class WeixinService {
     let wxPayOpt = {}
     wxPayOpt.app_id = opt.app_id
     wxPayOpt.mch_id = opt.mch_id
-    wxPayOpt.notify_url = 'https://pay.cc512.com/api/notify/wxpay'
+    wxPayOpt.notify_url = 'http://pay.cc512.com/api/notify/wxpay'
     wxPayOpt.key = opt.key
     
     let WxPay = new WxPaySdk(wxPayOpt)
     let body = order.body
-    let out_trade_no = order.out_trade_no
+    let out_trade_no = order.order_no // 用平台生成的 ，不用第三方的
     let total_fee = order.total_fee
     let ip = order.ip
     let openid = order.payment_user
@@ -35,9 +35,11 @@ class WeixinService {
       if(unifiedOrderResult.result_code == 'SUCCESS'){
         result.message = unifiedOrderResult.return_msg
         result.data = unifiedOrderResult
+        result.data.order_no = order.order_no
       }else{
         result.code = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_WX_FAIL.code
         result.message = unifiedOrderResult.err_code_des
+        result.data = unifiedOrderResult
       }
     
     }else {
