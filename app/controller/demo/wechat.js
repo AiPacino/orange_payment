@@ -4,6 +4,7 @@ const config = require('./../../../config/index')
 const httpUtils = require('./../../../utils/http_utils')
 const WeixinService = require('./../../service/weixin_service')
 const log = require('./../../../lib/log')('demo-wechat')
+const Uuid = require('./../../../utils/uuid_utils')
 
 router.use((req , res , next) => {
 
@@ -28,6 +29,9 @@ router.get('/' , async (req , res) => {
 router.get('/pay' , async (req , res) => {
 
   log.info('/pay openid' , req.session.openid)
+  let outTradeNo = req.query.orderNo || Uuid.v4()
+  let totalFee = parseInt(req.query.num) || 1
+  let title = req.query.title || '收钱吧！' 
 
   // 支付下单
   let openid = req.session.openid
@@ -37,10 +41,10 @@ router.get('/pay' , async (req , res) => {
   log.info('/pay action' , action)
   let orderObj = {
     method: 'wx', // 支付方式 wx:微信
-    out_trade_no : 'dsgdfhafdshfdshhsadhg', // 第三方订单号
-    body : '公众号支付test' , // 订单说明
+    out_trade_no : outTradeNo , // 第三方订单号
+    body : title , // 订单说明
     detail : '' , // 订单详情
-    total_fee : 1 , // 订单金额,精确到分
+    total_fee : totalFee , // 订单金额,精确到分
     redirect_url : req.protocol + '://' +  req.hostname + '/demo/wechat/paySucc' , // 支付完成跳转链接
     payment_type : 'JSAPI',
     payment_user : openid // wx JSAPI传openid
