@@ -49,7 +49,8 @@ class PaymentService {
       redirect_url : resultData.redirect_url,
       payment_type : resultData.payment_type,
       payment_user : resultData.payment_user,
-      method :resultData.method
+      method :resultData.method,
+      // unifiedorder_info : resultData.unifiedorder_info,
     }
     return result
   }

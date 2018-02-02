@@ -1,6 +1,7 @@
 const log = require('./../../lib/log')('weixin_service')
 const RESULT_UTILS = require('./../../utils/result_utils')
 const WxPaySdk = require('./../../sdk/wechat/wx_pay')
+const OrderModel = require('./../../server/model/order_model')
 
 class WeixinService {
 
@@ -20,10 +21,45 @@ class WeixinService {
     let openid = order.payment_user
     let payment_type = order.payment_type
     
-    let resultData = await WxPay.unifiedOrder(body , out_trade_no , total_fee , ip , openid , payment_type)
-    return resultData
+    let unifiedOrderResult = await WxPay.unifiedOrder(body , out_trade_no , total_fee , ip , openid , payment_type)
+    
+    // 保存数据
+    log.info('unifiedOrder result' , unifiedOrderResult)
+    let result = {code : 0 , message : '' , data : {}}
+
+    if(unifiedOrderResult.return_code == 'SUCCESS'){
+      if(unifiedOrderResult.result_code == 'SUCCESS'){
+        result.message = unifiedOrderResult.return_msg
+        result.data = unifiedOrderResult
+      }else{
+        result.code = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_WX_FAIL.code
+        result.message = unifiedOrderResult.err_code_des
+      }
+    
+    }else {
+      result.code = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_WX_FAIL.code
+      result.message = unifiedOrderResult.return_msg
+      result.data = unifiedOrderResult
+
+    }
+
+    this._saveUnifiedOrderResult(order.order_no , result)
+    return result
   }
 
+  async _saveUnifiedOrderResult(orderNo , unifiedOrderResult){
+    let order = await OrderModel.model.findOne({
+      where : { order_no : orderNo}
+    })
+    let unifiedorderInfo = order.unifiedorder_info
+    let unifiedorderObj = unifiedorderInfo ? JSON.parse(unifiedorderInfo) : null
+    if(!unifiedorderObj || unifiedorderObj.code != 0){
+      order.unifiedorder_info = JSON.stringify(unifiedOrderResult)
+      order.save()
+    }
+
+    return
+  }
 
 }
 

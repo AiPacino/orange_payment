@@ -27,5 +27,10 @@ module.exports = {
     message : '订单已支付',
     data : {}
   },
+
+  PAYMENT_UNIFIED_ORDER_WX_FAIL : {
+    code : 30001,
+    message : '微信支付下单失败',
+  }
   
 }
