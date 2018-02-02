@@ -67,7 +67,7 @@ class WxJsSdk {
     obj.package = 'prepay_id=' + prepayId
     obj.signType = 'MD5'
 
-    let signObj = this._sign(obj)
+    let signObj = this._sign(obj , this.key)
     obj.paySign = signObj
 
     return obj
