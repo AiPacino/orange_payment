@@ -47,19 +47,6 @@ class WxPay {
 
   _sign(signObj){
 
-    // let key = this.key
-    // let keySortStr = (obj) => {
-    //   let sdic = Object.keys(obj).sort()
-    //   let strArr = []
-    //   for(let k in sdic){
-    //     if(obj[sdic[k]]){
-    //       strArr.push(sdic[k] + '=' + obj[sdic[k]])
-    //     }
-    //   }
-    //   strArr.push('key=' + key)
-    //   return strArr.join('&')
-    // }
-
     let sortStr = this._keySortStr(signObj , this.key)
     // console.log('========================' , sortStr)
     let hash = crypto.createHash('md5')
@@ -101,6 +88,7 @@ class WxPay {
     })
    
   }
+
 }
 
 module.exports = WxPay

@@ -5,6 +5,7 @@ const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
+const XmlUtils = require('./../../utils/xml_utils')
 
 class WeixinService {
 
@@ -68,6 +69,53 @@ class WeixinService {
     }
     
     return
+  }
+
+  /**
+   * 接收通知处理订单 
+   */
+  async notifyDealOrder(xmlData){
+    let notifyObj = await XmlUtils.toObj(xmlData)
+    log.info('notifyDealOrder notifyObj' , notifyObj)
+    let orderNo = notifyObj.out_trade_no || null
+    let resultCode = notifyObj.result_code || null
+    // if(resultCode != 'SUCCESS' || !orderNo){
+    //   return 'FAIL'
+    // }
+
+    if(orderNo){
+      let order = OrderModel.model.findOne({
+        where : {
+          order_no : orderNo
+        }
+      })
+
+      if(resultCode == 'SUCCESS'){
+        order.status = 0
+        order.unifiedorder_info = JSON.stringify(notifyObj)
+        order.save()
+      }else{
+        order.unifiedorder_info = JSON.stringify(notifyObj)
+        order.save()
+        
+        return 'FAIL'
+      }
+      
+      
+    }else{
+      return 'FAIL'
+    }
+    
+
+    
+    
+    // 找到订单信息 商户信息
+
+    // 找到商户配置 然后验证
+
+    // 修改订单信息 
+
+    return 'success'
   }
 
   /**
