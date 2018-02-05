@@ -1,7 +1,6 @@
 const log = require('./../../lib/log')('alipay_service')
 const RESULT_UTILS = require('./../../utils/result_utils')
 const OrderModel = require('./../../server/model/order_model')
-const BusinessModel = require('./../../server/model/business_model')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const AlipaySdk = require('./../../sdk/ali/alipay')
 
@@ -37,13 +36,70 @@ class AlipayService {
       result = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_ALIPAY_FAIL
     }
     
-    let orderInfo = await OrderModel.modal.findOne({
+    let orderInfo = await OrderModel.model.findOne({
       where : {order_no : order_no}
     })
     orderInfo.unifiedorder_info = JSON.stringify(result)
     orderInfo.save()
     
     return result
+  }
+
+  async notify(obj){
+    let orderNo = obj.out_trade_no || null
+    let tradeStatus = obj.trade_status
+
+    // 验证
+    
+
+    if(tradeStatus == 'TRADE_SUCCESS'){
+
+      let order = await OrderModel.model.findOne({
+        where : {order_no : orderNo}
+      })
+
+      if(!order || !orderNo){
+        log.info('notify fail:order' , order)
+        return 'FAIL'
+      }
+
+      let businessMethod = await BusinessMethodModel.model.findOne({
+        where : {
+          business_id : order.business_id,
+          method_key : order.method
+        }
+      })
+      if(!businessMethod){
+        log.info('notifyDealOrder config error')
+        return 'FAIL:config error'
+      }
+
+      let methodConfig = JSON.parse(businessMethod.config)
+      let signData = obj.sign
+      let AliPay = new AlipaySdk(methodConfig)
+      let signObj = obj
+      delete signObj.sign
+      let signed = AliPay._sign(signObj , methodConfig.alipay_public_key)
+
+      log.info('notifyDealOrder notify sign data' , signData)
+      log.info('notifyDealOrder notify signed ' , signed)
+      if(signData != signed){
+        return 'FAIL:sign error'
+      }
+
+      order.status = 0
+      order.payment_info = JSON.stringify(obj)
+      order.payment_user = obj.buyer_logon_id || obj.buyer_id
+      order.save()
+
+      return 'success'
+    }else {
+      log.info('notify fail:trade status' , tradeStatus)
+      return 'FAIL'
+    }
+    
+
+  
   }
 }
 
