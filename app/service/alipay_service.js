@@ -78,9 +78,9 @@ class AlipayService {
       let AliPay = new AlipaySdk(methodConfig)
       let signObj = obj
       delete signObj.sign
-      let verify = AliPay._verify(signObj , signData)
+      // let verify = AliPay._verify(signObj , signData)
 
-      log.info('notifyDealOrder notify verify data:==========' , verify)
+      // log.info('notifyDealOrder notify verify data:==========' , verify)
 
       order.status = 0
       order.payment_info = JSON.stringify(obj)

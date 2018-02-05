@@ -84,6 +84,7 @@ class AlipaySdk {
 
   _verify(signObj , signature){
     let signStr = this._keySortStr(signObj)
+    console.log('sginStr===========' , signStr)
     let verify = crypto.createVerify('RSA-SHA256')
     verify.update(signStr)
     return verify.verify(this.alipayPubKey, signature , 'base64')
