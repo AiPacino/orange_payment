@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const log = require('./../../../lib/log')('demo-index')
 const wechatPubService = require('./../../service/weixin_pub_service')
-const wechatRouter = require('./wechat')
+
 const config = require('./../../../config/index')
 const wxOpt = config.wx_opt
 
@@ -50,6 +50,10 @@ router.get('/auth' , async (req , res) => {
   
 })
 
+const wechatRouter = require('./wechat')
+const alipayRouter = require('./alipay')
+
 router.use('/wechat' , wechatRouter)
+router.use('/alipay' , alipayRouter)
 
 module.exports = router
