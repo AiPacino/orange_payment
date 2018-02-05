@@ -50,7 +50,6 @@ class AlipayService {
     let tradeStatus = obj.trade_status
 
     // 验证
-    
 
     if(tradeStatus == 'TRADE_SUCCESS'){
 
@@ -79,13 +78,9 @@ class AlipayService {
       let AliPay = new AlipaySdk(methodConfig)
       let signObj = obj
       delete signObj.sign
-      let signed = AliPay._sign(signObj , methodConfig.alipay_public_key)
+      let verify = AliPay._verify(signObj , signData)
 
-      log.info('notifyDealOrder notify sign data' , signData)
-      log.info('notifyDealOrder notify signed ' , signed)
-      if(signData != signed){
-        return 'FAIL:sign error'
-      }
+      log.info('notifyDealOrder notify verify data:==========' , verify)
 
       order.status = 0
       order.payment_info = JSON.stringify(obj)
