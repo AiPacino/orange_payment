@@ -30,11 +30,18 @@ class AlipayService {
       let unifiedOrderResult = await Alipay.pagePay(subject , body , order_no , total_amount , payment_type, notify_url , return_url)
       log.info('unifiedOrder unifiedOrder result' , unifiedOrderResult)
       result.message = unifiedOrderResult
+      
     }catch(err) {
       // console.log(err)
       log.info('unifiedOrder unifiedOrder error' , err)
       result = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_ALIPAY_FAIL
     }
+    
+    let orderInfo = await OrderModel.modal.findOne({
+      where : {order_no : order_no}
+    })
+    orderInfo.unifiedorder_info = JSON.stringify(result)
+    orderInfo.save()
     
     return result
   }
