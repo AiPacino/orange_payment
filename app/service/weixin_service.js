@@ -82,20 +82,22 @@ class WeixinService {
     // if(resultCode != 'SUCCESS' || !orderNo){
     //   return 'FAIL'
     // }
-
+    
     if(orderNo){
+      
       let order = OrderModel.model.findOne({
         where : {
           order_no : orderNo
         }
       })
+      log.info('notifyDealOrder order' , order)
 
       if(resultCode == 'SUCCESS'){
         order.status = 0
-        order.unifiedorder_info = JSON.stringify(notifyObj)
+        order.payment_info = JSON.stringify(notifyObj)
         order.save()
       }else{
-        order.unifiedorder_info = JSON.stringify(notifyObj)
+        order.payment_info = JSON.stringify(notifyObj)
         order.save()
 
         return 'FAIL'
@@ -112,6 +114,7 @@ class WeixinService {
 
     // 修改订单信息 
 
+    log.info('notifyDealOrder return success')
     return 'success'
   }
 
