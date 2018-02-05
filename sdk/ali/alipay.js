@@ -4,7 +4,15 @@ const request = require('request')
 // const getWayUrl = 'https://openapi.alipay.com/gateway.do' // 正式环境
 const getWayUrl = 'https://openapi.alipaydev.com/gateway.do' // 测试环境
 
-const ALIPAY_TRADE_WAP_PAY = 'alipay.trade.wap.pay'
+const PRODUCT_CODE = {
+  WAP : 'QUICK_WAP_WAY',
+  PC : 'FAST_INSTANT_TRADE_PAY'
+}
+
+const METHOD = {
+  WAP : 'alipay.trade.wap.pay',
+  PC : 'alipay.trade.page.pay'
+}
 
 class AlipaySdk {
 
@@ -14,10 +22,13 @@ class AlipaySdk {
     this.rsaPrivateKey = '-----BEGIN RSA PRIVATE KEY-----\n' + opt.rsa_private_key + '\n-----END RSA PRIVATE KEY-----'
   }
 
-  async wapPay(subject , body , order_no , total_amount , product_code, notify_url , return_url = ''){
+  async pagePay(subject , body , order_no , total_amount , payment_type, notify_url , return_url = ''){
+    let method = METHOD[payment_type.toUpperCase()]
+    let product_code = PRODUCT_CODE[payment_type.toUpperCase()]
+
     let requestObj = {}
     requestObj.app_id= this.appId
-    requestObj.method = ALIPAY_TRADE_WAP_PAY
+    requestObj.method = method
     requestObj.format = 'json'
     requestObj.return_url = return_url
     requestObj.charset = 'utf-8'
@@ -37,9 +48,12 @@ class AlipaySdk {
     let sign = this._sign(requestObj , this.rsaPrivateKey)
     requestObj.sign = sign
 
+    // console.log(sign)
     let action = this._buildRquestUrl(requestObj)
-    let resultRequest = await this._requestGet(action)
-    return resultRequest
+    // console.log(action)
+    // let resultRequest = await this._requestGet(action)
+    return action
+    // return resultRequest
   }
 
   _dateFormat (timestamp, format) {
@@ -58,7 +72,7 @@ class AlipaySdk {
   _sign(signObj , key){
 
     let sortStr = this._keySortStr(signObj)
-    // console.log(sortStr)
+    console.log(sortStr)
     const sign = crypto.createSign('RSA-SHA256')
     sign.update(sortStr)
 
@@ -81,7 +95,8 @@ class AlipaySdk {
   _buildRquestUrl(params){
     let paramsArr = []
     for (let key in params) {
-      paramsArr.push(key + '=' + params[key])
+      let paramsValue = encodeURIComponent(params[key])
+      paramsArr.push(key + '=' + paramsValue)
     }
     let paramsStr = paramsArr.join('&')
     let url = this.getWayUrl + '?' + paramsStr

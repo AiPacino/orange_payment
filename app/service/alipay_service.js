@@ -23,14 +23,15 @@ class AlipayService {
     let total_amount = order.total_fee
     let notify_url = 'http://pay.cc512.com/api/notify/alipay'
     let return_url = order.redirect_url
-    let product_code = order.payment_type // 'QUICK_WAP_WAY':手机网站支付
-
+    let payment_type = order.payment_type // 'WAP':手机网站支付 , 'PC':电脑网站
+    log.info('unifiedOrder order' , order)
     let result = {code : 0 , message : ''}
     try {
-      let unifiedOrderResult = await Alipay.wapPay(subject , body , order_no , total_amount , product_code, notify_url , return_url)
+      let unifiedOrderResult = await Alipay.pagePay(subject , body , order_no , total_amount , payment_type, notify_url , return_url)
       log.info('unifiedOrder unifiedOrder result' , unifiedOrderResult)
       result.message = unifiedOrderResult
     }catch(err) {
+      // console.log(err)
       log.info('unifiedOrder unifiedOrder error' , err)
       result = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_ALIPAY_FAIL
     }
