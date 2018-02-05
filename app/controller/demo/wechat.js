@@ -48,7 +48,7 @@ router.get('/pay' , async (req , res) => {
     total_fee : totalFee , // 订单金额,精确到分
     redirect_url : req.protocol + '://' +  req.hostname + '/demo/wechat/paySucc' , // 支付完成跳转链接
     payment_type : type,
-    payment_user : openid // wx JSAPI传openid
+    payment_user : (type == 'JSAPI') ? openid : '' // wx JSAPI传openid
   }
   log.info('/pay orderObj' , orderObj)
   let orderRes = await httpUtils.post(action , orderObj)

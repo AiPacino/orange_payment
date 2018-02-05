@@ -127,6 +127,9 @@ class WeixinService {
       if(resultCode == 'SUCCESS'){
         order.status = 0
         order.payment_info = JSON.stringify(notifyObj)
+        if(notifyObj.openid){
+          order.payment_user = notifyObj.openid
+        }
         order.save()
       }else{
         order.payment_info = JSON.stringify(notifyObj)
