@@ -32,9 +32,10 @@ router.get('/pay' , async (req , res) => {
   let outTradeNo = req.query.orderNo || Uuid.v4()
   let totalFee = parseInt(req.query.num) || 1
   let title = req.query.title || '收钱吧！' 
+  let type = req.query.type || 'JSAPI'
 
   // 支付下单
-  let openid = req.session.openid
+  let openid = req.session.openid || ''
   let businessId = req.query.business_id || 'e32c20bfc10d5c677b5db96ec57247fc'
   let action = config.host_api + ':' + config.port_api
   action += '/api/payment/unifiedOrder?business_id=' + businessId
@@ -46,7 +47,7 @@ router.get('/pay' , async (req , res) => {
     detail : '' , // 订单详情
     total_fee : totalFee , // 订单金额,精确到分
     redirect_url : req.protocol + '://' +  req.hostname + '/demo/wechat/paySucc' , // 支付完成跳转链接
-    payment_type : 'JSAPI',
+    payment_type : type,
     payment_user : openid // wx JSAPI传openid
   }
   log.info('/pay orderObj' , orderObj)
@@ -55,24 +56,37 @@ router.get('/pay' , async (req , res) => {
     return res.send(orderRes.message)
   }
 
-  let opt = config.wx_opt
-  log.info('/pay opt' , opt)
+  if (type == 'JSAPI'){
+    // 微信配置 TODO 改为数据库的
+    let opt = config.wx_opt
+    log.info('/pay opt' , opt)
 
-  // 预支付数据
-  let prepayId = orderRes.data.prepay_id
-  log.info('/pay prepayId' , prepayId)
-  let wxPay = WeixinService.wxPayJsInit(opt , prepayId)
-  log.info('/pay wxPay' , wxPay)
-  res.locals.wxPay = wxPay
+    // 预支付数据
+    let prepayId = orderRes.data.prepay_id
+    log.info('/pay prepayId' , prepayId)
+    let wxPay = WeixinService.wxPayJsInit(opt , prepayId)
+    log.info('/pay wxPay' , wxPay)
+    res.locals.wxPay = wxPay
 
-  // jssdk init
-  let url = req.protocol + '://' +  req.hostname + req.originalUrl
-  let jssdk = await WeixinService.jssdkInit(opt , url)
-  log.info('/pay jssdk' , jssdk)
-  res.locals.jssdk = jssdk
+    // jssdk init
+    let url = req.protocol + '://' +  req.hostname + req.originalUrl
+    let jssdk = await WeixinService.jssdkInit(opt , url)
+    log.info('/pay jssdk' , jssdk)
+    res.locals.jssdk = jssdk
 
-  res.render('demo/wechat_pay')
+    res.render('demo/wechat_pay')
+  }else if(type == 'NATIVE'){
+    let code_url = orderRes.data.code_url
+    res.locals.code_url = code_url
+    res.render('demo/wechat_pay_code')
+  }
+  
 
+})
+
+router.get('/redirect' , (req ,res) => {
+
+  res.send(req.query)
 })
 
 module.exports = router
