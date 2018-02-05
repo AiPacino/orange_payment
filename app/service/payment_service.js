@@ -1,6 +1,7 @@
 
 const OrderModel = require('./../../server/model/order_model')
 const WeixinService = require('./../service/weixin_service')
+const AlipayService = require('./../service/alipay_service')
 const Uuid = require('./../../utils/uuid_utils')
 const RESULT_UTILS = require('./../../utils/result_utils')
 const log = require('./../../lib/log')('payment_service')
@@ -62,7 +63,14 @@ class PaymentService {
     let result = null
     let method = orderObj.method
     if(method == 'wx'){
+      // 微信支付
       result = await WeixinService.unifiedOrder(orderObj , opt)
+    }else if(method == 'alipay'){
+      // 支付宝
+      result = await AlipayService.unifiedOrder(orderObj , opt)
+    }else {
+
+      result = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_TYPE_ERR
     }
 
     return result

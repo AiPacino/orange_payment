@@ -28,9 +28,20 @@ module.exports = {
     data : {}
   },
 
+
   PAYMENT_UNIFIED_ORDER_WX_FAIL : {
     code : 30001,
     message : '微信支付下单失败',
-  }
+  },
+
+  PAYMENT_UNIFIED_ORDER_ALIPAY_FAIL : {
+    code : 30002,
+    message : '支付宝支付下单失败',
+  },
+
+  PAYMENT_UNIFIED_ORDER_TYPE_ERR: {
+    code : 30101,
+    message : '不支持的下单类型',
+  },
   
 }

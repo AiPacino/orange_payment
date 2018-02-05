@@ -16,4 +16,12 @@ router.post('/wxpay' , async (req , res) => {
   res.send(result)
 })
 
+router.post('/alipay' , async (req , res) => {
+  log.info('req.body' , req.body)
+
+  res.send('success')
+  // let result = await WeixinService.notifyDealOrder(req.body)
+  // res.send(result)
+})
+
 module.exports = router
