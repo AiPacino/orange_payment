@@ -20,7 +20,7 @@ class AlipayService {
     let subject = order.body
     let body = order.detail
     let order_no = order.order_no
-    let total_amount = order.total_fee
+    let total_amount = order.total_fee / 100
     let notify_url = 'http://pay.cc512.com/api/notify/alipay'
     let return_url = order.redirect_url
     let payment_type = order.payment_type // 'WAP':手机网站支付 , 'PC':电脑网站

@@ -34,6 +34,7 @@ class AlipaySdk {
     requestObj.charset = 'utf-8'
     requestObj.sign_type = 'RSA2'
     requestObj.timestamp = this._dateFormat(null , 'YYYY-MM-DD HH:mm:ss')
+    requestObj.notify_url = notify_url
     requestObj.version = '1.0'
 
     let bizContent = {}
@@ -42,7 +43,7 @@ class AlipaySdk {
     bizContent.out_trade_no = order_no
     bizContent.total_amount = total_amount
     bizContent.product_code = product_code
-    bizContent.notify_url = notify_url
+    // bizContent.notify_url = notify_url
 
     requestObj.biz_content = JSON.stringify(bizContent)
     let sign = this._sign(requestObj , this.rsaPrivateKey)
