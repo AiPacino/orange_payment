@@ -16,7 +16,7 @@ let config = {
 //   'notify_url' : 'https://pay.cc512.com/demo/pay/notify',
 // }
 
-{"app_id":"wx9070c69e2b42f307","app_secret":"a47bfa076a9135dda22f9ce9a5ce4ae9","mch_id":"1488745772","key":"ccf9507615a847fca60d386d12f6f8a0","notify_url":"https://pay.cc512.com/demo/notify/wxPay"}
+// {"app_id":"wx9070c69e2b42f307","app_secret":"a47bfa076a9135dda22f9ce9a5ce4ae9","mch_id":"1488745772","key":"ccf9507615a847fca60d386d12f6f8a0","notify_url":"https://pay.cc512.com/demo/notify/wxPay"}
 
 // // console.log(JSON.stringify(data));
 
@@ -82,10 +82,14 @@ let textWxOpt = {
 //   console.log(result)
 // })
 
-let url = 'http://pay.cc512.com/demo/wechat/pay'
-wxServive.jssdkInit(textWxOpt , url).then(result => {
+// let url = 'http://pay.cc512.com/demo/wechat/pay'
+// wxServive.jssdkInit(textWxOpt , url).then(result => {
+//   console.log(result)
+//   // return result
+// })
+
+wxServive.notifyDealOrder().then(result => {
   console.log(result)
-  // return result
 })
 
 

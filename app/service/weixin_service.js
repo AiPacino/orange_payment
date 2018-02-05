@@ -4,6 +4,8 @@ const WxPaySdk = require('./../../sdk/wechat/wx_pay')
 const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
+const BusinessModel = require('./../../server/model/business_model')
+const BusinessMethodModel = require('./../../server/model/business_method_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
 const XmlUtils = require('./../../utils/xml_utils')
 
@@ -76,6 +78,11 @@ class WeixinService {
    */
   async notifyDealOrder(xmlData){
     let notifyObj = await XmlUtils.toObj(xmlData)
+
+    // test data
+    // let notifyObj = '{"appid":"wx9070c69e2b42f307","bank_type":"CFT","cash_fee":"1","device_info":"WEB","fee_type":"CNY","is_subscribe":"Y","mch_id":"1488745772","nonce_str":"cf6ec49476cd453e8acf24e3cbe19a42","openid":"oLOGI0lDCn1OH19JzDkzItpmPsaU","out_trade_no":"bf0596a5586b4fb4838cb35f5cbefe18","result_code":"SUCCESS","return_code":"SUCCESS","sign":"B18192B6E2D15174910025C6D98C555C","time_end":"20180205094903","total_fee":"1","trade_type":"JSAPI","transaction_id":"4200000070201802057281740459"}'
+    // notifyObj = JSON.parse(notifyObj)
+
     log.info('notifyDealOrder notifyObj' , notifyObj)
     let orderNo = notifyObj.out_trade_no || null
     let resultCode = notifyObj.result_code || null
@@ -84,14 +91,39 @@ class WeixinService {
     // }
     
     if(orderNo){
-      
+
+      // 找到订单信息 商户信息
       let order = await OrderModel.model.findOne({
         where : {
           order_no : orderNo
         }
       })
       log.info('notifyDealOrder order' , order)
+      let businessMethod = await BusinessMethodModel.model.findOne({
+        where : {
+          business_id : order.business_id,
+          method_key : order.method
+        }
+      })
+      if(!businessMethod){
+        log.info('notifyDealOrder config error')
+        return 'FAIL:config error'
+      }
 
+      // 找到商户配置 然后验证
+      let methodConfig = JSON.parse(businessMethod.config)
+      let signData = notifyObj.sign
+      let WxPay = new WxPaySdk(methodConfig)
+      let signObj = notifyObj
+      delete signObj.sign
+      let signed = WxPay._sign(signObj)
+      log.info('notifyDealOrder notify sign data' , signData)
+      log.info('notifyDealOrder notify signed ' , signed)
+      if(signData != signed){
+        return 'FAIL:sign error'
+      }
+
+      // 修改订单信息 
       if(resultCode == 'SUCCESS'){
         order.status = 0
         order.payment_info = JSON.stringify(notifyObj)
@@ -105,15 +137,10 @@ class WeixinService {
       
       
     }else{
+      log.info('notifyDealOrder return fail no order_no')
       return 'FAIL'
     }
     
-    // 找到订单信息 商户信息
-
-    // 找到商户配置 然后验证
-
-    // 修改订单信息 
-
     log.info('notifyDealOrder return success')
     return 'success'
   }
