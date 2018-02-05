@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const WeixinService = require('./../../service/weixin_service')
+const AlipayService = require('./../../service/alipay_service')
 
 const log = require('./../../../lib/log')('api-notify')
 
@@ -18,8 +19,9 @@ router.post('/wxpay' , async (req , res) => {
 
 router.post('/alipay' , async (req , res) => {
   log.info('req.body' , req.body)
-
-  res.send('success')
+  let result = await AlipayService.notify(req.body)
+  log.info('/alipay result: ' , result)
+  res.send(result)
   // let result = await WeixinService.notifyDealOrder(req.body)
   // res.send(result)
 })
