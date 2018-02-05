@@ -85,7 +85,7 @@ class WeixinService {
     
     if(orderNo){
       
-      let order = OrderModel.model.findOne({
+      let order = await OrderModel.model.findOne({
         where : {
           order_no : orderNo
         }
