@@ -14,10 +14,18 @@ router.use((req , res , next) => {
 
   let openid = req.session.openid || null
   log.info('/demo-wecaht openid' , openid)
+
+  // 扫码直接进入需要授权
+  let reqUrl = req.originalUrl
+  if(reqUrl.indexOf('type=NATIVE') > -1){
+    next()
+  }
+
   if(!openid){
     req.session.redirect_uri = req.protocol + '://' +  req.hostname + req.originalUrl
     return res.redirect('/demo/auth')
   }
+
   next()
 })
 
