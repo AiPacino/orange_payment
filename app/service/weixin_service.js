@@ -18,7 +18,6 @@ class WeixinService {
     wxPayOpt.mch_id = opt.mch_id
     wxPayOpt.notify_url = 'http://pay.cc512.com/api/notify/wxpay'
     wxPayOpt.key = opt.key
-    wxPayOpt.key = opt.h5_url
     
     // h5支付需要wap地址
     wxPayOpt.h5_url = 'http://pay.cc512.com'
