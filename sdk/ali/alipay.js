@@ -20,7 +20,7 @@ class AlipaySdk {
     this.appId = opt.app_id
     this.getWayUrl = getWayUrl
     this.rsaPrivateKey = '-----BEGIN RSA PRIVATE KEY-----\n' + opt.rsa_private_key + '\n-----END RSA PRIVATE KEY-----'
-    this.alipayPubKey = '-----BEGIN CERTIFICATE-----\n' + opt.alipay_public_key + '\n-----END CERTIFICATE-----'
+    this.alipayPubKey = '-----BEGIN PUBLIC KEY-----\n' + opt.alipay_public_key + '\n-----END PUBLIC KEY-----'
   }
 
   async pagePay(subject , body , order_no , total_amount , payment_type, notify_url , return_url = ''){
@@ -82,12 +82,15 @@ class AlipaySdk {
 
   }
 
-  _verify(signObj , signature){
+  _verify(signObj , signature = ''){
+    let sign = signature || signObj.sign
+    console.log(sign)
+    delete signObj.sign
     let signStr = this._keySortStr(signObj)
     console.log('sginStr===========' , signStr)
     let verify = crypto.createVerify('RSA-SHA256')
     verify.update(signStr)
-    return verify.verify(this.alipayPubKey, signature , 'base64')
+    return verify.verify(this.alipayPubKey, sign , 'base64')
 
   }
 

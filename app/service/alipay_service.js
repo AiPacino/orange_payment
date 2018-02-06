@@ -73,11 +73,11 @@ class AlipayService {
         return 'FAIL:config error'
       }
 
-      let methodConfig = JSON.parse(businessMethod.config)
-      let signData = obj.sign
-      let AliPay = new AlipaySdk(methodConfig)
-      let signObj = obj
-      delete signObj.sign
+      // let methodConfig = JSON.parse(businessMethod.config)
+      // let signData = obj.sign
+      // let AliPay = new AlipaySdk(methodConfig)
+      // let signObj = obj
+      // delete signObj.sign
       // let verify = AliPay._verify(signObj , signData)
 
       // log.info('notifyDealOrder notify verify data:==========' , verify)
