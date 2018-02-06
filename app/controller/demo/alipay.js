@@ -48,6 +48,9 @@ router.get('/paySucc' , (req , res) => {
 
 })
 
+router.get('/authRedirect' , (req , res) => {
+  res.send('授权成功')
+})
 router.get('/test' , (req , res) => {
   let url = 'https://openapi.alipaydev.com/gateway.do?app_id=2016090900470172&method=alipay.trade.wap.pay&format=json&return_url=http%3A%2F%2Fwww.baidu.com&charset=utf-8&sign_type=RSA2&timestamp=2018-02-05%2015%3A36%3A48&version=1.0&biz_content=%7B%22subject%22%3A%22ceshi%22%2C%22out_trade_no%22%3A%228e5151210fcd4122936a20d650c45d73%22%2C%22total_amount%22%3A1%2C%22product_code%22%3A%22QUICK_WAP_WAY%22%2C%22notify_url%22%3A%22http%3A%2F%2Fpay.cc512.com%2Fapi%2Fnotify%2Falipay%22%7D&sign=KEjoCW2zftayeMq9qbMD%2Fxlh9DcqJwxhtbDT%2BI1xihmo%2BpfXqaOGmIKDIfZXcqoK5io7A3tisNbJsbBiDOAGLtJRNp3Y70MvSLgfCoTvLMqF05PuxsCHojy5ilNE1lBKnJ0Dsfv8jJjH8PHJVlLyjGRgeENm9ixFJAFw%2Fzj9j1QrbHtS6bkWK3Iig65Azl6teRtBn0if9V6QWKsJvlV7IfHJd%2F2LwMH1At8E3BYCK%2FzKNc7u4bqKyjVBmI2uB912QegquSqu4QQ02yMve992U09qtsbSYvWzpmrd3HajowkVtvfgwoTOdj5YXs%2Bz7sIzLqKHiofqPplBisBVr1ChGQ%3D%3D'
   
