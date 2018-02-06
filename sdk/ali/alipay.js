@@ -74,7 +74,7 @@ class AlipaySdk {
   _sign(signObj , key ){
     
     let sortStr = this._keySortStr(signObj)
-    console.log('sort str ==================' , sortStr)
+    // console.log('sort str ==================' , sortStr)
     let sign = crypto.createSign('RSA-SHA256')
     sign.update(sortStr)
 
@@ -84,10 +84,11 @@ class AlipaySdk {
 
   _verify(signObj , signature = ''){
     let sign = signature || signObj.sign
-    console.log(sign)
+    // console.log('sign======================' , sign)
     delete signObj.sign
+    delete signObj.sign_type
     let signStr = this._keySortStr(signObj)
-    console.log('sginStr===========' , signStr)
+    // console.log('sginStr===========' , signStr)
     let verify = crypto.createVerify('RSA-SHA256')
     verify.update(signStr)
     return verify.verify(this.alipayPubKey, sign , 'base64')

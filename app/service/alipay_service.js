@@ -61,6 +61,10 @@ class AlipayService {
         log.info('notify fail:order' , order)
         return 'FAIL'
       }
+      if (order.status == 0){
+        log.info('notify fail:order.status' , order.status)
+        return 'FAIL'
+      }
 
       let businessMethod = await BusinessMethodModel.model.findOne({
         where : {
@@ -73,14 +77,14 @@ class AlipayService {
         return 'FAIL:config error'
       }
 
-      // let methodConfig = JSON.parse(businessMethod.config)
-      // let signData = obj.sign
-      // let AliPay = new AlipaySdk(methodConfig)
-      // let signObj = obj
-      // delete signObj.sign
-      // let verify = AliPay._verify(signObj , signData)
-
-      // log.info('notifyDealOrder notify verify data:==========' , verify)
+      let methodConfig = JSON.parse(businessMethod.config)
+      let AliPay = new AlipaySdk(methodConfig)
+      let signObj = obj
+      let verify = AliPay._verify(signObj)
+      log.info('notifyDealOrder notify verify data:==========' , verify)
+      if(!verify){
+        return 'FAIL:verify err'
+      }
 
       order.status = 0
       order.payment_info = JSON.stringify(obj)
@@ -93,8 +97,6 @@ class AlipayService {
       return 'FAIL'
     }
     
-
-  
   }
 }
 
