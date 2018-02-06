@@ -4,7 +4,6 @@ const WxPaySdk = require('./../../sdk/wechat/wx_pay')
 const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
-const BusinessModel = require('./../../server/model/business_model')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
 const XmlUtils = require('./../../utils/xml_utils')
@@ -19,6 +18,10 @@ class WeixinService {
     wxPayOpt.mch_id = opt.mch_id
     wxPayOpt.notify_url = 'http://pay.cc512.com/api/notify/wxpay'
     wxPayOpt.key = opt.key
+    wxPayOpt.key = opt.h5_url
+    
+    // h5支付需要wap地址
+    wxPayOpt.h5_url = 'http://pay.cc512.com'
     
     let WxPay = new WxPaySdk(wxPayOpt)
     let body = order.body

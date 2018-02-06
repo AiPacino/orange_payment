@@ -76,9 +76,14 @@ router.get('/pay' , async (req , res) => {
 
     res.render('demo/wechat_pay')
   }else if(type == 'NATIVE'){
+    // 扫码
     let code_url = orderRes.data.code_url
     res.locals.code_url = code_url
     res.render('demo/wechat_pay_code')
+  }else if(type == 'MWEB'){
+    // h5支付
+    let mweb_url = orderRes.data.mweb_url
+    return res.redirect(mweb_url)
   }
   
 
