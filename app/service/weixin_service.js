@@ -11,7 +11,7 @@ const XmlUtils = require('./../../utils/xml_utils')
 class WeixinService {
 
   // 微信支付下单
-  async unifiedOrder(order , opt){
+  async unifiedOrder(order , opt , isCommon = 1){
 
     let wxPayOpt = {}
     wxPayOpt.app_id = opt.app_id
@@ -22,7 +22,7 @@ class WeixinService {
     // h5支付需要wap地址
     wxPayOpt.h5_url = 'http://pay.cc512.com'
     
-    let WxPay = new WxPaySdk(wxPayOpt)
+    let WxPay = new WxPaySdk(wxPayOpt , isCommon)
     let body = order.body
     let out_trade_no = order.order_no // 用平台生成的 ，不用第三方的
     let total_fee = order.total_fee

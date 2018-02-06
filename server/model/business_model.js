@@ -43,6 +43,10 @@ class BusinessModel {
       update_time : {
         type : FIELD_TYPE.INT,
         defaultValue : parseInt(Date.now() / 1000)
+      },
+      is_common : {
+        type : FIELD_TYPE.BOOLEAN,
+        defaultValue : 1
       }
     },{
       timestamps: false,

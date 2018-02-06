@@ -70,7 +70,8 @@ router.post('/unifiedOrder' , async (req , res) => {
   let unifiedOrderObj = orderRes.data
   unifiedOrderObj.ip = req.connection.remoteAddress.replace('::ffff:' , '') || '127.0.0.1'
   log.info('/unifiedOrder ip' , unifiedOrderObj.ip )
-  let unifiedOrderResult = await PaymentService.unifiedOrder(unifiedOrderObj , payOpt)
+  let isCommon = req.business.is_common
+  let unifiedOrderResult = await PaymentService.unifiedOrder(unifiedOrderObj , payOpt , isCommon)
 
   res.json(unifiedOrderResult)
   

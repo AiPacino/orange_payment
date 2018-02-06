@@ -58,13 +58,13 @@ class PaymentService {
     return result
   }
 
-  async unifiedOrder(orderObj , opt = {}){
+  async unifiedOrder(orderObj , opt = {} , isCommon = 1){
     
     let result = null
     let method = orderObj.method
     if(method == 'wx'){
       // 微信支付
-      result = await WeixinService.unifiedOrder(orderObj , opt)
+      result = await WeixinService.unifiedOrder(orderObj , opt , isCommon)
     }else if(method == 'alipay'){
       // 支付宝
       result = await AlipayService.unifiedOrder(orderObj , opt)
