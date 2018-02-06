@@ -1,8 +1,8 @@
 const moment = require('moment')
 const crypto = require('crypto')
 const request = require('request')
-// const getWayUrl = 'https://openapi.alipay.com/gateway.do' // 正式环境
-const getWayUrl = 'https://openapi.alipaydev.com/gateway.do' // 测试环境
+const getWayUrl = 'https://openapi.alipay.com/gateway.do' // 正式环境
+// const getWayUrl = 'https://openapi.alipaydev.com/gateway.do' // 测试环境
 
 const PRODUCT_CODE = {
   WAP : 'QUICK_WAP_WAY',
