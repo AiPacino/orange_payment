@@ -41,11 +41,11 @@ class UserModel {
         type : FIELD_TYPE.INT,
         defaultValue : parseInt(Date.now() / 1000)
       },
-      fee_in : {
+      rate_in : {
         type : FIELD_TYPE.DECIMAL2,
         defaultValue : 0
       },
-      fee_out : {
+      rate_out : {
         type : FIELD_TYPE.DECIMAL2,
         defaultValue : 0
       },

@@ -30,6 +30,10 @@ class BusinessMethodModel {
         type : FIELD_TYPE.BOOLEAN,
         defaultValue : 1
       },
+      rate : {
+        type : FIELD_TYPE.DECIMAL2,
+        defaultValue : 0
+      }
       // create_time : {
       //   type : FIELD_TYPE.INT,
       //   defaultValue : parseInt(Date.now() / 1000)

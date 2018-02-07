@@ -4,6 +4,7 @@ const WxPaySdk = require('./../../sdk/wechat/wx_pay')
 const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
+const OrderService = require('./order_service')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
 const XmlUtils = require('./../../utils/xml_utils')
@@ -104,7 +105,8 @@ class WeixinService {
       let businessMethod = await BusinessMethodModel.model.findOne({
         where : {
           business_id : order.business_id,
-          method_key : order.method
+          method_key : order.method,
+          status : 1
         }
       })
       if(!businessMethod){
@@ -126,17 +128,25 @@ class WeixinService {
       log.info('notifyDealOrder notify sign data' , signData)
       log.info('notifyDealOrder notify signed ' , signed)
       if(signData != signed){
-        // return 'FAIL:sign error'
+        return 'FAIL:sign error'
       }
 
-      // 修改订单信息 
+      
       if(resultCode == 'SUCCESS'){
+
+        // 修改订单信息 
         order.status = 0
         order.payment_info = JSON.stringify(notifyObj)
         if(notifyObj.openid){
           order.payment_user = notifyObj.openid
         }
         order.save()
+
+        // 记录流水
+        OrderService.recordOrderFee(order.dataValues).then(resOrderRecodeFee => {
+          log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
+        })
+
       }else{
         order.payment_info = JSON.stringify(notifyObj)
         order.save()

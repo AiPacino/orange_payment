@@ -14,7 +14,7 @@ class UserService {
   }
 
   // 记录资金流水
-  async fundTrade(userId , money , type = 1 , orderId = 0){
+  async fundTrade(userId , money , type = 1 , orderId = 0 , fee = 0){
     let userFund = await UserFundModel.model.find({
       where : {
         user_id : userId,
@@ -37,7 +37,7 @@ class UserService {
 
       let newMoney = money * type
       if(newMoney <= 0){
-        return false
+        result = false
       }else {
         userFund = await UserFundModel.model.create({
           user_id : userId,
@@ -54,10 +54,12 @@ class UserService {
         user_id : userId,
         type : (type == 1) ? 'in' : 'out',
         num : money * type,
-        order_id : orderId
+        order_id : orderId,
+        fee : fee
       })
     }
     
+    userFund = result ? userFund : null
     return [result , userFund , userTrade]
   }
 }

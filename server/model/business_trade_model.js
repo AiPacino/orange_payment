@@ -1,15 +1,15 @@
 const { DB , FIELD_TYPE} = require('./../../lib/model')
 
-class UserTradeModel {
+class BusinessTradeModel {
 
   constructor(){
-    this.model = DB.define('user_trade' , {
+    this.model = DB.define('business_trade' , {
       id : {
         type : FIELD_TYPE.BIGINT,
         primaryKey: true,
         autoIncrement: true 
       },
-      user_id: {
+      business_id: {
         type: FIELD_TYPE.BIGINT
       },
       order_id: {
@@ -36,7 +36,7 @@ class UserTradeModel {
     },{
       timestamps: false,
       freezeTableName: true,
-      tableName : 't_user_trade'
+      tableName : 't_business_trade'
     })
 
   }
@@ -44,4 +44,4 @@ class UserTradeModel {
   
 }
 
-module.exports = new UserTradeModel()
+module.exports = new BusinessTradeModel()

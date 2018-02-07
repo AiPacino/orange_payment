@@ -79,6 +79,14 @@ class OrderModel {
         type: FIELD_TYPE.TEXT,
         defaultValue : ''
       },
+      poundage_fee :{
+        type: FIELD_TYPE.BIGINT,
+        defaultValue : 0
+      },
+      service_fee : {
+        type: FIELD_TYPE.BIGINT,
+        defaultValue : 0
+      }
     },{
       timestamps: false,
       freezeTableName: true,

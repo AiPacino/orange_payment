@@ -46,7 +46,7 @@ class PaymentService {
     }
 
     let result = RESULT_UTILS.SUCCESS
-    result.data = {user_id : user.id , user_key : userKey}
+    result.data = {user_id : user.id , user_key : userKey , user_rate : user.rate_in}
     return result
   }
 
@@ -64,6 +64,7 @@ class PaymentService {
         out_trade_no : orderObj.out_trade_no
       }
     })
+
     log.info('createOrder orderFind' , orderFind)
 
     let resultData = {}
@@ -97,6 +98,8 @@ class PaymentService {
       payment_type : resultData.payment_type,
       payment_user : resultData.payment_user,
       method :resultData.method,
+      poundage_fee : resultData.poundage_fee,
+      service_fee : resultData.service_fee
       // unifiedorder_info : resultData.unifiedorder_info,
     }
     return result
@@ -151,6 +154,8 @@ class PaymentService {
     result.data.sign = cryptoUtils.md5ByKey(result.data , signKey)
     return result
   }
+
+  
 }
 
 module.exports = new PaymentService()

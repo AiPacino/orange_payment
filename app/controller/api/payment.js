@@ -6,6 +6,24 @@ const RESULT_CODE = require('./../../../utils/result_utils')
 const log = require('./../../../lib/log')('api-payment')
 const Uuid = require('./../../../utils/uuid_utils')
 
+// 计算手续费
+let formateFee = (num) => {
+  log.info(num)
+  if(num > 0){
+    if (num < 0.1){
+      return 0
+    }else {
+      if (num > 0.1 && num < 1){
+        return 1
+      }else {
+        return parseInt(num)
+      }
+    }
+  }else{
+    return 0
+  }
+}
+
 // 中间件处理逻辑
 router.use( async (req , res , next) =>{
 
@@ -31,6 +49,27 @@ router.post('/createOrder' , async(req , res) => {
   orderObj.business_id = req.business.id
   orderObj.business_uuid = req.business.uuid
 
+  let checkRes = await PaymentService.checkRequest(orderObj)
+  if(checkRes.code > 0){
+    return res.json(checkRes)
+  }
+  orderObj.user_id = checkRes.data.user_id
+  // let userSignKey = checkRes.data.user_key // 签名秘钥
+  let userRate = checkRes.data.user_rate
+  log.info('/createOrder userRate' , userRate)
+  // 找到支付配置 isCommon 是否普通商户 支付费率
+  let [payOpt , isCommon  , rate] = await BusinessService.getMethodConfig(req.business.id , orderObj.method)
+  if(!payOpt){
+    return res.json(RESULT_CODE.BUSINESS_PAY_CONFIG_ERROR)
+  }
+  log.info('/createOrder busiRate' , rate)
+  
+  // 手续费
+  let poundageFee = orderObj.total_fee * rate / 100
+  orderObj.poundage_fee = formateFee(poundageFee)
+  let serviceFee = orderObj.total_fee * userRate / 100
+  orderObj.service_fee = formateFee(serviceFee)
+
   if(!req.body.out_trade_no && process.env.NODE_MODE != 'production'){
     orderObj.out_trade_no = Uuid.v4()
   }
@@ -55,13 +94,20 @@ router.post('/unifiedOrder' , async (req , res) => {
     return res.json(checkRes)
   }
   orderObj.user_id = checkRes.data.user_id
-  let userSignKey = checkRes.data.user_key
+  let userSignKey = checkRes.data.user_key // 签名秘钥
+  let userRate = checkRes.data.user_rate
 
-  // 找到支付配置 isCommon 是否普通商户
-  let [payOpt , isCommon] = await BusinessService.getMethodConfig(req.business.id , orderObj.method)
+  // 找到支付配置 isCommon 是否普通商户 支付费率
+  let [payOpt , isCommon  , rate] = await BusinessService.getMethodConfig(req.business.id , orderObj.method)
   if(!payOpt){
     return res.json(RESULT_CODE.BUSINESS_PAY_CONFIG_ERROR)
   }
+ 
+  // 手续费
+  let poundageFee = orderObj.total_fee * rate / 100
+  orderObj.poundage_fee = formateFee(poundageFee)
+  let serviceFee = orderObj.total_fee * userRate / 100
+  orderObj.service_fee = formateFee(serviceFee)
   
   if(!req.body.out_trade_no && process.env.NODE_MODE != 'production'){
     orderObj.out_trade_no = Uuid.v4()
