@@ -5,6 +5,7 @@ const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
+const UserModel = require('./../../server/model/user_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
 const XmlUtils = require('./../../utils/xml_utils')
 
@@ -111,10 +112,13 @@ class WeixinService {
         log.info('notifyDealOrder config error')
         return 'FAIL:config error'
       }
+      log.info('notifyDealOrderbusiness method' , businessMethod)
 
       // 找到商户配置 然后验证
       let methodConfig = JSON.parse(businessMethod.config)
-      let isCommon = methodConfig.common
+      let isCommon = businessMethod.common
+      log.info('notifyDealOrder business common' , isCommon)
+
       let signData = notifyObj.sign
       let WxPay = new WxPaySdk(methodConfig , isCommon)
       let signObj = notifyObj
