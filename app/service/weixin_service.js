@@ -114,8 +114,9 @@ class WeixinService {
 
       // 找到商户配置 然后验证
       let methodConfig = JSON.parse(businessMethod.config)
+      let isCommon = methodConfig.common
       let signData = notifyObj.sign
-      let WxPay = new WxPaySdk(methodConfig)
+      let WxPay = new WxPaySdk(methodConfig , isCommon)
       let signObj = notifyObj
       delete signObj.sign
       let signed = WxPay._sign(signObj)
