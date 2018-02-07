@@ -5,7 +5,6 @@ const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
-const UserModel = require('./../../server/model/user_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
 const XmlUtils = require('./../../utils/xml_utils')
 

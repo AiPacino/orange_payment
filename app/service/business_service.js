@@ -16,6 +16,7 @@ class BusinessService {
     return result
   }
 
+  // 获取支付配置
   async getMethodConfig(businessId , method = 'wx'){
     let result = await BusinessMethodModel.model.findOne({
       where : {
@@ -29,13 +30,13 @@ class BusinessService {
     if(result){
       try {
         let config = JSON.parse(result.config)
-        return config
+        return [ config , result.common ]
       }catch (err){
-        return null
+        return [null , null]
       }
       
     }else{
-      return null
+      return [null , null]
     }
     // return result
   }

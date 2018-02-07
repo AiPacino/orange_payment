@@ -9,8 +9,7 @@ const Uuid = require('./../../../utils/uuid_utils')
 // 中间件处理逻辑
 router.use( async (req , res , next) =>{
 
-  let accessToken = req.query.access_token
-  let businessId = req.query.business_id
+  let businessId = req.query.business_id || 'e32c20bfc10d5c677b5db96ec57247fc'
 
   let business = await BusinessService.getByUuid(businessId)
   if(!business){
@@ -51,8 +50,15 @@ router.post('/unifiedOrder' , async (req , res) => {
   orderObj.business_id = req.business.id
   orderObj.business_uuid = req.business.uuid
 
-  // 找到支付配置
-  let payOpt = await BusinessService.getMethodConfig(req.business.id , orderObj.method)
+  let checkRes = await PaymentService.checkRequest(orderObj)
+  if(checkRes.code > 0){
+    return res.json(checkRes)
+  }
+  orderObj.user_id = checkRes.data.user_id
+  let userSignKey = checkRes.data.user_key
+
+  // 找到支付配置 isCommon 是否普通商户
+  let [payOpt , isCommon] = await BusinessService.getMethodConfig(req.business.id , orderObj.method)
   if(!payOpt){
     return res.json(RESULT_CODE.BUSINESS_PAY_CONFIG_ERROR)
   }
@@ -70,10 +76,16 @@ router.post('/unifiedOrder' , async (req , res) => {
   let unifiedOrderObj = orderRes.data
   unifiedOrderObj.ip = req.connection.remoteAddress.replace('::ffff:' , '') || '127.0.0.1'
   log.info('/unifiedOrder ip' , unifiedOrderObj.ip )
-  let isCommon = req.business.is_common
+  
+  // 下单
   let unifiedOrderResult = await PaymentService.unifiedOrder(unifiedOrderObj , payOpt , isCommon)
+  if(unifiedOrderResult.code > 0){
+    return res.json(unifiedOrderResult)
+  }
 
-  res.json(unifiedOrderResult)
+  // 构建返回数据
+  let returnData = PaymentService.buildUnifiedOrderReturnData(unifiedOrderObj , unifiedOrderResult , userSignKey)
+  res.json(returnData)
   
 })
 

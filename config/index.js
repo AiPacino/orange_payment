@@ -45,6 +45,14 @@ let config = {
     maxLimit : 10,
   },
 
+  payment : {
+    methods : ['wx' , 'alipay'] , 
+    type : {
+      wx : ['JSAPI' , 'NATIVE'] , // 'JSAPI' , 'NATIVE' , 'MWEB' , 'APP'
+      alipay : ['wap' , 'pc']
+    }
+  }
+
 }
 
 // let env = process.env.NODE_ENV ? process.env.NODE_ENV : ''

@@ -12,6 +12,12 @@ class OrderModel {
       uuid: {
         type: FIELD_TYPE.STRING_LEN(32)
       },
+      user_id : {
+        type: FIELD_TYPE.BIGINT,
+      },
+      app_id : {
+        type: FIELD_TYPE.STRING_LEN(32)
+      },
       business_id : {
         type: FIELD_TYPE.BIGINT,
       },

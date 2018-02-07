@@ -52,8 +52,10 @@ router.get('/auth' , async (req , res) => {
 
 const wechatRouter = require('./wechat')
 const alipayRouter = require('./alipay')
+const userRouter = require('./user')
 
 router.use('/wechat' , wechatRouter)
 router.use('/alipay' , alipayRouter)
+router.use('/user' , userRouter)
 
 module.exports = router

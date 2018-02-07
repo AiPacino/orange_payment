@@ -43,5 +43,30 @@ module.exports = {
     code : 30101,
     message : '不支持的下单类型',
   },
+
+  PAYMENT_UNIFIED_CHCEK_USER : {
+    code : 30201,
+    message : '商户信息错误或被禁用',
+  },
+
+  PAYMENT_UNIFIED_CHCEK_METHOD : {
+    code : 30202,
+    message : '不支持的支付方式',
+  },
+
+  PAYMENT_UNIFIED_CHCEK_PAYMENT_TYPE : {
+    code : 30203,
+    message : '不支持的支付类型',
+  },
+
+  PAYMENT_UNIFIED_CHCEK_BODY : {
+    code : 30204,
+    message : '请求body字段非法',
+  },
+
+  PAYMENT_UNIFIED_TOTAL_FEE : {
+    code : 30205,
+    message : '请求total_fee字段非法',
+  }
   
 }

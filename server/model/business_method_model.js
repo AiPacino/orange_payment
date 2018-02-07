@@ -26,6 +26,10 @@ class BusinessMethodModel {
         type : FIELD_TYPE.BOOLEAN,
         defaultValue : 0
       },
+      common : {
+        type : FIELD_TYPE.BOOLEAN,
+        defaultValue : 1
+      },
       // create_time : {
       //   type : FIELD_TYPE.INT,
       //   defaultValue : parseInt(Date.now() / 1000)

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>微信支付接口测试</title>
+  </head>
+  <body>
+    <div class="container-fluid mt-3">
+      <h1>微信支付接口测试</h1>
+      <div>
+        <div>
+          <p>商户名 ：<%= user.name %></p>
+          <p>商户app_id : <%= user.uuid %></p>
+          <p>商户加密key : <%= user.key %></p>
+          <p>商户消息通知地址 : <%= user.notify_url %></p>
+          <p>商户费率 : 
+            充值(<span><%= user.fee_in %></span>) 
+            提现(<span><%= user.fee_out %></span>)
+          </p>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-6">
+          <form>
+            <div class="form-group row">
+              <label for="" class="col-3">商户app_id</label>
+              <div class="col-9">
+                <input type="text" name="app_id" id="" value="<%= user_id %>" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="" class="col-3">支付类型</label>
+              <div class="col-9">
+                <input type="text" name="method" id="" value="<%= method %>" class="form-control" readonly>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="" class="col-3"></label>
+              <div class="col-9">
+                <input type="text" name="payment_type" id="" value="<%= payment_type %>" class="form-control" readonly>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="" class="col-3">订单号</label>
+              <div class="col-9">
+                <input type="text" name="out_trade_no" id="" value="<%= out_trade_no %>" class="form-control" readonly>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="" class="col-3">下单描述</label>
+              <div class="col-9">
+                <input type="text" name="body" id="" value="" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="" class="col-3">下单金额</label>
+              <div class="col-9">
+                <input type="text" name="total_fee" id="" value="" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="" class="col-3">支付完成跳转地址</label>
+              <div class="col-9">
+                <input type="text" name="redirect_url" id="" value="" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-3"></div>
+              <div class="col-9">
+                <input type="submit" value="提交" class="btn btn-primary">
+                <a href="javascript:;" class="btn btn-danger">验签</a>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+    
+   
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

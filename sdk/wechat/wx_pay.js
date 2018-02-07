@@ -69,7 +69,7 @@ class WxPay {
       this.mch_id = SERVICE_BUSIBESS_INFO.mch_id
       this.key = SERVICE_BUSIBESS_INFO.key
 
-      this.sub_appid = opt.app_id
+      this.sub_appid = opt.app_id || null
       this.sub_mch_id = opt.mch_id
       
     }
@@ -103,9 +103,12 @@ class WxPay {
     if(this.isCommon){
       unifiedOrderObj.openid = openid
     }else{
-      unifiedOrderObj.sub_appid = this.sub_appid
       unifiedOrderObj.sub_mch_id = this.sub_mch_id
-      unifiedOrderObj.sub_openid = openid
+      if (this.sub_appid){
+        unifiedOrderObj.sub_appid = this.sub_appid
+        unifiedOrderObj.sub_openid = openid
+      }
+      
     }
 
     if(payment_type == 'MWEB'){
