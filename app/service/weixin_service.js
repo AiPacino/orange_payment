@@ -147,6 +147,8 @@ class WeixinService {
           log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
         })
 
+        // 通知商户TODO
+
       }else{
         order.payment_info = JSON.stringify(notifyObj)
         order.save()

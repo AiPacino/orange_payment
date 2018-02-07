@@ -127,8 +127,8 @@ class PaymentService {
   buildUnifiedOrderReturnData(orderObj , unifiedOrderRes , signKey = ''){
 
     let result = {code : 0 , message : '' , data : {}}
-    result.code = unifiedOrderRes.code || -1
-    result.message = unifiedOrderRes.message || 'FAIL'
+    result.code = unifiedOrderRes.code
+    result.message = unifiedOrderRes.message
     result.data = {
       result_code : unifiedOrderRes.code == 0 ? 'SUCCESS' : 'FAIL',
       method : orderObj.method,

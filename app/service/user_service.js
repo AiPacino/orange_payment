@@ -2,6 +2,7 @@ const log = require('./../../lib/log')('user_service')
 const UserModel = require('./../../server/model/user_model')
 const UserFundModel = require('./../../server/model/user_fund_model')
 const UserTradeModel = require('./../../server/model/user_trade_model')
+const CryptoUtils = require('./../../utils/crypto_utils')
 
 class UserService {
 
@@ -62,6 +63,17 @@ class UserService {
     userFund = result ? userFund : null
     return [result , userFund , userTrade]
   }
+
+  // test sign
+  async paySign(obj){
+    let user = await this.getInfoByUuid(obj.app_id)
+    let key = user.key
+
+    let sign = CryptoUtils.md5ByKey(obj , key)
+    return sign
+
+  }
+
 }
 
 module.exports = new UserService()

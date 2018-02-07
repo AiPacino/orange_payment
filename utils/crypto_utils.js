@@ -3,7 +3,7 @@ const crypto = require('crypto')
 class CryptoUtils {
 
   md5ByKey(obj , key){
-    
+
     let sortStr = this._keySortStr(obj , key)
     // console.log('========================' , sortStr)
     let hash = crypto.createHash('md5')

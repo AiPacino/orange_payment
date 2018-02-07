@@ -25,8 +25,23 @@ router.post('/unifiedOrder' , async (req , res) => {
   let data = req.body
   log.info('/unifiedOrder data' , data)
   let action = 'http://127.0.0.1:8092/api/payment/unifiedOrder'
-  let result = httpUtils.post(action , data)
+  let result = await httpUtils.post(action , data)
+  log.info('/unifiedOrder result ' , result)
   res.json(result)
+})
+
+
+router.post('/unifiedSign' , async (req , res) =>{
+  let obj = req.body
+  delete obj.sign
+  let sign = await UserService.paySign(obj)
+  log.info('/unifiedSign sign' , sign)
+  res.send(sign)
+
+})
+
+router.get('/testSucc' , (req , res) => {
+  res.send('<h1>测试成功！</h1>')
 })
 
 module.exports = router
