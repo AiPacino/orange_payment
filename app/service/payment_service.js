@@ -8,6 +8,7 @@ const RESULT_UTILS = require('./../../utils/result_utils')
 const log = require('./../../lib/log')('payment_service')
 const cryptoUtils = require('./../../utils/crypto_utils')
 const paymentConfig = require('./../../config/index').payment
+const testCode = require('./../../config/index').test_code
 
 class PaymentService {
 
@@ -23,7 +24,12 @@ class PaymentService {
     let userKey = user.key
     let checkRes = cryptoUtils.checkMd5(obj , userKey)
     if(!checkRes){
-      // return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_SIGN
+      if(obj.is_test && obj.is_test == testCode){
+        delete obj.is_test
+      }else{
+        return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_SIGN
+      }
+      
     }
 
     // 检验method
@@ -46,6 +52,12 @@ class PaymentService {
     // 检验total_fee
     let total_fee = parseInt(obj.total_fee)
     if (isNaN(total_fee) || total_fee < 0){
+      return RESULT_UTILS.PAYMENT_UNIFIED_TOTAL_FEE
+    }
+
+    // 检验notify_url
+    let notifyUrl = obj.notify_url
+    if(!notifyUrl || notifyUrl.indexOf('http://') <= -1 || notifyUrl.indexOf('https://')){
       return RESULT_UTILS.PAYMENT_UNIFIED_TOTAL_FEE
     }
 
@@ -166,6 +178,9 @@ class PaymentService {
       }else if(paymentType == 'pc'){
         // pc电脑
         paymentInfo.pay_url_pc = unifiedOrderRes.message
+      }else if(paymentType == 'code') {
+        // 二维码
+        paymentInfo.code_url = unifiedOrderRes.data.alipay_trade_precreate_response.qr_code
       }
 
     }

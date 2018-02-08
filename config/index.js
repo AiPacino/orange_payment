@@ -51,8 +51,9 @@ let config = {
       wx : ['JSAPI' , 'NATIVE'] , // 'JSAPI' , 'NATIVE' , 'MWEB' , 'APP'
       alipay : ['wap' , 'pc' , 'code']
     }
-  }
+  },
 
+  test_code : 'a47bfa076a9135ddccf9507615a84'
 }
 
 // let env = process.env.NODE_ENV ? process.env.NODE_ENV : ''
