@@ -149,11 +149,16 @@ class WeixinService {
         })
 
         // 通知商户
-        PaymentService.notifyUser(order).then(() => {
-          log.info('notifyDealOrder resultNotify:')
-        }).catch(err=>{
+        try {
+          PaymentService.notifyUser(order).then(() => {
+            log.info('notifyDealOrder resultNotify:')
+          }).catch(err=>{
+            log.info('notifyDealOrder err:' , err)
+          })
+        }catch (err) {
           log.info('notifyDealOrder err:' , err)
-        })
+        }
+        
 
       }else{
         order.payment_info = JSON.stringify(notifyObj)
