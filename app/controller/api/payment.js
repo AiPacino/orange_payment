@@ -57,7 +57,7 @@ router.post('/createOrder' , async(req , res) => {
   // let userSignKey = checkRes.data.user_key // 签名秘钥
   let userRate = checkRes.data.user_rate
   log.info('/createOrder userRate' , userRate)
-  
+
   // 找到支付配置 isCommon 是否普通商户 支付费率
   let [payOpt , isCommon  , rate , opens] = await BusinessService.getMethodConfig(req.business.id , orderObj.method)
   if(!payOpt){
@@ -65,6 +65,7 @@ router.post('/createOrder' , async(req , res) => {
   }
   // 验证资质商权限 opens payment_type
   let paymentType = orderObj.payment_type
+  log.info('/createOrder opens' , opens)
   if(opens.indexOf(paymentType) <= -1){
     return res.json(RESULT_CODE.BUSINESS_PAY_OPENS_NOT_MATCH)
   }
@@ -113,6 +114,7 @@ router.post('/unifiedOrder' , async (req , res) => {
   }
   // 验证资质商权限 opens payment_type
   let paymentType = orderObj.payment_type
+  log.info('/unifiedOrder opens' , opens)
   if(opens.indexOf(paymentType) <= -1){
     return res.json(RESULT_CODE.BUSINESS_PAY_OPENS_NOT_MATCH)
   }

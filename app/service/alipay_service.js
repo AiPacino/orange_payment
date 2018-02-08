@@ -23,13 +23,26 @@ class AlipayService {
     let total_amount = order.total_fee / 100
     let notify_url = 'http://pay.cc512.com/api/notify/alipay'
     let return_url = order.redirect_url
-    let payment_type = order.payment_type // 'WAP':手机网站支付 , 'PC':电脑网站
+    let payment_type = order.payment_type.toLowerCase() // 'WAP':手机网站支付 , 'PC':电脑网站
     log.info('unifiedOrder order' , order)
     let result = {code : 0 , message : ''}
     try {
-      let unifiedOrderResult = await Alipay.pagePay(subject , body , order_no , total_amount , payment_type, notify_url , return_url)
-      log.info('unifiedOrder unifiedOrder result' , unifiedOrderResult)
-      result.message = unifiedOrderResult
+      if(payment_type == 'wap' || payment_type == 'pc'){
+        let unifiedOrderResult = await Alipay.pagePay(subject , body , order_no , total_amount , payment_type, notify_url , return_url)
+        log.info('unifiedOrder unifiedOrder result' , unifiedOrderResult)
+        result.message = unifiedOrderResult
+      }else if(payment_type == 'code'){
+        let unifiedOrderResult = await Alipay.codePay(subject , body , order_no , total_amount , notify_url)
+        let resultCode = unifiedOrderResult.alipay_trade_precreate_response.code
+        if(resultCode != '10000'){
+          result.code = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_ALIPAY_FAIL.code
+          result.message = unifiedOrderResult.alipay_trade_precreate_response.sub_msg
+        }else{
+          result.data = unifiedOrderResult
+        }
+        
+      }
+      
       
     }catch(err) {
       // console.log(err)

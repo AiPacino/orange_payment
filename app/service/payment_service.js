@@ -23,7 +23,7 @@ class PaymentService {
     let userKey = user.key
     let checkRes = cryptoUtils.checkMd5(obj , userKey)
     if(!checkRes){
-      return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_SIGN
+      // return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_SIGN
     }
 
     // 检验method

@@ -73,6 +73,11 @@ module.exports = {
   PAYMENT_UNIFIED_TOTAL_FEE : {
     code : 30205,
     message : '请求total_fee字段非法',
+  },
+
+  PAYMENT_UNIFIED_NOTIFY_URL : {
+    code : 30206,
+    message : '请求notify_url字段非法',
   }
   
 }

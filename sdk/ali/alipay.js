@@ -2,7 +2,10 @@ const moment = require('moment')
 const crypto = require('crypto')
 const request = require('request')
 const getWayUrl = 'https://openapi.alipay.com/gateway.do' // 正式环境
+const getWayUrlTest = 'https://openapi.alipaydev.com/gateway.do' //
 // const getWayUrl = 'https://openapi.alipaydev.com/gateway.do' // 测试环境
+const config = require('./config')
+const serviceUserOpt = config.service_user
 
 const PRODUCT_CODE = {
   WAP : 'QUICK_WAP_WAY',
@@ -11,16 +14,31 @@ const PRODUCT_CODE = {
 
 const METHOD = {
   WAP : 'alipay.trade.wap.pay',
-  PC : 'alipay.trade.page.pay'
+  PC : 'alipay.trade.page.pay',
+  CODE : 'alipay.trade.precreate'
 }
 
 class AlipaySdk {
 
   constructor(opt){
     this.appId = opt.app_id
-    this.getWayUrl = getWayUrl
+    this.getWayUrl = opt.is_test ? getWayUrlTest : getWayUrl
     this.rsaPrivateKey = '-----BEGIN RSA PRIVATE KEY-----\n' + opt.rsa_private_key + '\n-----END RSA PRIVATE KEY-----'
     this.alipayPubKey = '-----BEGIN PUBLIC KEY-----\n' + opt.alipay_public_key + '\n-----END PUBLIC KEY-----'
+
+    
+    console.log('================',this.getWayUrl , opt.is_test)
+  }
+
+  // 切换特约商户
+  changeSpecial(){
+    this.appId = serviceUserOpt.app_id
+    this.getWayUrl = serviceUserOpt.is_test ? getWayUrlTest : getWayUrl
+    this.rsaPrivateKey = '-----BEGIN RSA PRIVATE KEY-----\n' + serviceUserOpt.rsa_private_key + '\n-----END RSA PRIVATE KEY-----'
+    this.alipayPubKey = '-----BEGIN PUBLIC KEY-----\n' + serviceUserOpt.alipay_public_key + '\n-----END PUBLIC KEY-----'
+
+    this.sys_service_provider_id = serviceUserOpt.sys_service_provider_id //返佣
+
   }
 
   async pagePay(subject , body , order_no , total_amount , payment_type, notify_url , return_url = ''){
@@ -56,6 +74,54 @@ class AlipaySdk {
     // let resultRequest = await this._requestGet(action)
     return action
     // return resultRequest
+  }
+
+  // 扫码支付
+  async codePay(subject , body , order_no , total_amount , notify_url , app_auth_token = ''){
+    let method = METHOD.CODE
+
+    let requestObj = {}
+    if (app_auth_token){
+      requestObj.app_auth_token = app_auth_token
+      this.changeSpecial()
+    }
+    
+    requestObj.app_id= this.appId
+    requestObj.method = method
+    requestObj.format = 'json'
+    requestObj.charset = 'utf-8'
+    requestObj.sign_type = 'RSA2'
+    requestObj.timestamp = this._dateFormat(null , 'YYYY-MM-DD HH:mm:ss')
+    requestObj.notify_url = notify_url
+    requestObj.version = '1.0'
+
+    let bizContent = {}
+    bizContent.subject = subject
+    bizContent.body = body
+    bizContent.out_trade_no = order_no
+    bizContent.total_amount = total_amount
+
+    // 返佣
+    if(app_auth_token && this.sys_service_provider_id){
+      bizContent.extend_params = {
+        sys_service_provider_id : this.sys_service_provider_id
+      }
+    }
+
+    requestObj.biz_content = JSON.stringify(bizContent)
+    let sign = this._sign(requestObj , this.rsaPrivateKey)
+    requestObj.sign = sign
+
+    // console.log(sign)
+    let action = this._buildRquestUrl(requestObj)
+    // console.log('===================',action)
+    let resultRequest = await this._requestGet(action)
+    // console.log('=================' , typeof resultRequest)
+    if(typeof resultRequest == 'string'){
+      resultRequest = JSON.parse(resultRequest)
+    }
+    // return action
+    return resultRequest
   }
 
   _dateFormat (timestamp, format) {

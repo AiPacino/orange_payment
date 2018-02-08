@@ -49,7 +49,7 @@ let config = {
     methods : ['wx' , 'alipay'] , 
     type : {
       wx : ['JSAPI' , 'NATIVE'] , // 'JSAPI' , 'NATIVE' , 'MWEB' , 'APP'
-      alipay : ['wap' , 'pc']
+      alipay : ['wap' , 'pc' , 'code']
     }
   }
 
