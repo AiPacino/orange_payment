@@ -220,7 +220,7 @@ class PaymentService {
       redirect_url :orderObj.redirect_url,
       payment_type : orderObj.payment_type,
       payment_user : orderObj.payment_user || '' ,
-      payment_info : orderObj.payment_info
+      payment_info : orderObj.payment_info || ''
     }
   
     let result = 'fail'
