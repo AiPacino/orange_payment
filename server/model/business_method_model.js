@@ -33,6 +33,10 @@ class BusinessMethodModel {
       rate : {
         type : FIELD_TYPE.DECIMAL2,
         defaultValue : 0
+      },
+      opens : {
+        type : FIELD_TYPE.STRING,
+        defaultValue : ''
       }
       // create_time : {
       //   type : FIELD_TYPE.INT,

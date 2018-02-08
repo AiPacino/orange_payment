@@ -6,26 +6,27 @@ module.exports = {
   },
   FAIL : {
     code : 1,
-    message : 'error',
-    data : {}
+    message : 'error'
   },
 
   BUSINESS_FIND_ERROR : {
     code : 10001,
-    message : '商户未找到',
-    data : {}
+    message : '资质商账户未找到'
   },
 
   BUSINESS_PAY_CONFIG_ERROR : {
     code : 10002,
-    message : '商户支付配置信息错误',
-    data : {}
+    message : '支付配置信息错误'
+  },
+
+  BUSINESS_PAY_OPENS_NOT_MATCH : {
+    code : 10003,
+    message : '支付权限不匹配'
   },
 
   ORDER_STATUS_0 :{
     code : 20001,
-    message : '订单已支付',
-    data : {}
+    message : '订单已支付'
   },
 
 

@@ -33,13 +33,13 @@ class BusinessService {
     if(result){
       try {
         let config = JSON.parse(result.config)
-        return [ config , result.common , result.rate ]
+        return [ config , result.common , result.rate , result.opens ]
       }catch (err){
-        return [null , 1 , 0]
+        return [null , 1 , 0 , '']
       }
       
     }else{
-      return [null , 1 , 0]
+      return [null , 1 , 0 , '']
     }
     // return result
   }
