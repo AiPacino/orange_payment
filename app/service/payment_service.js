@@ -33,6 +33,12 @@ class PaymentService {
       
     }
 
+    // 检验out_trade_no
+    let outTradeNo = obj.out_trade_no
+    if(!outTradeNo || outTradeNo.length > 32){
+      return RESULT_UTILS.PAYMENT_UNIFIED_OUT_TRADE_NO
+    }
+
     // 检验method
     let methods = paymentConfig.methods
     if(!obj.method || methods.indexOf(obj.method) <= -1){

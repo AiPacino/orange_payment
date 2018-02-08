@@ -78,6 +78,11 @@ module.exports = {
   PAYMENT_UNIFIED_REDIRECT_URL : {
     code : 30206,
     message : '请求redirect_url字段非法',
+  },
+
+  PAYMENT_UNIFIED_OUT_TRADE_NO : {
+    code : 30207,
+    message : '请求out_trade_no字段非法',
   }
   
 }
