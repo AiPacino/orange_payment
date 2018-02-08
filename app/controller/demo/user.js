@@ -5,7 +5,8 @@ const httpUtils = require('./../../../utils/http_utils')
 const log = require('./../../../lib/log')('demo-user')
 const Uuid = require('./../../../utils/uuid_utils')
 const UserService = require('./../../service/user_service')
-
+const paymentService = require('./../../../app/service/payment_service')
+const OrderModel = require('./../../../server/model/order_model')
 
 router.get('/wxTest' , async (req , res) => {
 
@@ -65,6 +66,14 @@ router.post('/notify' , (req , res) => {
   log.info('/notify data' , req.body)
 
   res.send('succes')
+})
+
+router.get('/test/notify' , async (req , res) => {
+  let order = await OrderModel.model.findById(204)
+  paymentService.notifyUser(order).then(() => {
+    // console.log('==========' , result)
+    res.send('success')
+  })
 })
 
 module.exports = router

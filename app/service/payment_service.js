@@ -230,9 +230,15 @@ class PaymentService {
           payment_user : orderObj.payment_user || '' ,
           payment_info : orderObj.payment_info
         }
-    
-        result = await HttpUtils.post(notifyUrl , notifyObj)
-        log.info('/notifyUser result' , result , time)
+        
+        log.info('/notifyUser notifyUrl' , notifyUrl , time)
+        try {
+          result = await HttpUtils.post(notifyUrl , notifyObj)
+          log.info('/notifyUser result' , result , time)
+        }catch (err){
+          log.info('/notifyUser err' , err)
+        }
+        
       }
 
       if(result != 'success'){
