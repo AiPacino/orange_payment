@@ -40,7 +40,8 @@ class PaymentService {
 
     // 检验payment_type
     let types = paymentConfig.type[obj.method]
-    if(!obj.payment_type || !types || types.indexOf(obj.payment_type) <= -1){
+    let paymentType = obj.payment_type 
+    if(!paymentType || !types || types.indexOf(paymentType) <= -1){
       return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_PAYMENT_TYPE
     }
 
@@ -56,11 +57,14 @@ class PaymentService {
     }
 
     // 检验notify_url
-    let notifyUrl = obj.notify_url
-    if(!notifyUrl || notifyUrl.indexOf('http://') <= -1 || notifyUrl.indexOf('https://')){
-      return RESULT_UTILS.PAYMENT_UNIFIED_TOTAL_FEE
+    let redirectUrl = obj.redirect_url
+    if (['JSAPI', 'NATIVE', 'WAP', 'PC'].indexOf(paymentType.toUpperCase()) > -1) {
+    
+      if (!redirectUrl || (redirectUrl.indexOf('http://') <= -1 && redirectUrl.indexOf('https://') <= -1) ){
+        return RESULT_UTILS.PAYMENT_UNIFIED_REDIRECT_URL
+      }
     }
-
+    
     let result = RESULT_UTILS.SUCCESS
     result.data = {user_id : user.id , user_key : userKey , user_rate : user.rate_in}
     return result
