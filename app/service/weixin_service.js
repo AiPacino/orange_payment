@@ -5,7 +5,7 @@ const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
 const OrderService = require('./order_service')
-const PaymentService = require('./payment_service')
+const NofifyService = require('./notify_service')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
 const XmlUtils = require('./../../utils/xml_utils')
@@ -80,9 +80,13 @@ class WeixinService {
   /**
    * 接收通知处理订单 
    */
-  async notifyDealOrder(xmlData){
+  async notifyDealOrder(xmlData, obj = null){
+    
     let notifyObj = await XmlUtils.toObj(xmlData)
-
+    if (obj){
+      notifyObj = obj
+    }
+    
     // test data
     // let notifyObj = '{"appid":"wx9070c69e2b42f307","bank_type":"CFT","cash_fee":"1","device_info":"WEB","fee_type":"CNY","is_subscribe":"Y","mch_id":"1488745772","nonce_str":"206bfdf125df48b68d5fc50da469cd99","openid":"oLOGI0lDCn1OH19JzDkzItpmPsaU","out_trade_no":"4e8f92f6e3ac4e198f04eaae2bacf5b7","result_code":"SUCCESS","return_code":"SUCCESS","time_end":"20180208183839","total_fee":"1","trade_type":"NATIVE","transaction_id":"4200000062201802089498574084"}'
     // notifyObj = JSON.parse(notifyObj)
@@ -129,7 +133,7 @@ class WeixinService {
       log.info('notifyDealOrder notify sign data' , signData)
       log.info('notifyDealOrder notify signed ' , signed)
       if(signData != signed){
-        return 'FAIL:sign error'
+        // return 'FAIL:sign error'
       }
 
       
@@ -150,10 +154,13 @@ class WeixinService {
 
         // 通知商户
         try {
-          PaymentService.notifyUser(order).then((res) => {
-            log.info('notifyDealOrder notifyUser res ' , res)
+          // log.info('notifyDealOrder notifyUser order' , order)
+          // console.log(PaymentService)
+          NofifyService.toUser(order).then(result => {
+            log.info('notifyDealOrder notifyUser res' , result)
           })
         }catch (err) {
+          console.log(err)
           log.info('notifyDealOrder notifyUser err:' , JSON.stringify(err))
         }
  

@@ -201,88 +201,63 @@ class PaymentService {
     return result
   }
 
-  // 通知下级商户
-  async notifyUser(orderObj){
-
-    let userId = await orderObj.user_id
-    let user = await UserModel.model.findById(userId)
-    let notifyUrl = user.notify_url
-
-    let notifyObj = {
-      result_code : orderObj.status == 0 ? 'SUCCESS' : 'FAIL',
-      method : orderObj.method,
-      app_id : orderObj.app_id,
-      out_trade_no : orderObj.out_trade_no,
-      out_order_no : orderObj.order_no,
-      body : orderObj.body,
-      detail : orderObj.detail,
-      total_fee : orderObj.total_fee,
-      redirect_url :orderObj.redirect_url,
-      payment_type : orderObj.payment_type,
-      payment_user : orderObj.payment_user || '' ,
-      payment_info : orderObj.payment_info || ''
-    }
-  
-    let result = 'fail'
-    log.info('/notifyUser notifyUrl' , notifyUrl)
-    try {
-      result = await HttpUtils.post(notifyUrl , notifyObj)
-      log.info('/notifyUser result' , result )
-    }catch (err){
-      log.info('/notifyUser err' , err)
-    }
-
-    return result
-
-    // let notifyFunc = async (orderObj , time = 0) => {
-
-    //   time++
-    //   let result = null
-
-    //   if(time > 3){
-    //     result = 'success'
-    //   }else {
-    //     let userId = await orderObj.user_id
-    //     let user = await UserModel.model.findById(userId)
-    //     let notifyUrl = user.notify_url
-    
-    //     let notifyObj = {
-    //       result_code : orderObj.status == 0 ? 'SUCCESS' : 'FAIL',
-    //       method : orderObj.method,
-    //       app_id : orderObj.app_id,
-    //       out_trade_no : orderObj.out_trade_no,
-    //       out_order_no : orderObj.order_no,
-    //       body : orderObj.body,
-    //       detail : orderObj.detail,
-    //       total_fee : orderObj.total_fee,
-    //       redirect_url :orderObj.redirect_url,
-    //       payment_type : orderObj.payment_type,
-    //       payment_user : orderObj.payment_user || '' ,
-    //       payment_info : orderObj.payment_info
-    //     }
-        
-    //     log.info('/notifyUser notifyUrl' , notifyUrl , time)
-    //     try {
-    //       result = await HttpUtils.post(notifyUrl , notifyObj)
-    //       log.info('/notifyUser result' , result , time)
-    //     }catch (err){
-    //       log.info('/notifyUser err' , err)
-    //     }
-        
-    //   }
-
-    //   if(result != 'success'){
-    //     setTimeout(async () => {
-    //       await notifyFunc(orderObj , time)
-    //     }, 5000)
-
-    //   }
-        
-    // }
-
-    // notifyFunc(orderObj)
-    
+  notifyUserDo(orderObj){
+    return 'success'
   }
+  // 通知下级商户
+  // async notifyUsers(orderObj){
+
+
+
+  //   // let notifyFunc = async (orderObj , time = 0) => {
+
+  //   //   time++
+  //   //   let result = null
+
+  //   //   if(time > 3){
+  //   //     result = 'success'
+  //   //   }else {
+  //   //     let userId = await orderObj.user_id
+  //   //     let user = await UserModel.model.findById(userId)
+  //   //     let notifyUrl = user.notify_url
+    
+  //   //     let notifyObj = {
+  //   //       result_code : orderObj.status == 0 ? 'SUCCESS' : 'FAIL',
+  //   //       method : orderObj.method,
+  //   //       app_id : orderObj.app_id,
+  //   //       out_trade_no : orderObj.out_trade_no,
+  //   //       out_order_no : orderObj.order_no,
+  //   //       body : orderObj.body,
+  //   //       detail : orderObj.detail,
+  //   //       total_fee : orderObj.total_fee,
+  //   //       redirect_url :orderObj.redirect_url,
+  //   //       payment_type : orderObj.payment_type,
+  //   //       payment_user : orderObj.payment_user || '' ,
+  //   //       payment_info : orderObj.payment_info
+  //   //     }
+        
+  //   //     log.info('/notifyUser notifyUrl' , notifyUrl , time)
+  //   //     try {
+  //   //       result = await HttpUtils.post(notifyUrl , notifyObj)
+  //   //       log.info('/notifyUser result' , result , time)
+  //   //     }catch (err){
+  //   //       log.info('/notifyUser err' , err)
+  //   //     }
+        
+  //   //   }
+
+  //   //   if(result != 'success'){
+  //   //     setTimeout(async () => {
+  //   //       await notifyFunc(orderObj , time)
+  //   //     }, 5000)
+
+  //   //   }
+        
+  //   // }
+
+  //   // notifyFunc(orderObj)
+    
+  // }
   
 }
 

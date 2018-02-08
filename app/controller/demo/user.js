@@ -6,6 +6,7 @@ const log = require('./../../../lib/log')('demo-user')
 const Uuid = require('./../../../utils/uuid_utils')
 const UserService = require('./../../service/user_service')
 const paymentService = require('./../../../app/service/payment_service')
+const weixinService = require('./../../service/weixin_service')
 const OrderModel = require('./../../../server/model/order_model')
 
 router.get('/wxTest' , async (req , res) => {
@@ -69,11 +70,17 @@ router.post('/notify' , (req , res) => {
 })
 
 router.get('/test/notify' , async (req , res) => {
-  let order = await OrderModel.model.findById(204)
-  paymentService.notifyUser(order).then(() => {
-    // console.log('==========' , result)
+  // let order = await OrderModel.model.findById(204)
+
+  let obj = '{"appid":"wx9070c69e2b42f307","bank_type":"CFT","cash_fee":"1","device_info":"WEB","fee_type":"CNY","is_subscribe":"Y","mch_id":"1488745772","nonce_str":"7b266e9dd40d45d09f6e54f04691a7ef","openid":"oLOGI0lDCn1OH19JzDkzItpmPsaU","out_trade_no":"3db4b563972d4e289cec1806ec790d4c","result_code":"SUCCESS","return_code":"SUCCESS","time_end":"20180208195333","total_fee":"1","trade_type":"NATIVE","transaction_id":"4200000065201802089596314677"}'
+  obj = JSON.parse(obj)
+  weixinService.notifyDealOrder('<xml></xml>' , obj).then(result => {
     res.send('success')
   })
+  // paymentService.notifyUser(order).then(() => {
+  //   // console.log('==========' , result)
+  //   res.send('success')
+  // })
 })
 
 module.exports = router
