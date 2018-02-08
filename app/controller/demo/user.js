@@ -60,4 +60,11 @@ router.get('/testSucc' , (req , res) => {
   res.send('<h1>测试成功！</h1>')
 })
 
+router.post('/notify' , (req , res) => {
+  
+  log.info('/notify data' , req.body)
+
+  res.send('succes')
+})
+
 module.exports = router

@@ -9,6 +9,7 @@ const log = require('./../../lib/log')('payment_service')
 const cryptoUtils = require('./../../utils/crypto_utils')
 const paymentConfig = require('./../../config/index').payment
 const testCode = require('./../../config/index').test_code
+const HttpUtils = require('./../../utils/http_utils')
 
 class PaymentService {
 
@@ -194,6 +195,52 @@ class PaymentService {
     return result
   }
 
+  // 通知下级商户
+  async notifyUser(orderObj){
+
+    let notifyFunc = async (orderObj , time = 0) => {
+
+      time++
+      let result = null
+
+      if(time > 3){
+        result = 'success'
+      }else {
+        let userId = await orderObj.user_id
+        let user = await UserModel.model.findById(userId)
+        let notifyUrl = user.notify_url
+    
+        let notifyObj = {
+          result_code : orderObj.status == 0 ? 'SUCCESS' : 'FAIL',
+          method : orderObj.method,
+          app_id : orderObj.app_id,
+          out_trade_no : orderObj.out_trade_no,
+          out_order_no : orderObj.order_no,
+          body : orderObj.body,
+          detail : orderObj.detail,
+          total_fee : orderObj.total_fee,
+          redirect_url :orderObj.redirect_url,
+          payment_type : orderObj.payment_type,
+          payment_user : orderObj.payment_user || '' ,
+          payment_info : orderObj.payment_info
+        }
+    
+        result = await HttpUtils.post(notifyUrl , notifyObj)
+        log.info('/notifyUser result' , result , time)
+      }
+
+      if(result != 'success'){
+        setTimeout(async () => {
+          await notifyFunc(orderObj , time)
+        }, 5000)
+
+      }
+        
+    }
+
+    notifyFunc(orderObj)
+    
+  }
   
 }
 

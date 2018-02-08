@@ -34,7 +34,7 @@ class HttpUtil {
       body = this._objToXml(data)
       
     }
-    console.log('===================' , body)
+    // console.log('===================' , body)
     return new Promise((resolve, reject) => {
       request({
         url: action,
@@ -45,7 +45,7 @@ class HttpUtil {
         },
         body: body
       }, function (error, response, body) {
-        console.log(response.statusCode)
+        // console.log(response.statusCode)
         if(error) {
           reject (response)
         }

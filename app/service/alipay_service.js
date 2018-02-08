@@ -2,6 +2,7 @@ const log = require('./../../lib/log')('alipay_service')
 const RESULT_UTILS = require('./../../utils/result_utils')
 const OrderModel = require('./../../server/model/order_model')
 const OrderService = require('./order_service')
+const PaymentService = require('./payment_service')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const AlipaySdk = require('./../../sdk/ali/alipay')
 
@@ -110,7 +111,12 @@ class AlipayService {
         log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
       })
 
-      // 通知商户TODO
+      // 通知商户
+      PaymentService.notifyUser(order).then(() => {
+        log.info('notifyDealOrder resultNotify:')
+      }).catch(err=>{
+        log.info('notifyDealOrder err:' , err)
+      })
 
       return 'success'
     }else {

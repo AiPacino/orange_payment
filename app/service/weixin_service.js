@@ -5,6 +5,7 @@ const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 const WxJssdk = require('./../../sdk/wechat/wx_jssdk')
 const OrderModel = require('./../../server/model/order_model')
 const OrderService = require('./order_service')
+const PaymentService = require('./payment_service')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const WxTokenModel = require('./../../server/model/wx_token_model')
 const XmlUtils = require('./../../utils/xml_utils')
@@ -147,7 +148,12 @@ class WeixinService {
           log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
         })
 
-        // 通知商户TODO
+        // 通知商户
+        PaymentService.notifyUser(order).then(() => {
+          log.info('notifyDealOrder resultNotify:')
+        }).catch(err=>{
+          log.info('notifyDealOrder err:' , err)
+        })
 
       }else{
         order.payment_info = JSON.stringify(notifyObj)
