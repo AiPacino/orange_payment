@@ -86,8 +86,6 @@ router.post('/unifiedOrder' , async (req , res) => {
   let orderObj = req.body
   log.info('/unifiedOrder  req.body' , req.body)
   log.info('/unifiedOrder  req.business' , req.business)
-  orderObj.business_id = req.business.id
-  orderObj.business_uuid = req.business.uuid
 
   let checkRes = await PaymentService.checkRequest(orderObj)
   if(checkRes.code > 0){
@@ -96,6 +94,9 @@ router.post('/unifiedOrder' , async (req , res) => {
   orderObj.user_id = checkRes.data.user_id
   let userSignKey = checkRes.data.user_key // 签名秘钥
   let userRate = checkRes.data.user_rate
+
+  orderObj.business_id = req.business.id
+  orderObj.business_uuid = req.business.uuid
 
   // 找到支付配置 isCommon 是否普通商户 支付费率
   let [payOpt , isCommon  , rate] = await BusinessService.getMethodConfig(req.business.id , orderObj.method)

@@ -44,6 +44,11 @@ module.exports = {
     message : '不支持的下单类型',
   },
 
+  PAYMENT_UNIFIED_CHCEK_SIGN : {
+    code : 30200,
+    message : '签名错误',
+  },
+
   PAYMENT_UNIFIED_CHCEK_USER : {
     code : 30201,
     message : '商户信息错误或被禁用',

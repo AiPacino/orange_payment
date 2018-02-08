@@ -1,6 +1,7 @@
 const log = require('./../../lib/log')('alipay_service')
 const RESULT_UTILS = require('./../../utils/result_utils')
 const OrderModel = require('./../../server/model/order_model')
+const OrderService = require('./order_service')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const AlipaySdk = require('./../../sdk/ali/alipay')
 
@@ -90,6 +91,13 @@ class AlipayService {
       order.payment_info = JSON.stringify(obj)
       order.payment_user = obj.buyer_logon_id || obj.buyer_id
       order.save()
+
+      // 记录流水
+      OrderService.recordOrderFee(order.dataValues).then(resOrderRecodeFee => {
+        log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
+      })
+
+      // 通知商户TODO
 
       return 'success'
     }else {

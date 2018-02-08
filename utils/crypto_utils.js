@@ -5,6 +5,8 @@ class CryptoUtils {
   md5ByKey(obj , key){
 
     let sortStr = this._keySortStr(obj , key)
+    // console.log('obj=========' , obj)
+    // console.log('key============' , key)
     // console.log('========================' , sortStr)
     let hash = crypto.createHash('md5')
     hash.update(sortStr)
@@ -20,6 +22,8 @@ class CryptoUtils {
     delete signObj.sign
 
     let signStr = this.md5ByKey(signObj , key)
+    // console.log('================',sign)
+    // console.log('================',signStr)
     return (signStr == sign) ? true : false
   }
 

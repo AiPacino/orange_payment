@@ -21,6 +21,22 @@ router.get('/wxTest' , async (req , res) => {
   res.render('demo/user_wx_test')
 })
 
+router.get('/alipayTest' , async (req , res) => {
+
+  let userId = req.query.user_id || 'orafa1cd81f4863b786'
+
+  res.locals.user_id = userId
+  res.locals.method = 'alipay'
+  res.locals.out_trade_no = Uuid.v4()
+  res.locals.payment_types = {
+    wap : '手机移动端h5' , pc: 'pc网站'
+  }
+
+  let user = await UserService.getInfoByUuid(userId)
+  res.locals.user = user.dataValues
+  res.render('demo/user_ali_test')
+})
+
 router.post('/unifiedOrder' , async (req , res) => {
   let data = req.body
   log.info('/unifiedOrder data' , data)

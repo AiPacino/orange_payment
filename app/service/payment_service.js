@@ -18,9 +18,13 @@ class PaymentService {
     if(!user || user.status == 0){
       return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_USER
     }
-
+    log.info('checkRequest user ' , user)
     // 验证签名
     let userKey = user.key
+    let checkRes = cryptoUtils.checkMd5(obj , userKey)
+    if(!checkRes){
+      return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_SIGN
+    }
 
     // 检验method
     let methods = paymentConfig.methods
@@ -128,7 +132,7 @@ class PaymentService {
 
     let result = {code : 0 , message : '' , data : {}}
     result.code = unifiedOrderRes.code
-    result.message = unifiedOrderRes.message
+    
     result.data = {
       result_code : unifiedOrderRes.code == 0 ? 'SUCCESS' : 'FAIL',
       method : orderObj.method,
@@ -144,10 +148,26 @@ class PaymentService {
 
     let paymentInfo = {}
     if(orderObj.method == 'wx'){
-      if(orderObj.payment_type.toUpperCase() == 'NATIVE'){
+      // 微信支付
+      result.message = unifiedOrderRes.message
+      let paymentType = orderObj.payment_type.toUpperCase()
+      if(paymentType == 'NATIVE'){
+        // 原生扫码
         paymentInfo.code_url = unifiedOrderRes.data.code_url,
         paymentInfo.prepay_id = unifiedOrderRes.data.prepay_id
       }
+    }else if(orderObj.method == 'alipay'){
+      // 支付宝
+      result.message = 'SUCCESS'
+      let paymentType = orderObj.payment_type.toLowerCase()
+      if(paymentType == 'wap'){
+        // 移动端h5
+        paymentInfo.pay_url_wap = unifiedOrderRes.message
+      }else if(paymentType == 'pc'){
+        // pc电脑
+        paymentInfo.pay_url_pc = unifiedOrderRes.message
+      }
+
     }
 
     result.data.payment_info = paymentInfo ? JSON.stringify(paymentInfo) : ''
