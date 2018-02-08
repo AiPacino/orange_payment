@@ -65,7 +65,7 @@ router.post('/notify' , (req , res) => {
   
   log.info('/notify data' , req.body)
 
-  res.send('succes')
+  res.send('success')
 })
 
 router.get('/test/notify' , async (req , res) => {

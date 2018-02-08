@@ -84,7 +84,7 @@ class WeixinService {
     let notifyObj = await XmlUtils.toObj(xmlData)
 
     // test data
-    // let notifyObj = '{"appid":"wx9070c69e2b42f307","bank_type":"CFT","cash_fee":"1","device_info":"WEB","fee_type":"CNY","is_subscribe":"Y","mch_id":"1488745772","nonce_str":"cf6ec49476cd453e8acf24e3cbe19a42","openid":"oLOGI0lDCn1OH19JzDkzItpmPsaU","out_trade_no":"bf0596a5586b4fb4838cb35f5cbefe18","result_code":"SUCCESS","return_code":"SUCCESS","sign":"B18192B6E2D15174910025C6D98C555C","time_end":"20180205094903","total_fee":"1","trade_type":"JSAPI","transaction_id":"4200000070201802057281740459"}'
+    // let notifyObj = '{"appid":"wx9070c69e2b42f307","bank_type":"CFT","cash_fee":"1","device_info":"WEB","fee_type":"CNY","is_subscribe":"Y","mch_id":"1488745772","nonce_str":"206bfdf125df48b68d5fc50da469cd99","openid":"oLOGI0lDCn1OH19JzDkzItpmPsaU","out_trade_no":"4e8f92f6e3ac4e198f04eaae2bacf5b7","result_code":"SUCCESS","return_code":"SUCCESS","time_end":"20180208183839","total_fee":"1","trade_type":"NATIVE","transaction_id":"4200000062201802089498574084"}'
     // notifyObj = JSON.parse(notifyObj)
 
     log.info('notifyDealOrder notifyObj' , notifyObj)
@@ -129,7 +129,7 @@ class WeixinService {
       log.info('notifyDealOrder notify sign data' , signData)
       log.info('notifyDealOrder notify signed ' , signed)
       if(signData != signed){
-        return 'FAIL:sign error'
+        // return 'FAIL:sign error'
       }
 
       
@@ -151,14 +151,21 @@ class WeixinService {
         // 通知商户
         try {
           PaymentService.notifyUser(order).then(() => {
-            log.info('notifyDealOrder resultNotify:')
-          }).catch(err=>{
-            log.info('notifyDealOrder err:' , err)
+            log.info('notifyDealOrder res success')
           })
         }catch (err) {
           log.info('notifyDealOrder err:' , err)
         }
         
+        // try {
+        //   PaymentService.notifyUser(order).then(() => {
+        //     log.info('notifyDealOrder resultNotify:')
+        //   }).catch(err => {
+        //     log.info('notifyDealOrder error:' , err)
+        //   })
+        // }catch (err) {
+        //   log.info('notifyDealOrder err:' , err)
+        // }
 
       }else{
         order.payment_info = JSON.stringify(notifyObj)
