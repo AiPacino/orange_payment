@@ -129,7 +129,7 @@ class WeixinService {
       log.info('notifyDealOrder notify sign data' , signData)
       log.info('notifyDealOrder notify signed ' , signed)
       if(signData != signed){
-        // return 'FAIL:sign error'
+        return 'FAIL:sign error'
       }
 
       
@@ -150,22 +150,13 @@ class WeixinService {
 
         // 通知商户
         try {
-          PaymentService.notifyUser(order).then(() => {
-            log.info('notifyDealOrder res success')
+          PaymentService.notifyUser(order).then((res) => {
+            log.info('notifyDealOrder notifyUser res ' , res)
           })
         }catch (err) {
-          log.info('notifyDealOrder err:' , err)
+          log.info('notifyDealOrder notifyUser err:' , JSON.stringify(err))
         }
-        
-        // try {
-        //   PaymentService.notifyUser(order).then(() => {
-        //     log.info('notifyDealOrder resultNotify:')
-        //   }).catch(err => {
-        //     log.info('notifyDealOrder error:' , err)
-        //   })
-        // }catch (err) {
-        //   log.info('notifyDealOrder err:' , err)
-        // }
+ 
 
       }else{
         order.payment_info = JSON.stringify(notifyObj)
