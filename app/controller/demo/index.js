@@ -7,11 +7,16 @@ const config = require('./../../../config/index')
 const wxOpt = config.wx_opt
 
 router.get('/' , async (req , res) => {
-  res.success({version : '0.0.1'})
+  // res.success({version : '0.0.1'})
+  res.render('demo/index')
 })
 
 router.get('/pay' , (req , res) => {
   res.render('demo/pay')
+})
+
+router.get('/payWxH5' , (req , res) => {
+  res.render('demo/pay_wx_h5')
 })
 
 // 微信公众号授权

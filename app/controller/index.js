@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/' , async (req , res) => {
-  res.send('hello world!')
+  // res.send('hello world!')
+  res.render('index')
 })
 
 router.get('/MP_verify_whMgCjWdjph4TYOA.txt' , (req , res) => {

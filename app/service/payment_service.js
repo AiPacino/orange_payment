@@ -178,7 +178,16 @@ class PaymentService {
         // 原生扫码
         paymentInfo.code_url = unifiedOrderRes.data.code_url,
         paymentInfo.prepay_id = unifiedOrderRes.data.prepay_id
+      }else if (paymentType == 'JSAPI'){
+        // 公众号支付 公众号授权 太麻烦要是对方可以那就可以
+        paymentInfo.pay_url = 'http://pay.cc512.com/order/' + orderObj.order_no
+        paymentInfo.prepay_id = unifiedOrderRes.data.prepay_id
+      }else if (paymentType == 'MWEB'){
+        // h5支付
+        paymentInfo.pay_url = unifiedOrderRes.data.mweb_url
+        paymentInfo.prepay_id = unifiedOrderRes.data.prepay_id
       }
+
     }else if(orderObj.method == 'alipay'){
       // 支付宝
       result.message = 'SUCCESS'
