@@ -138,7 +138,7 @@ class WeixinService {
 
       
       if(resultCode == 'SUCCESS'){
-
+        let orderStatus = order.status
         // 修改订单信息 
         order.status = 0
         order.payment_info = JSON.stringify(notifyObj)
@@ -147,22 +147,25 @@ class WeixinService {
         }
         order.save()
 
-        // 记录流水
-        OrderService.recordOrderFee(order.dataValues).then(resOrderRecodeFee => {
-          log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
-        })
-
-        // 通知商户
-        try {
-          // log.info('notifyDealOrder notifyUser order' , order)
-          // console.log(PaymentService)
-          NofifyService.toUser(order).then(result => {
-            log.info('notifyDealOrder notifyUser res' , result)
+        if(orderStatus != 0){
+          // 记录流水
+          OrderService.recordOrderFee(order.dataValues).then(resOrderRecodeFee => {
+            log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
           })
-        }catch (err) {
-          console.log(err)
-          log.info('notifyDealOrder notifyUser err:' , JSON.stringify(err))
+
+          // 通知商户
+          try {
+            // log.info('notifyDealOrder notifyUser order' , order)
+            // console.log(PaymentService)
+            NofifyService.toUser(order).then(result => {
+              log.info('notifyDealOrder notifyUser res' , result)
+            })
+          }catch (err) {
+            console.log(err)
+            log.info('notifyDealOrder notifyUser err:' , JSON.stringify(err))
+          }
         }
+        
  
 
       }else{

@@ -52,7 +52,7 @@ class OrderModel {
         type: FIELD_TYPE.STRING_LEN(12)
       },
       status : {
-        type : FIELD_TYPE.BOOLEAN,
+        type : FIELD_TYPE.INT_LEN(2),
         defaultValue : 1
       },
       create_time : {

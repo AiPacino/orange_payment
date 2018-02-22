@@ -66,7 +66,7 @@ gulp.task('copy', () => {
     './node_modules/jquery/dist/jquery.min.map',
     './node_modules/font-awesome/css/*',
     './node_modules/font-awesome/fonts/*',
-    './node_modules/webuploader/dist/webuploader.html5only.min.js',
+    './node_modules/webuploader/dist/webuploader.html5only.min.js'
   ]).pipe(gulp.dest((file) => {
     if (file.path.indexOf('static') > -1) {
       return DIST_FOLDER_ASSETS

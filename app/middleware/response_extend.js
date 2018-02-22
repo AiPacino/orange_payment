@@ -109,6 +109,10 @@ module.exports = (req , res , next) => {
     }
   }
 
+  res.locals.money = (num) => {
+    return num / 100
+  }
+
   next()
 
 }

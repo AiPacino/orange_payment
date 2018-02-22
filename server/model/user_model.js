@@ -1,4 +1,4 @@
-const { DB , FIELD_TYPE} = require('./../../lib/model')
+const { DB , FIELD_TYPE , OP} = require('./../../lib/model')
 
 class UserModel {
 
@@ -24,7 +24,9 @@ class UserModel {
       phone: {
         type: FIELD_TYPE.STRING_LEN(32)
       },
-      
+      contract : {
+        type: FIELD_TYPE.STRING_LEN(64)
+      },
       key: {
         type: FIELD_TYPE.STRING_LEN(32),
         defaultValue : ''
@@ -53,11 +55,18 @@ class UserModel {
         type: FIELD_TYPE.STRING_LEN(64),
         defaultValue : ''
       },
+      business_id : {
+        type : FIELD_TYPE.BIGINT,
+        defaultValue : 0
+      }
+      
     },{
       timestamps: false,
       freezeTableName: true,
       tableName : 't_user'
     })
+
+    this.op = OP
 
   }
 

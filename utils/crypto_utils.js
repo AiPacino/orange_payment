@@ -2,6 +2,15 @@ const crypto = require('crypto')
 
 class CryptoUtils {
 
+  md5(str) {
+    
+    let hash = crypto.createHash('md5')
+    hash.update(str)
+    let signStr = hash.digest('hex')
+
+    return signStr.toUpperCase()
+  }
+
   md5ByKey(obj , key){
 
     let sortStr = this._keySortStr(obj , key)

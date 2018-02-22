@@ -1,5 +1,6 @@
 const UserService = require('./user_service')
 const BusinessService = require('./business_service')
+const OrderModel = require('./../../server/model/order_model')
 const log = require('./../../lib/log')('order_service')
 
 class OrderService {
@@ -30,6 +31,20 @@ class OrderService {
       businessFundTrade : resultBusiness
     }
 
+  }
+
+  async lists(userId , map = {} , page = 1 , size = 10){
+    map.user_id = userId
+
+    let result = await OrderModel.model.findAndCountAll({
+      where : map ,
+      offset : (page - 1) * size,
+      limit : size,
+      order : [['create_time' , 'DESC']]
+    })
+
+    log.info('/lists result' , result)
+    return result
   }
 }
 

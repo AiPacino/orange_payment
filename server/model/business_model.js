@@ -1,4 +1,4 @@
-const { DB , FIELD_TYPE} = require('./../../lib/model')
+const { DB , FIELD_TYPE , OP} = require('./../../lib/model')
 
 class BusinessModel {
 
@@ -54,6 +54,7 @@ class BusinessModel {
       tableName : 't_business'
     })
 
+    this.op = OP
   }
 
   

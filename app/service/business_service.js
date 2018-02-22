@@ -2,7 +2,8 @@ const BusinessModel = require('./../../server/model/business_model')
 const BusinessMethodModel = require('./../../server/model/business_method_model')
 const BusinessFundModel = require('./../../server/model/business_fund_model')
 const BusinessTradeModel = require('./../../server/model/business_trade_model')
-const UserService = require('./../service/user_service')
+const MethodModel = require('./../../server/model/method_model')
+const ResultUtils = require('./../../utils/result_utils')
 const log = require('./../../lib/log')('business_service')
 
 class BusinessService {
@@ -16,6 +17,76 @@ class BusinessService {
     })
 
     log.info('getByUuid result ' , result)
+    return result
+  }
+
+  async getLists(map , page , size){
+    let where = {}
+    if(map.name){
+      where.name = {[BusinessModel.op.like] : '%' + map.name + '%'}
+    }
+    if(map.status){
+      where.status = map.status
+    }
+
+    let result = await BusinessModel.model.findAndCountAll({
+      where : where ,
+      offset : (page - 1) * size,
+      limit : size,
+      order : [ ['create_time' , 'DESC' ]]
+    })
+
+    return result
+  }
+
+  /**
+   * 获取所有支付配置
+   * @param {*} businessId 
+   */
+  async getMethods(businessId){
+   
+    let businessMethods = await BusinessMethodModel.model.findAll({
+      where : {business_id : businessId}
+    })
+   
+    let methods = await MethodModel.model.findAll()
+    let result = []
+    methods.forEach(method => {
+      let item = {}
+      item.name = method.name
+      item.key = method.key_val
+      item.config_json = JSON.parse(method.config_json)
+      item.status = method.status
+      item.business_method = null
+
+      businessMethods.forEach(businessMethod => {
+        let methodKey = businessMethod.method_key
+        if(methodKey == method.key_val){
+          item.business_method = businessMethod.dataValues
+        }
+      })
+      
+      result.push(item)
+    })
+  
+    return result
+  }
+
+  async setMethod(businessId , method , obj){
+    let businessMethod = await BusinessMethodModel.model.findOne({
+      where : {
+        business_id : businessId,
+        method_key : method,
+      }
+    })
+    if(businessMethod){
+      await businessMethod.update(obj)
+    }else {
+      businessMethod = await BusinessMethodModel.model.create(obj)
+    }
+
+    let result = ResultUtils.SUCCESS
+    result.data = businessMethod
     return result
   }
 

@@ -47,6 +47,10 @@ let config = {
 
   payment : {
     methods : ['wx' , 'alipay'] , 
+    method_value : {
+      wx : '微信支付',
+      alipay : '支付宝'
+    },
     type : {
       wx : ['JSAPI' , 'NATIVE'] , // 'JSAPI' , 'NATIVE' , 'MWEB' , 'APP'
       alipay : ['wap' , 'pc' , 'code']

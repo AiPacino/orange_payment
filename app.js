@@ -28,6 +28,7 @@ if (!module.parent) app.use(logger('combined', {stream: accessLogStream}))
 // 静态文件
 app.use('/assets', express.static(path.join(__dirname , './public/assets')))
 app.use('/uploads', express.static(path.join(__dirname , './public/uploads')))
+app.use('/favicon.ico', express.static(path.join(__dirname , './public/favicon.ico')))
 
 // session 支持
 app.use(session({

@@ -9,6 +9,19 @@ module.exports = {
     message : 'error'
   },
 
+  USER_EMAIL_REQUIRED : {
+    code : 8001,
+    message : '商户邮箱存在'
+  },
+  USER_NAME_REQUIRED : {
+    code : 8002,
+    message : '商户名重复'
+  },
+  USER_FIND_ERROR : {
+    code : 8010,
+    message : '商户未找到'
+  },
+
   BUSINESS_FIND_ERROR : {
     code : 10001,
     message : '资质商账户未找到'

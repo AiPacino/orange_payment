@@ -34,6 +34,10 @@ class BusinessMethodModel {
         type : FIELD_TYPE.DECIMAL2,
         defaultValue : 0
       },
+      remark : {
+        type : FIELD_TYPE.STRING_LEN(64),
+        defaultValue : ''
+      },
       opens : {
         type : FIELD_TYPE.STRING,
         defaultValue : ''
