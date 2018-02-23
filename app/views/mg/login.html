@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include head.html %>
+    <title>登录</title>
+  </head>
+  <body>
+    
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">橙子支付服务</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse " >
+          
+          <span class="navbar-text">
+            后台数据管理 
+          </span>
+        </div>
+      </nav>
+    </header>
+
+    <div class="jumbotron text-center">
+      <h1 class="display-4">管理员登录</h1>
+    </div>
+
+    <div class="container" style="width:480px;margin:auto;">
+      <form action="/mg/login" method="post" >
+        
+        <div class="form-group">
+          <label for="">管理员</label>
+          <div class="">
+            <input type="text" name="name" value="" placeholder="填写管理员名称" required class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">密码</label>
+          <div class="">
+            <input type="text" name="password" value="" placeholder="" required class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" class="btn btn-block btn-primary">
+        </div>
+      </form>
+    </div>
+
+
+    <% include script.html %>
+  </body>
+</html>

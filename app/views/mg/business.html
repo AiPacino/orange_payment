@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include head.html %>
+    <title>资质商</title>
+  </head>
+  <body>
+      <% include header.html %>
+
+    <div class="jumbotron text-center">
+      <h1 class="display-4">资质商</h1>
+    </div>
+
+    <div class="container-fluid mt-3">
+      
+      <div class="row mb-3">
+        <div class="col-6">
+          <a href="/mg/businessUpdate" class="btn btn-primary">添加资质商</a>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>资质商名称</th>
+              <th>邮箱</th>
+              <th>加入时间</th>
+              <th>状态</th>
+              <th>支付配置</th>
+              <th>订单记录</th>
+              <th>交易记录</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% lists.forEach((item) => { %>
+              <tr class="user-items">
+                <td><%= item.name %></td>
+                <td><%= item.email %></td>
+                <td><%= dateFormat(item.create_time) %></td>
+                <td>
+                  <%if (item.status == 0) { %><span class="text-danger">禁用</span><% } %>
+                  <%if (item.status == 1) { %><span class="text-success">正常</span><% } %>
+                </td>
+                
+                <td>
+                  <a href="/mg/businessMethod?id=<%= item.id %>">查看</a>
+                </td>
+                <td>
+                  <a href="/mg/order?business_id=<%= item.id %>">订单查询</a>
+                </td>
+                <td>
+                  <a href="/mg/businessTrade?id=<%= item.id %>">交易记录</a>
+                </td>
+                <td>
+                  <a href="/mg/businessUpdate?id=<%= item.id %>" class="btn btn-primary btn-sm">编辑</a>
+                </td>
+                
+              </tr>
+              <% }) %>
+            </tbody>
+        </table>
+        <div>
+          <%- page %>
+        </div>
+      </div>
+    </div>
+
+    <% include script.html %>
+    <script>
+    $('.nav-item.item-business').addClass('active')
+    </script>
+  </body>
+</html>

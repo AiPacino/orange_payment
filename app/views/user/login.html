@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include head.html %>
+    <title>加入</title>
+  </head>
+  <body>
+    
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">橙子支付服务</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse " >
+          
+          <span class="navbar-text">
+            商户登录 
+          </span>
+        </div>
+      </nav>
+    </header>
+
+    <div class="jumbotron text-center">
+      <h1 class="display-4">商户登录</h1>
+      <p class="lead">没有账户，<a href="/user/join">立即申请</a></p>
+    </div>
+
+    <div class="container" style="width:480px;margin:auto;">
+      <form action="/user/login" method="post" >
+        
+        <div class="form-group">
+          <label for="">商户邮箱</label>
+          <div class="">
+            <input type="text" name="email" value="" placeholder="填写商户邮箱" required class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="">密码</label>
+          <div class="">
+            <input type="text" name="password" value="" placeholder="默认密码：联系人手机号" required class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" class="btn btn-block btn-primary">
+        </div>
+      </form>
+    </div>
+
+
+    <% include script.html %>
+  </body>
+</html>

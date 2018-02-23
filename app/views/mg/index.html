@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include head.html %>
+    <title>商户</title>
+  </head>
+  <body>
+      <% include header.html %>
+
+    <div class="jumbotron text-center">
+      <h1 class="display-4">商户列表</h1>
+    </div>
+
+    <div class="container-fluid mt-3">
+      
+      <div class="row">
+        <div class="col-6">
+          
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>商户名称</th>
+              <th>邮箱</th>
+              <th>联系人</th>
+              <th>电话</th>
+              <th>加入时间</th>
+              <th>状态</th>
+              <th>开发配置</th>
+              <th>操作</th>
+              <th>费率设置(%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% lists.forEach((item) => { %>
+              <tr class="user-items">
+                <td><%= item.name %></td>
+                <td><%= item.email %></td>
+                <td><%= item.contract %></td>
+                <td><%= item.phone %></td>
+                <td><%= dateFormat(item.create_time) %></td>
+                <td>
+                  <%if (item.status == 0) { %><span class="text-danger">禁用</span><% } %>
+                  <%if (item.status == 1) { %><span class="text-success">正常</span><% } %>
+                </td>
+                <td>
+                  appID:<span class="font-weight-light"><%= item.uuid %></span> <br>
+                  key:<span class="font-weight-light"><%= item.key %></span> <br>
+                  消息通知地址:<span class="font-weight-light"><%= item.notify_url %></span>
+                </td>
+                <td>
+                    <%if (item.status == 0) { %>
+                     <a href="javascript:;" class="btn btn-sm btn-success user-status-check" data-id="<%= item.id %>" data-status="1">通过</a> 
+                    <% } %>
+                    <%if (item.status == 1) { %>
+                      <a href="javascript:;" class="btn btn-sm btn-danger user-status-check" data-id="<%= item.id %>" data-status="0">禁用</a> 
+                     <% } %>
+                </td>
+                <td>
+                  <input type="text" id="rate-in-<%= item.id %>" value="<%= item.rate_in %>" size="5">
+                  <input type="text" id="rate-out-<%= item.id %>" value="<%= item.rate_out %>" size="5">
+                  <a href="javascript:;" class="btn btn-sm btn-danger user-rate-set" data-id="<%= item.id %>">设置</a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+        </table>
+        <div>
+          <%- page %>
+        </div>
+      </div>
+    </div>
+
+    <% include script.html %>
+    <script>
+      $('.nav-item.item-user').addClass('active')
+      </script>
+  </body>
+</html>
