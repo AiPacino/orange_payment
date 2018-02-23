@@ -1,17 +1,26 @@
 const express = require('express')
 const router = express.Router()
-const config = require('./../../../config/index')
 const httpUtils = require('./../../../utils/http_utils')
 const log = require('./../../../lib/log')('demo-user')
 const Uuid = require('./../../../utils/uuid_utils')
 const UserService = require('./../../service/user_service')
-const paymentService = require('./../../../app/service/payment_service')
-const weixinService = require('./../../service/weixin_service')
-const OrderModel = require('./../../../server/model/order_model')
+
+router.use((req , res , next) => {
+
+  // req.session.user_id = 1 // 测试开启
+  // req.session.user_uuid = 'orba02c7409fb3abb8' // 
+
+  let userId = req.session.user_id
+  if(!userId){
+    return res.redirect('/user/login')
+  }
+
+  next()
+})
 
 router.get('/wxTest' , async (req , res) => {
 
-  let userId = req.query.user_id || 'f2e8dbcd9a0f4d9e445b21cd9c9df846'
+  let userId = req.query.user_id || req.session.user_uuid
 
   res.locals.user_id = userId
   res.locals.method = 'wx'
@@ -25,7 +34,7 @@ router.get('/wxTest' , async (req , res) => {
 
 router.get('/alipayTest' , async (req , res) => {
 
-  let userId = req.query.user_id || 'orafa1cd81f4863b786'
+  let userId = req.query.user_id || req.session.user_uuid
 
   res.locals.user_id = userId
   res.locals.method = 'alipay'
@@ -69,18 +78,5 @@ router.post('/notify' , (req , res) => {
   res.send('success')
 })
 
-router.get('/test/notify' , async (req , res) => {
-  // let order = await OrderModel.model.findById(204)
-
-  let obj = '{"appid":"wx9070c69e2b42f307","bank_type":"CFT","cash_fee":"1","device_info":"WEB","fee_type":"CNY","is_subscribe":"Y","mch_id":"1488745772","nonce_str":"7b266e9dd40d45d09f6e54f04691a7ef","openid":"oLOGI0lDCn1OH19JzDkzItpmPsaU","out_trade_no":"3db4b563972d4e289cec1806ec790d4c","result_code":"SUCCESS","return_code":"SUCCESS","time_end":"20180208195333","total_fee":"1","trade_type":"NATIVE","transaction_id":"4200000065201802089596314677"}'
-  obj = JSON.parse(obj)
-  weixinService.notifyDealOrder('<xml></xml>' , obj).then(result => {
-    res.send('success')
-  })
-  // paymentService.notifyUser(order).then(() => {
-  //   // console.log('==========' , result)
-  //   res.send('success')
-  // })
-})
 
 module.exports = router

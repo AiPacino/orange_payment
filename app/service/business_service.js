@@ -172,6 +172,28 @@ class BusinessService {
     return [result , fund , trade]
   }
 
+  // 交易记录
+  async tradeLogList(businessId , map = {} , page = 1 , size = 10){
+    map.business_id = businessId
+
+    let result = await BusinessTradeModel.model.findAndCountAll({
+      where : map ,
+      offset : (page - 1) * size,
+      limit : size,
+      order : [['create_time' , 'DESC']]
+    })
+
+    log.info('/tradeLogList result' , result)
+    return result
+  }
+
+  async getFund(businessId){
+    let result = await BusinessFundModel.model.findOne({
+      where : {business_id : businessId}
+    })
+    return result ? result.money : 0
+  }
+
   /**
    * 修改信息
    * @param {*} obj 

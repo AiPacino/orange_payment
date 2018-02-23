@@ -31,14 +31,16 @@ module.exports = new Request();
 },{}],2:[function(require,module,exports){
 const User = require('./mg/user');
 const Business = require('./mg/business');
+const Order = require('./mg/order');
 
 $(function () {
 
   User.init();
   Business.init();
+  Order.init();
 });
 
-},{"./mg/business":3,"./mg/user":4}],3:[function(require,module,exports){
+},{"./mg/business":3,"./mg/order":4,"./mg/user":5}],3:[function(require,module,exports){
 const Request = require('./../common/request');
 
 class Business {
@@ -72,6 +74,52 @@ class Business {
 module.exports = new Business();
 
 },{"./../common/request":1}],4:[function(require,module,exports){
+
+class Order {
+
+  init() {
+    this.showData();
+  }
+
+  showData() {
+
+    let viewUnifiedorderInfo = $('.view-unifiedorder-info');
+    if (viewUnifiedorderInfo.length <= 0) {
+      return;
+    }
+
+    viewUnifiedorderInfo.on('click', function () {
+      let orderId = $(this).attr('data-id');
+      let text = $('#unifiedorder-info-' + orderId).text();
+
+      let json = JSON.parse(text);
+
+      text = JSON.stringify(json, {}, 2);
+
+      $('#unifiedorder-info-text').val(text).show();
+    });
+
+    let viewPaymentInfo = $('.view-payment-info');
+    if (viewPaymentInfo.length <= 0) {
+      return;
+    }
+
+    viewPaymentInfo.on('click', function () {
+      let orderId = $(this).attr('data-id');
+      let text = $('#payment-info-' + orderId).text();
+
+      let json = JSON.parse(text);
+
+      text = JSON.stringify(json, {}, 2);
+
+      $('#payment-info-text').val(text).show();
+    });
+  }
+}
+
+module.exports = new Order();
+
+},{}],5:[function(require,module,exports){
 const Request = require('../common/request');
 
 class User {

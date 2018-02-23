@@ -35,7 +35,7 @@
                   <%= money(item.num) %>
                 </td>
                 <td><%= money(item.fee) %></td>
-                <td><a href="/user/order?order_id=<%= item.order_id %>" >查看</a></td>
+                <td><a href="/mg/order?id=<%= item.order_id %>" >查看</a></td>
               </tr>
               <% }) %>
             </tbody>
@@ -48,7 +48,7 @@
     <% include script.html %>
     <script>
     $(function(){
-      $('.nav-item.item-trade').addClass('active')
+      $('.nav-item.item-user').addClass('active')
     })
     </script>
   </body>

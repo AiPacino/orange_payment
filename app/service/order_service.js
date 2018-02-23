@@ -46,6 +46,21 @@ class OrderService {
     log.info('/lists result' , result)
     return result
   }
+
+  async getListsAll(map , page = 1, size = 10){
+
+    let where = {}
+    if(map.user_id){
+      where.user_id = map.user_id
+    }
+    if(map.business_id){
+      where.business_id = map.business_id
+    }
+
+    let result = await OrderModel.getLists(map , page , size)
+
+    return result
+  }
 }
 
 module.exports = new OrderService()

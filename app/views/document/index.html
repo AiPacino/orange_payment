@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>开发文档</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css">
+    <style>
+      html,body {height: 100% ; width: 100%}
+      .document-page {height: 100%;width: 100% ;padding-top: 60px;overflow: auto; }
+      .document-nav {height: 100% ; width: 240px;border-right: 1px solid #eee;float: left; overflow:auto; }
+      .document-content {height: 100%; width: 960px;float: left ; padding: 3rem;}
+    </style>
+  </head>
+  <body>
+      <header>
+
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="/">ORANGE PAY</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+      
+            <div class="collapse navbar-collapse ">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item item-index">
+                  <a class="nav-link" href="/">首页
+                    <span class="sr-only">(Home)</span>
+                  </a>
+                </li>
+                <li class="nav-item item-doc">
+                  <a class="nav-link" href="/document/">开发文档</a>
+                </li>
+                <li class="nav-item item-demo">
+                  <a class="nav-link" href="/demo/">接口测试</a>
+                </li>
+      
+              </ul>
+              <span class="navbar-text">
+                <a href="/user/">橙子网络支付服务商户入口</a>
+              </span>
+            </div>
+          </nav>
+        </header>
+
+    <div class="container-fluid document-page">
+
+      <div class="document-nav">
+          <nav class="nav flex-column">
+            <% for (let key in lists) { %>
+
+              <a class="nav-link font-weight-bold text-dark" href="javascript:;" ><%= key %></a>
+              <% for (let k in lists[key]) { %>
+                <a class="nav-link nav-item" href="/document/#<%= k %>" data-key="<%= k %>"><%= lists[key][k] %></a>
+              <% } %>
+
+            <% } %>
+              
+          </nav>
+      </div>
+
+      <div class="document-content">
+
+      </div>
+    </div>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script   src="http://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/marked/0.3.12/marked.js"></script>
+    <script>
+      $(function (){
+        $('.nav-item').on('click' , function () {  
+          let name = $(this).attr('data-key')
+          $.post('/document/info' , {name : name} , function (text) {  
+            $('.document-content').html(marked(text))
+          } , 'text')
+        })
+
+        $('.nav-item.item-doc').addClass('active')
+      })
+      
+    </script>
+  </body>
+</html>

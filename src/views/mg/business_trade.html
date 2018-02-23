@@ -11,7 +11,7 @@
       <h3>交易记录</h3>
       <div class="row">
         <div class="col-6">
-          <p>商户当前资金额：<span class="text-danger"><%= money(user_fund) %></span></p>
+          <p>当前资金额：<span class="text-danger"><%= money(business_fund) %></span></p>
         </div>
       </div>
       <div class="table-responsive">
@@ -35,7 +35,7 @@
                   <%= money(item.num) %>
                 </td>
                 <td><%= money(item.fee) %></td>
-                <td><a href="/user/order?order_id=<%= item.order_id %>" >查看</a></td>
+                <td><a href="/mg/order?id=<%= item.order_id %>" >查看</a></td>
               </tr>
               <% }) %>
             </tbody>
@@ -48,7 +48,7 @@
     <% include script.html %>
     <script>
     $(function(){
-      $('.nav-item.item-trade').addClass('active')
+      $('.nav-item.item-business').addClass('active')
     })
     </script>
   </body>

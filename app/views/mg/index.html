@@ -31,6 +31,7 @@
               <th>开发配置</th>
               <th>操作</th>
               <th>费率设置(%)</th>
+              <th>数据</th>
             </tr>
           </thead>
           <tbody>
@@ -62,6 +63,10 @@
                   <input type="text" id="rate-in-<%= item.id %>" value="<%= item.rate_in %>" size="5">
                   <input type="text" id="rate-out-<%= item.id %>" value="<%= item.rate_out %>" size="5">
                   <a href="javascript:;" class="btn btn-sm btn-danger user-rate-set" data-id="<%= item.id %>">设置</a>
+                </td>
+                <td>
+                  <a href="/mg/order?user_id=<%= item.id %>">订单列表</a>
+                  <a href="/mg/userTrade?user_id=<%= item.id %>">交易记录</a>
                 </td>
               </tr>
               <% }) %>

@@ -145,7 +145,7 @@ class WeixinService {
         if(notifyObj.openid){
           order.payment_user = notifyObj.openid
         }
-        order.save()
+        await order.save()
 
         if(orderStatus != 0){
           // 记录流水
@@ -161,7 +161,7 @@ class WeixinService {
               log.info('notifyDealOrder notifyUser res' , result)
             })
           }catch (err) {
-            console.log(err)
+            // console.log(err)
             log.info('notifyDealOrder notifyUser err:' , JSON.stringify(err))
           }
         }

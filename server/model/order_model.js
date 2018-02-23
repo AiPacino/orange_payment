@@ -1,4 +1,6 @@
 const { DB , FIELD_TYPE} = require('./../../lib/model')
+const UserModel = require('./../model/user_model')
+const BusinessModel = require('./../model/business_model')
 
 class OrderModel {
 
@@ -93,6 +95,29 @@ class OrderModel {
       tableName : 't_order'
     })
 
+    this.model.belongsTo(UserModel.model , {foreignKey :'user_id' , targetKey: 'id'})
+    this.model.belongsTo(BusinessModel.model , {foreignKey :'business_id' , targetKey: 'id'})
+  }
+
+  getLists(map, page, size) {
+    let result = this.model.findAndCountAll({
+      where: map,
+      offset: (page - 1) * size,
+      limit: size,
+      order: [['create_time', 'DESC']],
+      include: [
+        {
+          model: UserModel.model,
+          attributes: ['id', 'name']
+        },
+        {
+          model: BusinessModel.model,
+          attributes: ['id', 'name']
+        }
+      ]
+    })
+
+    return result
   }
 
   
