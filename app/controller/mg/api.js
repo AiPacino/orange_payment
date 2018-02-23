@@ -32,4 +32,13 @@ router.post('/businessMethodSet' , async ( req , res) => {
   res.redirect('/mg/businessMethod?id=' + obj.business_id)
 })
 
+router.post('/businessUpdate' , async(req , res) =>{
+  let obj = req.body
+  log.info('businessUpdate obj' , obj , 'mgUserId' , req.session.mg_user_id)
+
+  let result = await BusinessService.update(obj)
+
+  return res.json(result)
+})
+
 module.exports = router

@@ -114,6 +114,7 @@ router.get('/business' , async ( req , res) => {
   res.render('mg/business')
 })
 
+// 商户支付配置
 router.get('/businessMethod' , async (req , res) => {
   
   let businessId = req.query.id
@@ -124,6 +125,18 @@ router.get('/businessMethod' , async (req , res) => {
   res.locals.business_id = businessId
 
   res.render('mg/business_method')
+})
+
+// 商户信息编辑
+router.get('/businessUpdate' , async(req , res) => {
+  let businessId = req.query.id || 0
+  if(businessId){
+    res.locals.data = await BusinessService.getById(businessId)
+  }else {
+    res.locals.data = {}
+  }
+
+  res.render('mg/business_update')
 })
 
 

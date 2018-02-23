@@ -30,13 +30,48 @@ module.exports = new Request();
 
 },{}],2:[function(require,module,exports){
 const User = require('./mg/user');
+const Business = require('./mg/business');
 
 $(function () {
 
   User.init();
+  Business.init();
 });
 
-},{"./mg/user":3}],3:[function(require,module,exports){
+},{"./mg/business":3,"./mg/user":4}],3:[function(require,module,exports){
+const Request = require('./../common/request');
+
+class Business {
+  init() {
+    this.update();
+  }
+
+  update() {
+    let form = $('#form-buisness-update');
+    if (form.length <= 0) {
+      return;
+    }
+
+    form.on('submit', function () {
+      let action = $(this).attr('action');
+      let data = $(this).serialize();
+
+      Request.ajax(action, data).then(response => {
+        if (response.code == 0) {
+          location.href = '/mg/business';
+        } else {
+          alert(response.message);
+        }
+      });
+
+      return false;
+    });
+  }
+}
+
+module.exports = new Business();
+
+},{"./../common/request":1}],4:[function(require,module,exports){
 const Request = require('../common/request');
 
 class User {

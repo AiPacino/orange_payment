@@ -12,7 +12,8 @@ router.use(async (req , res , next) => {
     next()
   } else {
     
-    req.session.user_id = 1
+    // req.session.user_id = 1 // 测试开启
+
     let userId = req.session.user_id
     if(!userId){
       return res.redirect('/user/login')
@@ -82,7 +83,7 @@ router.get('/' , async (req , res) => {
 router.get('/order' , async (req , res) => {
   let userId = req.session.user_id
   let page = req.query.page || 1
-  let size = req.query.size || 10
+  let size = req.query.size || 20
   let map = {}
   
   let result = await OrderService.lists(userId , map , page , size)
@@ -100,7 +101,7 @@ router.get('/order' , async (req , res) => {
 router.get('/trade' , async ( req , res) => {
   let userId = req.session.user_id
   let page = req.query.page || 1
-  let size = req.query.size || 10
+  let size = req.query.size || 20
   let map = {}
   
   let result = await UserService.tradeLogList(userId , map , page , size)

@@ -4,6 +4,7 @@ const BusinessFundModel = require('./../../server/model/business_fund_model')
 const BusinessTradeModel = require('./../../server/model/business_trade_model')
 const MethodModel = require('./../../server/model/method_model')
 const ResultUtils = require('./../../utils/result_utils')
+const UuidUtils = require('./../../utils/uuid_utils')
 const log = require('./../../lib/log')('business_service')
 
 class BusinessService {
@@ -17,6 +18,12 @@ class BusinessService {
     })
 
     log.info('getByUuid result ' , result)
+    return result
+  }
+
+  async getById(id){
+    let result = await BusinessModel.model.findById(id)
+    log.info('getById result ' , result)
     return result
   }
 
@@ -57,7 +64,7 @@ class BusinessService {
       item.key = method.key_val
       item.config_json = JSON.parse(method.config_json)
       item.status = method.status
-      item.business_method = null
+      item.business_method = {}
 
       businessMethods.forEach(businessMethod => {
         let methodKey = businessMethod.method_key
@@ -165,6 +172,57 @@ class BusinessService {
     return [result , fund , trade]
   }
 
+  /**
+   * 修改信息
+   * @param {*} obj 
+   */
+  async update(obj){
+
+    // 检测名称和email
+    let checkNameMap = { name : obj.name}
+    if(obj.id){
+      checkNameMap.id = {[BusinessModel.op.ne] : obj.id }
+    }
+    let checkNameCount = await BusinessModel.model.count({
+      where : checkNameMap
+    })
+    log.info('update checkNameCount:' ,checkNameCount )
+    if(checkNameCount > 0){
+      return ResultUtils.BUSINESS_NAME_REQUIRED
+    }
+
+    let checkEmailMap = {email : obj.email}
+    if(obj.id){
+      checkEmailMap.id = {[BusinessModel.op.ne] : obj.id }
+    }
+    let checkEmailCount = await BusinessModel.model.count({
+      where : checkEmailMap
+    })
+    log.info('update checkEmailCount:' ,checkEmailCount )
+    if(checkEmailCount > 0){
+      return ResultUtils.BUSINESS_EMAIL_REQUIRED
+    }
+    
+    if(!obj.id){
+      obj.uuid = UuidUtils.v4()
+      let business = await BusinessModel.model.create(obj)
+      let result = ResultUtils.SUCCESS
+      result.data = business
+      return result
+    }else {
+      let business = await BusinessModel.model.findById(obj.id)
+      if(!business){
+        return ResultUtils.BUSINESS_FIND_ERROR
+      }
+
+      await business.update(obj)
+      let result = ResultUtils.SUCCESS
+      result.data = business
+      return result
+    }
+
+    
+  }
   
 }
 
