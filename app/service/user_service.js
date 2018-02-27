@@ -152,7 +152,10 @@ class UserService {
     log.info('login user' , checkUser)
     if(checkUser){
       let result = ResultUtils.SUCCESS
-      result.data = {user_id : checkUser.id}
+      result.data = {
+        user_id : checkUser.id,
+        user_uuid : checkUser.uuid
+      }
       return result
     }else{
       let result = ResultUtils.FAIL

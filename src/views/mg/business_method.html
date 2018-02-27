@@ -20,7 +20,7 @@
             <form action="/mg/api/businessMethodSet?method=<%= method.key %>" method="post">
               
               <% 
-              let configVal = JSON.parse(method.business_method.config)
+              let configVal = method.business_method.config ? JSON.parse(method.business_method.config) : {}
 
               for (let item in method.config_json) { 
                 
@@ -29,7 +29,7 @@
                 <div class="form-group">
                   <label for=""><%= method.config_json[item] %></label>
                   <div>
-                    <textarea name="config[<%= item %>]" id="" class="form-control"><%= configVal[item]%></textarea>
+                    <textarea name="config[<%= item %>]" id="" class="form-control"><%= configVal[item] || '' %></textarea>
                   </div>
                 </div>
               <%} %>
@@ -38,13 +38,14 @@
                 <label for="">是否特约商户</label>
                 <div>
                   <select name="common" id="" class="form-control">
-                    <%if (method.business_method.common == 1){ %>
-                      <option value="1">否</option>
-                      <option value="0">是</option>
-                      <%}else {%>
+                    <%if (method.business_method.common == 0){ %>
                         <option value="1">否</option>
                         <option value="0" selected>是</option>
-                        <%}%>
+                      
+                      <%}else {%>
+                        <option value="1">否</option>
+                        <option value="0">是</option>
+                      <%}%>
               
                   </select>
                   <small class="text-danger">当商户为特约商户时，微信支付只填写商户ID</small>
@@ -54,22 +55,25 @@
               <div class="form-group">
                 <label for="">手续费%</label>
                 <div>
-                  <input type="text" name="rate" value="<%= method.business_method.rate %>" class="form-control">
+                  <input type="text" name="rate" value="<%= method.business_method.rate | '' %>" class="form-control">
                 </div>
               </div>
               
               <div class="form-group">
                 <label for="">说明</label>
                 <div>
-                  <input type="text" name="remark" value="<%= method.business_method.remark %>" class="form-control">
+                  <input type="text" name="remark" value="<%= method.business_method.remark || '' %>" class="form-control">
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="">开通支付类型</label>
                 <div>
-                  <input type="text" name="opens" value="<%= method.business_method.opens %>" class="form-control">
+                  <input type="text" name="opens" value="<%= method.business_method.opens || '' %>" class="form-control">
                 </div>
+                <small>
+                  wx: JSAPI|NATIVE|MWEB|APP alipay:pc|web|code
+                </small>
               </div>
 
               <div class="form-group">

@@ -27,21 +27,21 @@
 
       <div class="collapse navbar-collapse " id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">首页
-              <span class="sr-only">(Home)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/document/">开发文档</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/demo/">接口测试</a>
-          </li>
+            <li class="nav-item item-index">
+              <a class="nav-link" href="/">首页
+                <span class="sr-only">(Home)</span>
+              </a>
+            </li>
+            <li class="nav-item item-doc">
+              <a class="nav-link" href="/document/">开发文档</a>
+            </li>
+            <li class="nav-item item-demo">
+              <a class="nav-link" href="/demo/">接口测试</a>
+            </li>
 
         </ul>
         <span class="navbar-text">
-          <a href="/user/">橙子网络支付服务</a>
+          <a href="/user/">橙子网络支付服务商户入口</a>
         </span>
       </div>
     </nav>
@@ -123,6 +123,9 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    <script>
+    $('.nav-item.item-doc').addClass('index')
+    </script>
 </body>
 
 </html>

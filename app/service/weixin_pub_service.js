@@ -1,5 +1,4 @@
 const log = require('./../../lib/log')('weixin_pub_service')
-const RESULT_UTILS = require('./../../utils/result_utils')
 const WxPubSdk = require('./../../sdk/wechat/wx_pub')
 
 class WeixinPubService {

@@ -81,6 +81,8 @@ class AlipayService {
         return 'FAIL'
       }
 
+      let orderStatus = order.status
+
       let businessMethod = await BusinessMethodModel.model.findOne({
         where : {
           business_id : order.business_id,
@@ -104,19 +106,22 @@ class AlipayService {
       order.status = 0
       order.payment_info = JSON.stringify(obj)
       order.payment_user = obj.buyer_logon_id || obj.buyer_id
-      order.save()
+      await order.save()
 
-      // 记录流水
-      OrderService.recordOrderFee(order.dataValues).then(resOrderRecodeFee => {
-        log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
-      })
+      if(orderStatus != 0){
+        // 记录流水
+        OrderService.recordOrderFee(order.dataValues).then(resOrderRecodeFee => {
+          log.info('notifyDealOrder resOrderRecodeFee' , resOrderRecodeFee)
+        })
 
-      // 通知商户
-      PaymentService.notifyUser(order).then(() => {
-        log.info('notifyDealOrder resultNotify:')
-      }).catch(err=>{
-        log.info('notifyDealOrder err:' , err)
-      })
+        // 通知商户
+        PaymentService.notifyUser(order).then(() => {
+          log.info('notifyDealOrder resultNotify:')
+        }).catch(err=>{
+          log.info('notifyDealOrder err:' , err)
+        })
+      }
+      
 
       return 'success'
     }else {

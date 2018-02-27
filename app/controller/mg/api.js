@@ -25,11 +25,19 @@ router.post('/businessMethodSet' , async ( req , res) => {
   log.info('businessMethodSet obj' , obj , 'mgUserId' , req.session.mg_user_id)
   obj.method_key = req.query.method
   obj.config = JSON.stringify(obj.config)
-
-  let result = await BusinessService.setMethod(obj.business_id , obj.method_key , obj)
+  await BusinessService.setMethod(obj.business_id , obj.method_key , obj)
 
   // res.json(result)
   res.redirect('/mg/businessMethod?id=' + obj.business_id)
+})
+
+router.post('/businessUpdate' , async(req , res) =>{
+  let obj = req.body
+  log.info('businessUpdate obj' , obj , 'mgUserId' , req.session.mg_user_id)
+
+  let result = await BusinessService.update(obj)
+
+  return res.json(result)
 })
 
 module.exports = router

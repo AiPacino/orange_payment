@@ -37,6 +37,16 @@ module.exports = {
     message : '支付权限不匹配'
   },
 
+  BUSINESS_NAME_REQUIRED : {
+    code : 10201,
+    message : '存在相同名称资质商账户'
+  },
+
+  BUSINESS_EMAIL_REQUIRED : {
+    code : 10202,
+    message : '存在相同邮箱资质商账户'
+  },
+
   ORDER_STATUS_0 :{
     code : 20001,
     message : '订单已支付'
