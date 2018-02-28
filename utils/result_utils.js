@@ -37,6 +37,11 @@ module.exports = {
     message : '支付权限不匹配'
   },
 
+  BUSINESS_USER_NOT_MATCH : {
+    code : 10003,
+    message : '商户绑定资质商不匹配'
+  },
+
   BUSINESS_NAME_REQUIRED : {
     code : 10201,
     message : '存在相同名称资质商账户'

@@ -4,6 +4,7 @@ const httpUtils = require('./../../../utils/http_utils')
 const log = require('./../../../lib/log')('demo-user')
 const Uuid = require('./../../../utils/uuid_utils')
 const UserService = require('./../../service/user_service')
+const BusinessService = require('./../../service/business_service')
 
 router.use((req , res , next) => {
 
@@ -51,7 +52,16 @@ router.get('/alipayTest' , async (req , res) => {
 router.post('/unifiedOrder' , async (req , res) => {
   let data = req.body
   log.info('/unifiedOrder data' , data)
-  let action = 'http://127.0.0.1:8092/api/payment/unifiedOrder'
+  let user = await UserService.getInfoByUuid(data.app_id)
+  log.info('/unifiedOrder user' , user)
+  let action = ''
+  if(user.business_id){
+    let business = await BusinessService.getById(user.business_id)
+    action = 'http://127.0.0.1:8092/api/payment/unifiedOrder?business_id=' + business.uuid
+  }else {
+    action = 'http://127.0.0.1:8092/api/payment/unifiedOrder'
+  }
+  log.info('/unifiedOrder action' , action)
   let result = await httpUtils.post(action , data)
   log.info('/unifiedOrder result ' , result)
   res.json(result)

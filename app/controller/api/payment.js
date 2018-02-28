@@ -5,6 +5,7 @@ const PaymentService = require('./../../service/payment_service')
 const RESULT_CODE = require('./../../../utils/result_utils')
 const log = require('./../../../lib/log')('api-payment')
 const Uuid = require('./../../../utils/uuid_utils')
+const Config = require('./../../../config/index')
 
 // 计算手续费
 let formateFee = (num) => {
@@ -27,7 +28,7 @@ let formateFee = (num) => {
 // 中间件处理逻辑
 router.use( async (req , res , next) =>{
 
-  let businessId = req.query.business_id || 'e32c20bfc10d5c677b5db96ec57247fc'
+  let businessId = req.query.business_id || Config.default_business_uuid
 
   let business = await BusinessService.getByUuid(businessId)
   if(!business){
@@ -36,7 +37,7 @@ router.use( async (req , res , next) =>{
   }
   
   req.business = business.dataValues
-  log.info(req.business)
+  log.info('business info ' , req.business)
 
   next()
 })
@@ -102,6 +103,14 @@ router.post('/unifiedOrder' , async (req , res) => {
   orderObj.user_id = checkRes.data.user_id
   let userSignKey = checkRes.data.user_key // 签名秘钥
   let userRate = checkRes.data.user_rate
+
+  // 添加商户绑定资质商验证
+  let userBusinessId = checkRes.data.business_id || 0
+  if (userBusinessId){
+    if(userBusinessId != req.business.id){
+      return res.json(RESULT_CODE.BUSINESS_USER_NOT_MATCH)
+    }
+  }
 
   orderObj.business_id = req.business.id
   orderObj.business_uuid = req.business.uuid

@@ -27,9 +27,29 @@ class  NofifyService {
       payment_info : orderObj.payment_info || ''
     }
   
+    
+    let httpNotify = async (notifyUrl , notifyObj , index = 0) =>{
+      let notifyResult = 'fail'
+      if(index < 3){
+        notifyResult = await HttpUtils.post(notifyUrl , notifyObj)
+      }else {
+        notifyResult = 'success'
+      }
+      
+      index++
+      log.info('/notifyUser index:' , index)
+
+      if(result.toLowerCase() == 'success'){
+        return result.toLowerCase()
+      }else{
+        return await httpNotify(notifyUrl, notifyObj , index)
+      }
+    }
+
     let result = 'fail'
     try {
-      result = await HttpUtils.post(notifyUrl , notifyObj)
+      // result = await HttpUtils.post(notifyUrl , notifyObj)
+      result = await httpNotify(notifyUrl , notifyObj)
       log.info('/notifyUser result' , result )
     }catch (err){
       log.info('/notifyUser err' , err)

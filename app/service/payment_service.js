@@ -73,7 +73,7 @@ class PaymentService {
     }
     
     let result = RESULT_UTILS.SUCCESS
-    result.data = {user_id : user.id , user_key : userKey , user_rate : user.rate_in}
+    result.data = {user_id : user.id , user_key : userKey , user_rate : user.rate_in , business_id : user.business_id}
     return result
   }
 
