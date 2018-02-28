@@ -39,8 +39,8 @@ class  NofifyService {
       index++
       log.info('/notifyUser index:' , index)
 
-      if(result.toLowerCase() == 'success'){
-        return result.toLowerCase()
+      if(notifyResult.toLowerCase() == 'success'){
+        return notifyResult.toLowerCase()
       }else{
         return await httpNotify(notifyUrl, notifyObj , index)
       }

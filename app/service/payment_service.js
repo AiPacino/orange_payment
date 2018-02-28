@@ -9,7 +9,7 @@ const log = require('./../../lib/log')('payment_service')
 const cryptoUtils = require('./../../utils/crypto_utils')
 const paymentConfig = require('./../../config/index').payment
 const testCode = require('./../../config/index').test_code
-const HttpUtils = require('./../../utils/http_utils')
+// const HttpUtils = require('./../../utils/http_utils')
 
 class PaymentService {
 
@@ -210,7 +210,7 @@ class PaymentService {
     return result
   }
 
-  notifyUserDo(orderObj){
+  notifyUserDo(){
     return 'success'
   }
   // 通知下级商户
