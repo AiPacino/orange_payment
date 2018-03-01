@@ -1,5 +1,6 @@
 const log = require('./../../lib/log')('notify_service')
 const UserModel = require('./../../server/model/user_model')
+const CryptoUtils = require('./../../utils/crypto_utils')
 const HttpUtils = require('./../../utils/http_utils')
 
 class  NofifyService {
@@ -27,7 +28,11 @@ class  NofifyService {
       payment_info : orderObj.payment_info || ''
     }
   
-    
+    // TOOD 加密
+    log.info('/notifyUser key' , user.key)
+    notifyObj.sign = CryptoUtils.md5ByKey(notifyObj , user.key)
+    log.info('/notifyUser sign ' , notifyObj.sign)
+
     let httpNotify = async (notifyUrl , notifyObj , index = 0) =>{
       let notifyResult = 'fail'
       if(index < 3){
