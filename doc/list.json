@@ -1,9 +1,11 @@
 {
   "概述" : {
     "index" : "开始开发",
+    "business" : "商户接入",
     "sign" : "签名步骤"
   },
   "接口列表" : {
-    "unifiedOrder" : "统一下单"
+    "unifiedOrder" : "统一下单",
+    "notify" : "支付消息通知"
   }
 }

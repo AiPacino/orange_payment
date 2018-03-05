@@ -20,8 +20,8 @@ router.use(async (req , res , next) => {
     next()
   }else{
 
-    req.session.mg_user_id = 1
-    req.session.mg_user = users.lucong
+    // req.session.mg_user_id = 1
+    // req.session.mg_user = users.lucong
 
     let mgUserId = req.session.mg_user_id
 

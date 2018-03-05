@@ -2,7 +2,7 @@
 `http://open.cc512.com`
 
 ### 统一下单接口请求地址
-`POST /payment/unifiedOrder`
+`POST /api/payment/unifiedOrder`
 
 #### 请求 ：
 ```js
@@ -16,8 +16,10 @@
   redirect_url : '' , // 支付完成跳转链接
   payment_type : '' // 参见支付类型说明
   payment_user : '' // wx JSAPI传openid，其他情况不传
+  sign : '' // 支付签名
 }
 ```
+签名详细请看[签名步骤](/document/#sign)
 
 #### 返回数据:
 ```json
