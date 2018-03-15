@@ -59,7 +59,7 @@ let config = {
 
   test_code : 'a47bfa076a9135ddccf9507615a84',
 
-  default_business_uuid : 'e32c20bfc10d5c677b5db96ec57247fc',
+  default_business_uuid: '4d505ffcd6dc3b24ddb9b736b03c0042',
 }
 
 // let env = process.env.NODE_ENV ? process.env.NODE_ENV : ''
