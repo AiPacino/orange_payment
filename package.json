@@ -1,6 +1,6 @@
 {
   "name": "orange_payment",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "orange_payment",
   "main": "app.js",
   "scripts": {
