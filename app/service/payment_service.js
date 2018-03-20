@@ -85,7 +85,7 @@ class PaymentService {
     orderObj.order_no = orderUuid
 
     log.info('createORder orderObj' , orderObj)
-
+    console.log(OrderModel)
     let orderFind = await OrderModel.model().findOne({
       where : {
         business_id : orderObj.business_id,
