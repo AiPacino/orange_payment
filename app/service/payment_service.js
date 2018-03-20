@@ -100,11 +100,12 @@ class PaymentService {
       if(status == 0){
         return RESULT_UTILS.ORDER_STATUS_0
       }else {
+        orderObj.update_time = parseInt(Date.now / 1000)
         resultData = await orderFind.update(orderObj)
         // resultData = orderFind
       }
     }else{
-
+      orderObj.create_time = parseInt(Date.now / 1000)
       let order = await OrderModel.model.create(orderObj)
       log.info('createOrder order' , order)
       resultData = order
