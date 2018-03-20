@@ -84,7 +84,7 @@ class PaymentService {
     let orderUuid = Uuid.v4()
     orderObj.uuid = orderUuid
     orderObj.order_no = orderUuid
-
+    console.log(OrderModel.model())
     log.info('createORder orderObj' , orderObj)
     
     let orderFind = await OrderModel.model().findOne({
