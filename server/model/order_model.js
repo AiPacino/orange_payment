@@ -90,7 +90,9 @@ class OrderModel {
         defaultValue : 0
       }
     },{
-      timestamps: false,
+      timestamps: true,
+      createdAt: 'create_time',
+      updatedAt: 'update_time',
       freezeTableName: true,
       tableName : 't_order'
     })
