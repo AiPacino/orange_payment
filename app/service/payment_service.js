@@ -10,6 +10,7 @@ const cryptoUtils = require('./../../utils/crypto_utils')
 const paymentConfig = require('./../../config/index').payment
 const testCode = require('./../../config/index').test_code
 // const HttpUtils = require('./../../utils/http_utils')
+console.log(OrderModel)
 
 class PaymentService {
 
@@ -85,7 +86,7 @@ class PaymentService {
     orderObj.order_no = orderUuid
 
     log.info('createORder orderObj' , orderObj)
-    console.log(OrderModel)
+    
     let orderFind = await OrderModel.model().findOne({
       where : {
         business_id : orderObj.business_id,
