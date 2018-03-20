@@ -8,7 +8,7 @@ class  NofifyService {
   async toUser(orderObj){
 
     let userId = await orderObj.user_id
-    let user = await UserModel.model.findById(userId)
+    let user = await UserModel.model().findById(userId)
     let notifyUrl = user.notify_url
     
     log.info('/notifyUser notifyUrl' , notifyUrl)

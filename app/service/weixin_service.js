@@ -66,7 +66,7 @@ class WeixinService {
    * @param {*} unifiedOrderResult 
    */
   async _saveUnifiedOrderResult(orderNo , unifiedOrderResult){
-    let order = await OrderModel.model.findOne({
+    let order = await OrderModel.model().findOne({
       where : { order_no : orderNo}
     })
     if(order){
@@ -101,13 +101,13 @@ class WeixinService {
     if(orderNo){
 
       // 找到订单信息 商户信息
-      let order = await OrderModel.model.findOne({
+      let order = await OrderModel.model().findOne({
         where : {
           order_no : orderNo
         }
       })
       log.info('notifyDealOrder order' , order)
-      let businessMethod = await BusinessMethodModel.model.findOne({
+      let businessMethod = await BusinessMethodModel.model().findOne({
         where : {
           business_id : order.business_id,
           method_key : order.method,
@@ -215,7 +215,7 @@ class WeixinService {
   async getAccessToken(opt , wxToken = null){
     let appId = opt.app_id
     if(!wxToken){
-      wxToken = await WxTokenModel.model.findOne({
+      wxToken = await WxTokenModel.model().findOne({
         where : {app_id : appId}
       })
     }
@@ -243,7 +243,7 @@ class WeixinService {
       wxToken.access_token_deadline = deadLine
       await wxToken.save()
     }else{
-      await WxTokenModel.model.create(
+      await WxTokenModel.model().create(
         {
           app_id : appId,
           access_token : accessTokenReturn.access_token,
@@ -259,7 +259,7 @@ class WeixinService {
 
   async getJsapiTicket(opt){
     let appId = opt.app_id
-    let wxToken = await WxTokenModel.model.findOne({
+    let wxToken = await WxTokenModel.model().findOne({
       where : {app_id : appId}
     })
 
@@ -282,7 +282,7 @@ class WeixinService {
       return null
     }
 
-    wxToken = await WxTokenModel.model.findOne({
+    wxToken = await WxTokenModel.model().findOne({
       where : {app_id : appId}
     })
 
@@ -291,7 +291,7 @@ class WeixinService {
       wxToken.jsapi_ticket_deadline = deadLine
       await wxToken.save()
     }else{
-      await WxTokenModel.model.create(
+      await WxTokenModel.model().create(
         {
           app_id : appId,
           jsapi_ticket : jsapiTicketResult.ticket,

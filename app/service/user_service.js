@@ -9,13 +9,13 @@ const ResultUtils = require('./../../utils/result_utils')
 class UserService {
 
   async getInfoById(id){
-    let result = await UserModel.model.findById(id)
+    let result = await UserModel.model().findById(id)
     log.info('getInfoByid result' , result)
     return result
   }
 
   async getInfoByUuid(uuid){
-    let result = await UserModel.model.find({
+    let result = await UserModel.model().find({
       where : {uuid : uuid}
     })
     log.info('getInfoByUuid result' , result)
@@ -32,7 +32,7 @@ class UserService {
       where.status = map.status
     }
 
-    let result = await UserModel.model.findAndCountAll({
+    let result = await UserModel.model().findAndCountAll({
       where : where ,
       offset : (page - 1) * size,
       limit : size,
@@ -44,7 +44,7 @@ class UserService {
 
   // 记录资金流水
   async fundTrade(userId , money , type = 1 , orderId = 0 , fee = 0){
-    let userFund = await UserFundModel.model.find({
+    let userFund = await UserFundModel.model().find({
       where : {
         user_id : userId,
         status : 1
@@ -68,7 +68,7 @@ class UserService {
       if(newMoney <= 0){
         result = false
       }else {
-        userFund = await UserFundModel.model.create({
+        userFund = await UserFundModel.model().create({
           user_id : userId,
           money : newMoney
         })
@@ -79,7 +79,7 @@ class UserService {
     let userTrade = null
     if(result){
       // 记录
-      userTrade = await UserTradeModel.model.create({
+      userTrade = await UserTradeModel.model().create({
         user_id : userId,
         type : (type == 1) ? 'in' : 'out',
         num : money * type,
@@ -117,7 +117,7 @@ class UserService {
     log.info('join userObj' , userObj)
 
     // 检查邮箱
-    let checkEmail = await UserModel.model.count({
+    let checkEmail = await UserModel.model().count({
       where : {email : obj.email}
     })
     if(checkEmail > 0){
@@ -125,14 +125,14 @@ class UserService {
     }
 
     // 检查名称
-    let checkName = await UserModel.model.count({
+    let checkName = await UserModel.model().count({
       where : {name : obj.name}
     })
     if(checkName > 0){
       return ResultUtils.USER_NAME_REQUIRED
     }
 
-    let user = await UserModel.model.create(userObj)
+    let user = await UserModel.model().create(userObj)
     log.info('join user' , user)
     let result = ResultUtils.SUCCESS
     result.data = user
@@ -142,7 +142,7 @@ class UserService {
   // 登录
   async login(obj){
     log.info('login obj' , obj)
-    let checkUser = await UserModel.model.findOne({
+    let checkUser = await UserModel.model().findOne({
       where : {
         email : obj.email,
         password : CryptoUtils.md5(obj.password)
@@ -167,7 +167,7 @@ class UserService {
   async tradeLogList(userId , map = {} , page = 1 , size = 10){
     map.user_id = userId
 
-    let result = await UserTradeModel.model.findAndCountAll({
+    let result = await UserTradeModel.model().findAndCountAll({
       where : map ,
       offset : (page - 1) * size,
       limit : size,
@@ -180,7 +180,7 @@ class UserService {
 
   // 获取商户资产
   async getUserFund(userId){
-    let result = await UserFundModel.model.findOne({
+    let result = await UserFundModel.model().findOne({
       where : {user_id : userId}
     })
     return result ? result.money : 0
@@ -188,7 +188,7 @@ class UserService {
 
   // 设置状态
   async setStatus(userId , status){
-    let user = await UserModel.model.findById(userId)
+    let user = await UserModel.model().findById(userId)
     if(user){
       user.status = status
       user.save()
@@ -201,7 +201,7 @@ class UserService {
 
   // 设置费率
   async setRate(userId , inNum , outNum){
-    let user = await UserModel.model.findById(userId)
+    let user = await UserModel.model().findById(userId)
     if(user){
       user.rate_in = inNum
       user.rate_out = outNum

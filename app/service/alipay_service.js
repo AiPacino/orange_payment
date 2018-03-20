@@ -51,7 +51,7 @@ class AlipayService {
       result = RESULT_UTILS.PAYMENT_UNIFIED_ORDER_ALIPAY_FAIL
     }
     
-    let orderInfo = await OrderModel.model.findOne({
+    let orderInfo = await OrderModel.model().findOne({
       where : {order_no : order_no}
     })
     orderInfo.unifiedorder_info = JSON.stringify(result)
@@ -68,7 +68,7 @@ class AlipayService {
 
     if(tradeStatus == 'TRADE_SUCCESS'){
 
-      let order = await OrderModel.model.findOne({
+      let order = await OrderModel.model().findOne({
         where : {order_no : orderNo}
       })
 
@@ -83,7 +83,7 @@ class AlipayService {
 
       let orderStatus = order.status
 
-      let businessMethod = await BusinessMethodModel.model.findOne({
+      let businessMethod = await BusinessMethodModel.model().findOne({
         where : {
           business_id : order.business_id,
           method_key : order.method

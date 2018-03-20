@@ -3,13 +3,17 @@ const { DB, FIELD_TYPE, OP } = require('./../../lib/model')
 class UserModel {
 
   constructor() {
-    this.model = DB.define('test', {
+    this.op = OP
+  }
+
+  model(){
+    let model = DB.define('test', {
       id: {
         type: FIELD_TYPE.BIGINT,
         primaryKey: true,
         autoIncrement: true
       },
-      
+
       status: {
         type: FIELD_TYPE.BOOLEAN,
         defaultValue: 1
@@ -25,16 +29,14 @@ class UserModel {
 
     }, {
       timestamps: true,
-      createdAt : 'create_time',
-      updatedAt : 'update_time',
+      createdAt: 'create_time',
+      updatedAt: 'update_time',
       freezeTableName: true,
       tableName: 't_test'
     })
 
-    this.op = OP
-
+    return model
   }
-
 
 }
 

@@ -36,7 +36,7 @@ class OrderService {
   async lists(userId , map = {} , page = 1 , size = 10){
     map.user_id = userId
 
-    let result = await OrderModel.model.findAndCountAll({
+    let result = await OrderModel.model().findAndCountAll({
       where : map ,
       offset : (page - 1) * size,
       limit : size,

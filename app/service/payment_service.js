@@ -16,7 +16,7 @@ class PaymentService {
   // 检验
   async checkRequest(obj){
     // 检测app_id(user uuid)
-    let user = await UserModel.model.findOne({where : {uuid : obj.app_id}})
+    let user = await UserModel.model().findOne({where : {uuid : obj.app_id}})
     if(!user || user.status == 0){
       return RESULT_UTILS.PAYMENT_UNIFIED_CHCEK_USER
     }
@@ -74,6 +74,7 @@ class PaymentService {
     
     let result = RESULT_UTILS.SUCCESS
     result.data = {user_id : user.id , user_key : userKey , user_rate : user.rate_in , business_id : user.business_id}
+    log.info('/checkRequest result ' ,result)
     return result
   }
 
@@ -85,7 +86,7 @@ class PaymentService {
 
     log.info('createORder orderObj' , orderObj)
 
-    let orderFind = await OrderModel.model.findOne({
+    let orderFind = await OrderModel.model().findOne({
       where : {
         business_id : orderObj.business_id,
         out_trade_no : orderObj.out_trade_no
@@ -106,7 +107,7 @@ class PaymentService {
       }
     }else{
       // orderObj.create_time = parseInt(Date.now / 1000)
-      let order = await OrderModel.model.create(orderObj)
+      let order = await OrderModel.model().create(orderObj)
       log.info('createOrder order' , order)
       resultData = order
     }
@@ -228,7 +229,7 @@ class PaymentService {
   //   //     result = 'success'
   //   //   }else {
   //   //     let userId = await orderObj.user_id
-  //   //     let user = await UserModel.model.findById(userId)
+  //   //     let user = await UserModel.model().findById(userId)
   //   //     let notifyUrl = user.notify_url
     
   //   //     let notifyObj = {

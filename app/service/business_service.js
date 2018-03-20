@@ -10,7 +10,7 @@ const log = require('./../../lib/log')('business_service')
 class BusinessService {
 
   async getByUuid(uuid){
-    let result = await BusinessModel.model.findOne({
+    let result = await BusinessModel.model().findOne({
       where : {
         uuid : uuid , 
         status : 1
@@ -22,7 +22,7 @@ class BusinessService {
   }
 
   async getById(id){
-    let result = await BusinessModel.model.findById(id)
+    let result = await BusinessModel.model().findById(id)
     log.info('getById result ' , result)
     return result
   }
@@ -36,7 +36,7 @@ class BusinessService {
       where.status = map.status
     }
 
-    let result = await BusinessModel.model.findAndCountAll({
+    let result = await BusinessModel.model().findAndCountAll({
       where : where ,
       offset : (page - 1) * size,
       limit : size,
@@ -52,11 +52,11 @@ class BusinessService {
    */
   async getMethods(businessId){
    
-    let businessMethods = await BusinessMethodModel.model.findAll({
+    let businessMethods = await BusinessMethodModel.model().findAll({
       where : {business_id : businessId}
     })
    
-    let methods = await MethodModel.model.findAll()
+    let methods = await MethodModel.model().findAll()
     let result = []
     methods.forEach(method => {
       let item = {}
@@ -80,7 +80,7 @@ class BusinessService {
   }
 
   async setMethod(businessId , method , obj){
-    let businessMethod = await BusinessMethodModel.model.findOne({
+    let businessMethod = await BusinessMethodModel.model().findOne({
       where : {
         business_id : businessId,
         method_key : method,
@@ -89,7 +89,7 @@ class BusinessService {
     if(businessMethod){
       await businessMethod.update(obj)
     }else {
-      businessMethod = await BusinessMethodModel.model.create(obj)
+      businessMethod = await BusinessMethodModel.model().create(obj)
     }
 
     let result = ResultUtils.SUCCESS
@@ -99,7 +99,7 @@ class BusinessService {
 
   // 获取支付配置
   async getMethodConfig(businessId , method = 'wx'){
-    let result = await BusinessMethodModel.model.findOne({
+    let result = await BusinessMethodModel.model().findOne({
       where : {
         business_id : businessId,
         method_key : method,
@@ -124,7 +124,7 @@ class BusinessService {
 
   // 记录资金流水
   async fundTrade(businessId , money , type = 1 , orderId = 0 , fee = 0){
-    let fund = await BusinessFundModel.model.find({
+    let fund = await BusinessFundModel.model().find({
       where : {
         business_id : businessId,
         status : 1
@@ -148,7 +148,7 @@ class BusinessService {
       if(newMoney <= 0){
         result = false
       }else {
-        fund = await BusinessFundModel.model.create({
+        fund = await BusinessFundModel.model().create({
           business_id : businessId,
           money : newMoney
         })
@@ -159,7 +159,7 @@ class BusinessService {
     let trade = null
     if(result){
       // 记录
-      trade = await BusinessTradeModel.model.create({
+      trade = await BusinessTradeModel.model().create({
         business_id : businessId,
         type : (type == 1) ? 'in' : 'out',
         num : money * type,
@@ -176,7 +176,7 @@ class BusinessService {
   async tradeLogList(businessId , map = {} , page = 1 , size = 10){
     map.business_id = businessId
 
-    let result = await BusinessTradeModel.model.findAndCountAll({
+    let result = await BusinessTradeModel.model().findAndCountAll({
       where : map ,
       offset : (page - 1) * size,
       limit : size,
@@ -188,7 +188,7 @@ class BusinessService {
   }
 
   async getFund(businessId){
-    let result = await BusinessFundModel.model.findOne({
+    let result = await BusinessFundModel.model().findOne({
       where : {business_id : businessId}
     })
     return result ? result.money : 0
@@ -205,7 +205,7 @@ class BusinessService {
     if(obj.id){
       checkNameMap.id = {[BusinessModel.op.ne] : obj.id }
     }
-    let checkNameCount = await BusinessModel.model.count({
+    let checkNameCount = await BusinessModel.model().count({
       where : checkNameMap
     })
     log.info('update checkNameCount:' ,checkNameCount )
@@ -217,7 +217,7 @@ class BusinessService {
     if(obj.id){
       checkEmailMap.id = {[BusinessModel.op.ne] : obj.id }
     }
-    let checkEmailCount = await BusinessModel.model.count({
+    let checkEmailCount = await BusinessModel.model().count({
       where : checkEmailMap
     })
     log.info('update checkEmailCount:' ,checkEmailCount )
@@ -227,12 +227,12 @@ class BusinessService {
     
     if(!obj.id){
       obj.uuid = UuidUtils.v4()
-      let business = await BusinessModel.model.create(obj)
+      let business = await BusinessModel.model().create(obj)
       let result = ResultUtils.SUCCESS
       result.data = business
       return result
     }else {
-      let business = await BusinessModel.model.findById(obj.id)
+      let business = await BusinessModel.model().findById(obj.id)
       if(!business){
         return ResultUtils.BUSINESS_FIND_ERROR
       }

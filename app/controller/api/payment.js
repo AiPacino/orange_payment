@@ -114,7 +114,7 @@ router.post('/unifiedOrder' , async (req , res) => {
 
   orderObj.business_id = req.business.id
   orderObj.business_uuid = req.business.uuid
-
+  log.info('/unifiedOrder orderObj', orderObj)
   
   // 找到支付配置 isCommon 是否普通商户 支付费率
   let [payOpt , isCommon  , rate , opens] = await BusinessService.getMethodConfig(req.business.id , orderObj.method)

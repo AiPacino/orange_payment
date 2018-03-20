@@ -6,6 +6,7 @@ const WeixinService = require('./../../service/weixin_service')
 const log = require('./../../../lib/log')('demo-wechat')
 const Uuid = require('./../../../utils/uuid_utils')
 
+
 router.use((req , res , next) => {
 
   // if(process.env.NODE_ENV != 'production'){
@@ -101,5 +102,6 @@ router.get('/redirect' , (req ,res) => {
 
   res.send(req.query)
 })
+
 
 module.exports = router
