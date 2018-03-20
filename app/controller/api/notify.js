@@ -26,4 +26,10 @@ router.post('/alipay' , async (req , res) => {
   // res.send(result)
 })
 
+router.post('/test' , async(req , res) => {
+  // let data = req.body
+  
+  res.send(parseInt(Date.now() / 1000).toString())
+})
+
 module.exports = router
