@@ -10,7 +10,6 @@ const cryptoUtils = require('./../../utils/crypto_utils')
 const paymentConfig = require('./../../config/index').payment
 const testCode = require('./../../config/index').test_code
 // const HttpUtils = require('./../../utils/http_utils')
-console.log(OrderModel)
 
 class PaymentService {
 
