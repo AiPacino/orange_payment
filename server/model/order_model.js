@@ -1,6 +1,6 @@
 const { DB , FIELD_TYPE , OP} = require('./../../lib/model')
-const UserModel = require('./../model/user_model')
-const BusinessModel = require('./../model/business_model')
+// const UserModel = require('./../model/user_model')
+// const BusinessModel = require('./../model/business_model')
 
 class OrderModel {
 
@@ -199,26 +199,26 @@ class OrderModel {
     // model.belongsTo(BusinessModel.model(), { foreignKey: 'business_id', targetKey: 'id' })
   }
 
-  async getLists(map, page, size) {
-    let result = await this.model().findAndCountAll({
-      where: map,
-      offset: (page - 1) * size,
-      limit: size,
-      order: [['create_time', 'DESC']],
-      include: [
-        {
-          model: UserModel.model(),
-          attributes: ['id', 'name']
-        },
-        {
-          model: BusinessModel.model(),
-          attributes: ['id', 'name']
-        }
-      ]
-    })
+  // async getLists(map, page, size) {
+  //   let result = await this.model().findAndCountAll({
+  //     where: map,
+  //     offset: (page - 1) * size,
+  //     limit: size,
+  //     order: [['create_time', 'DESC']],
+  //     include: [
+  //       {
+  //         model: UserModel.model(),
+  //         attributes: ['id', 'name']
+  //       },
+  //       {
+  //         model: BusinessModel.model(),
+  //         attributes: ['id', 'name']
+  //       }
+  //     ]
+  //   })
 
-    return result
-  }
+  //   return result
+  // }
 
   
 }
