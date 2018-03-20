@@ -1,6 +1,6 @@
 const { DB , FIELD_TYPE , OP} = require('./../../lib/model')
-// const UserModel = require('./../model/user_model')
-// const BusinessModel = require('./../model/business_model')
+const UserModel = require('./../model/user_model')
+const BusinessModel = require('./../model/business_model')
 
 class OrderModel {
 
@@ -103,7 +103,7 @@ class OrderModel {
   }
 
   model() {
-    return DB.define('order', {
+    let model = DB.define('order', {
       id: {
         type: FIELD_TYPE.BIGINT,
         primaryKey: true,
@@ -195,8 +195,10 @@ class OrderModel {
       tableName: 't_order'
     })
 
-    // model.belongsTo(UserModel.model(), { foreignKey: 'user_id', targetKey: 'id' })
-    // model.belongsTo(BusinessModel.model(), { foreignKey: 'business_id', targetKey: 'id' })
+    model.belongsTo(UserModel.model(), { foreignKey: 'user_id', targetKey: 'id' })
+    model.belongsTo(BusinessModel.model(), { foreignKey: 'business_id', targetKey: 'id' })
+
+    return model
   }
 
   // async getLists(map, page, size) {

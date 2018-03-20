@@ -60,7 +60,7 @@ class BusinessMethodModel {
   }
 
   model() {
-    let model = this.model = DB.define('business_method', {
+    let model = DB.define('business_method', {
       id: {
         type: FIELD_TYPE.BIGINT,
         primaryKey: true,
