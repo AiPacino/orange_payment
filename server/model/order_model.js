@@ -195,8 +195,8 @@ class OrderModel {
       tableName: 't_order'
     })
 
-    model.belongsTo(UserModel.model(), { foreignKey: 'user_id', targetKey: 'id' })
-    model.belongsTo(BusinessModel.model(), { foreignKey: 'business_id', targetKey: 'id' })
+    // model.belongsTo(UserModel.model(), { foreignKey: 'user_id', targetKey: 'id' })
+    // model.belongsTo(BusinessModel.model(), { foreignKey: 'business_id', targetKey: 'id' })
 
     return model
   }
